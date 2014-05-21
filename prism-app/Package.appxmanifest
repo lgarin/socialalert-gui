@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
+  <Identity Name="b6cf8406-21e2-4dc8-9fa3-5a16f44556c9" Publisher="CN=Lucien" Version="1.0.0.0" />
+  <Properties>
+    <DisplayName>social-alert</DisplayName>
+    <PublisherDisplayName>Lucien</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+  <Prerequisites>
+    <OSMinVersion>6.3.0</OSMinVersion>
+    <OSMaxVersionTested>6.3.0</OSMaxVersionTested>
+  </Prerequisites>
+  <Resources>
+    <Resource Language="x-generate" />
+  </Resources>
+  <Applications>
+    <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Socialalert.App">
+      <m2:VisualElements DisplayName="Social Alert" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png" Description="A media platform." ForegroundText="light" BackgroundColor="#464646">
+        <m2:DefaultTile ShortName="Socialalert">
+          <m2:ShowNameOnTiles>
+            <m2:ShowOn Tile="square150x150Logo" />
+          </m2:ShowNameOnTiles>
+        </m2:DefaultTile>
+        <m2:SplashScreen Image="Assets\SplashScreen.png" />
+      </m2:VisualElements>
+    </Application>
+  </Applications>
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <Capability Name="picturesLibrary" />
+  </Capabilities>
+</Package>
