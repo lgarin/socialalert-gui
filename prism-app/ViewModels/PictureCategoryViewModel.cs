@@ -11,7 +11,7 @@ namespace Socialalert.ViewModels
 {
     public class PictureCategoryViewModel : SimpleViewModel
     {
-        public PictureCategoryViewModel(String name, Uri basePictureUri, IList<PictureInfo> data)
+        public PictureCategoryViewModel(String name, Uri basePictureUri, IList<PictureInfo> data, DelegateCommand<PictureCategoryViewModel> selectedCommand)
         {
             Items = new ObservableCollection<PictureViewModel>();
             Id = name;
@@ -20,10 +20,10 @@ namespace Socialalert.ViewModels
             {
                 Items.Add(new PictureViewModel(basePictureUri, picture));
             }
-            CategorySelectedCommand = new DelegateCommand(() => Items.Clear(), () => Items.Count > 0);
+            CategorySelectedCommand = selectedCommand;
         }
 
-        public DelegateCommand CategorySelectedCommand { get; private set; }
+        public DelegateCommand<PictureCategoryViewModel> CategorySelectedCommand { get; private set; }
 
         public string Id { get { return Get<string>(); } set { Set(value); } }
         public string Title { get { return Get<string>(); } set { Set(value); } }

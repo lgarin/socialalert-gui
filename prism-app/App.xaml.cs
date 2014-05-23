@@ -6,6 +6,7 @@ using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources;
+using Windows.UI.Xaml;
 
 namespace Socialalert
 {
@@ -27,6 +28,7 @@ namespace Socialalert
         protected override void OnInitialize(IActivatedEventArgs args)
         {
             container.RegisterInstance(NavigationService);
+            container.RegisterInstance(Resources);
             container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
             container.RegisterType<IAlertMessageService, AlertMessageService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IJsonRpcClient, JsonRpcClient>(new ContainerControlledLifetimeManager());

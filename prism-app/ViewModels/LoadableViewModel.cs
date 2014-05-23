@@ -1,5 +1,6 @@
 ﻿using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
+using Microsoft.Practices.Unity;
 using Socialalert.Services;
 using System;
 using System.Collections.Generic;
@@ -14,23 +15,32 @@ namespace Socialalert.ViewModels
 {
     public abstract class LoadableViewModel : ViewModel
     {
-        private readonly JsonRpcClient _rpcClient;
-        private readonly IAlertMessageService _alertMessageService;
-        private readonly IResourceLoader _resourceLoader;
-        private bool _loadingData;
-        private readonly Uri serverUrl;
+        private Uri serverUrl;
+        private int loadDelay;
 
-        protected LoadableViewModel(JsonRpcClient rpcClient, IAlertMessageService alertMessageService, IResourceLoader resourceLoader)
+        private bool _loadingData;
+
+        [InjectionMethod]
+        public void Init(ResourceDictionary resourceDictionary)
         {
-            _rpcClient = rpcClient;
-            _alertMessageService = alertMessageService;
-            _resourceLoader = resourceLoader;
-            serverUrl = new Uri(Application.Current.Resources["BaseServerUrl"] as string, UriKind.Absolute);
+            serverUrl = new Uri(resourceDictionary["BaseServerUrl"] as string, UriKind.Absolute);
+            loadDelay = (int) resourceDictionary["LoadDelay"];
         }
 
-        protected IResourceLoader ResourceLoader { get { return _resourceLoader;  } }
+        [Dependency]
+        protected IJsonRpcClient JsonRpcClient { get; set; }
 
-        protected IAlertMessageService AlertMessageService { get { return _alertMessageService; } }
+        [Dependency]
+        protected IResourceLoader ResourceLoader { get; set; }
+
+        [Dependency]
+        protected IAlertMessageService AlertMessageService { get; set; }
+
+        [Dependency]
+        protected INavigationService NavigationService { get; set; }
+
+        [Dependency]
+        protected ResourceDictionary ResourceDictionary { get; set; }
 
         public bool LoadingData
         {
@@ -46,8 +56,11 @@ namespace Socialalert.ViewModels
             try
             {
                 LoadingData = true;
-                await Task.Delay(TimeSpan.FromSeconds((int)Application.Current.Resources["LoadDelay"]));
-                result = await _rpcClient.InvokeAsync<T>(serverUrl, request);
+                if (loadDelay > 0)
+                {
+                    await Task.Delay(TimeSpan.FromSeconds(loadDelay));
+                }
+                result = await JsonRpcClient.InvokeAsync<T>(serverUrl, request);
             }
             catch (AggregateException ex)
             {
@@ -72,17 +85,17 @@ namespace Socialalert.ViewModels
             {
                 // TODO use specific error message based on error code
                 var errorMessage = string.Format(CultureInfo.CurrentCulture,
-                                             _resourceLoader.GetString("GeneralServiceErrorMessage"),
+                                             ResourceLoader.GetString("GeneralServiceErrorMessage"),
                                              Environment.NewLine, exception.Message);
-                await _alertMessageService.ShowAsync(errorMessage, _resourceLoader.GetString("ErrorServiceUnreachable"));
+                await AlertMessageService.ShowAsync(errorMessage, ResourceLoader.GetString("ErrorServiceUnreachable"));
                 throw exception;
             }
             else if (exception != null)
             {
                 var errorMessage = string.Format(CultureInfo.CurrentCulture,
-                                             _resourceLoader.GetString("GeneralServiceErrorMessage"),
+                                             ResourceLoader.GetString("GeneralServiceErrorMessage"),
                                              Environment.NewLine, exception.Message);
-                await _alertMessageService.ShowAsync(errorMessage, _resourceLoader.GetString("ErrorServiceUnreachable"));
+                await AlertMessageService.ShowAsync(errorMessage, ResourceLoader.GetString("ErrorServiceUnreachable"));
                 throw exception;
             }
             return result;
