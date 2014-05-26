@@ -1,4 +1,4 @@
-﻿using Socialalert.Models;
+﻿using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,21 +7,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Socialalert.ViewModels
+namespace Socialalert.UI.ViewModel
 {
-    public sealed class PictureViewModel : SimpleViewModel
+    class PictureViewModel : DictionaryViewModel
     {
-        public PictureViewModel(Uri basePicutreUrl, PictureInfo picture)
-        {
-            PictureUri = picture.PictureUri;
-            Title = picture.Title;
-            Description = picture.Description;
-            Creation = picture.Creation;
-            Creator = picture.Creator;
-            ImageUrl = new Uri(basePicutreUrl, picture.PictureUri);
-        }
-
-        public Uri ImageUrl { get { return Get<Uri>(); } set { Set(value); } }
         public Uri PictureUri { get { return Get<Uri>(); } set { Set(value); } }
         public string Title { get { return Get<string>(); } set { Set(value); } }
         public string Description { get { return Get<string>(); } set { Set(value); } }

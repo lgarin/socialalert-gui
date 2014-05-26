@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Socialalert.ViewModels
 {
-    public abstract class SimpleViewModel : ValidatableBindableBase
+    public abstract class SimpleViewModel : BindableBase  // ValidatableBindableBase
     {
         private readonly Dictionary<string, object> propertyBackingDictionary = new Dictionary<string, object>();
 
@@ -42,10 +42,10 @@ namespace Socialalert.ViewModels
             }
             propertyBackingDictionary[propertyName] = newValue;
             OnPropertyChanged(propertyName);
-            if (Errors.IsValidationEnabled)
-            {
-                Errors.ValidateProperty(propertyName);
-            }
+            //if (Errors.IsValidationEnabled)
+            //{
+            //    Errors.ValidateProperty(propertyName);
+            //}
             return true;
         }
     }

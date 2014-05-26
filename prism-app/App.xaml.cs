@@ -2,7 +2,9 @@
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using Microsoft.Practices.Unity;
 using Socialalert.Services;
+using Socialalert.ViewModels;
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources;

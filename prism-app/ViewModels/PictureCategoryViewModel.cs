@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Socialalert.ViewModels
 {
-    public class PictureCategoryViewModel : SimpleViewModel
+    public sealed class PictureCategoryViewModel : SimpleViewModel
     {
         public PictureCategoryViewModel(String name, Uri basePictureUri, IList<PictureInfo> data, DelegateCommand<PictureCategoryViewModel> selectedCommand)
         {
@@ -21,6 +21,7 @@ namespace Socialalert.ViewModels
                 Items.Add(new PictureViewModel(basePictureUri, picture));
             }
             CategorySelectedCommand = selectedCommand;
+            PropertyChanged += (s, e) => { CategorySelectedCommand.RaiseCanExecuteChanged(); };
         }
 
         public DelegateCommand<PictureCategoryViewModel> CategorySelectedCommand { get; private set; }

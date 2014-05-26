@@ -1,13 +1,17 @@
 ﻿using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using Microsoft.Practices.Unity;
+using Newtonsoft.Json;
 using Socialalert.Services;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.DataTransfer;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
@@ -17,8 +21,12 @@ namespace Socialalert.ViewModels
     {
         private Uri serverUrl;
         private int loadDelay;
+        private bool loadingData;
 
-        private bool _loadingData;
+        public LoadableViewModel()
+        {
+            DumpData = new DelegateCommand(WriteJson);
+        }
 
         [InjectionMethod]
         public void Init(ResourceDictionary resourceDictionary)
@@ -42,10 +50,28 @@ namespace Socialalert.ViewModels
         [Dependency]
         protected ResourceDictionary ResourceDictionary { get; set; }
 
+        public DelegateCommand DumpData { get; private set; }
+
+        private void WriteJson()
+        {
+            var serializer = new JsonSerializer();
+            serializer.Formatting = Formatting.Indented;
+            serializer.DateFormatHandling = DateFormatHandling.MicrosoftDateFormat;
+            serializer.ContractResolver = new ViewModelContractResolver(GetType().Namespace);
+            using (var writer = new StringWriter())
+            {
+                serializer.Serialize(writer, this);
+                DataPackage dataPackage = new DataPackage();
+                dataPackage.RequestedOperation = DataPackageOperation.Copy;
+                dataPackage.SetText(writer.ToString());
+                Clipboard.SetContent(dataPackage);
+            }
+        }
+
         public bool LoadingData
         {
-            get { return _loadingData; }
-            private set { SetProperty(ref _loadingData, value); }
+            get { return loadingData; }
+            private set { SetProperty(ref loadingData, value); }
         }
 
         protected async Task<T> ExecuteAsync<T>(JsonRpcRequest<T> request)

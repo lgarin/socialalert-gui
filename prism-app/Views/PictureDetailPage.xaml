@@ -1,0 +1,84 @@
+﻿<prism:VisualStateAwarePage
+    x:Name="pageRoot"
+    x:Class="Socialalert.Views.PictureDetailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Socialalert.Views"
+    xmlns:vm="using:Socialalert.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
+    mc:Ignorable="d"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    d:DataContext="{Binding Source={d:DesignData Source=/Data/PictureDetailPage.json, Type=vm:PictureDetailPageViewModel}}">
+    
+    <prism:VisualStateAwarePage.Resources>
+        <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
+    </prism:VisualStateAwarePage.Resources>
+
+    <prism:VisualStateAwarePage.TopAppBar>
+        <AppBar x:Uid="TopAppBar">
+            <AppBarButton Visibility="{StaticResource Debug}" Name="dumpData" FontFamily="Global User Interface" Label="Dump data" Command="{Binding DumpData}">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf083;"/>
+                </AppBarButton.Icon>
+
+            </AppBarButton>
+        </AppBar>
+    </prism:VisualStateAwarePage.TopAppBar>
+
+    <!--
+        This grid acts as a root panel for the page that defines two rows:
+        * Row 0 contains the back button and page title
+        * Row 1 contains the rest of the page layout
+    -->
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition/>
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="140"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" x:Name="contentRegion" DataContext="{Binding Info}">
+            <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                <Image Source="{Binding ImageUrl}" Stretch="Uniform" AutomationProperties.Name="{Binding Title}" Margin="48,10,-48,-10"/>
+            </Border>
+            <Grid Height="32" VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding Creation}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                <TextBlock Text="{Binding Creator}" Grid.Column="1" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+            </Grid>
+        </Grid>
+
+        <!-- Back button and page title -->
+        <Grid x:Name="titleGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button x:Name="backButton" Margin="39,59,39,0"  VerticalAlignment="Top"
+                          AutomationProperties.AutomationId="PictureDetailPageGoBackButton"
+                          AutomationProperties.Name="Back"
+                          AutomationProperties.ItemType="Navigation Button"
+                          Command="{Binding GoBackCommand, ElementName=pageRoot}"
+                          Style="{StaticResource NavigationBackButtonNormalStyle}" />
+
+            <TextBlock x:Name="pageTitle" Text="{Binding Info.Title}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="2" 
+                        IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,0,40" Height="40"/>
+            <TextBlock TextWrapping="Wrap" Text="&#xf083;" Margin="10,30,0,10" Grid.Column="1" HorizontalAlignment="Left" FontFamily="{StaticResource AwesomeIcons}" FontSize="72" Height="80" VerticalAlignment="Center" Width="80"/>
+        </Grid>
+
+        <ProgressRing Grid.Row="1" IsActive="{Binding LoadingData}" Height="100" Width="100" />
+    </Grid>
+</prism:VisualStateAwarePage>

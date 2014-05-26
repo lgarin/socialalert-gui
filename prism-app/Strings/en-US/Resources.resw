@@ -125,4 +125,7 @@
     <value>The following error messages were received from the service: {0} {1}</value>
     <comment>Message for general service errors</comment>
   </data>
+  <data name="HubPageTitle.Text" xml:space="preserve">
+    <value>Popular pictures</value>
+  </data>
 </root>

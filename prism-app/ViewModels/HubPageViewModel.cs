@@ -1,11 +1,13 @@
 ﻿using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using Microsoft.Practices.Unity;
+using Newtonsoft.Json;
 using Socialalert.Models;
 using Socialalert.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +16,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Socialalert.ViewModels
 {
-    public class HubPageViewModel : LoadableViewModel
+    public sealed class HubPageViewModel : LoadableViewModel
     {
         public HubPageViewModel() 
         {
@@ -24,7 +26,7 @@ namespace Socialalert.ViewModels
 
         private void GotoPictureDetail(PictureViewModel picture)
         {
-            NavigationService.Navigate("PictureDetail", picture);
+            NavigationService.Navigate("PictureDetail", picture.PictureUri.OriginalString);
         }
 
         public DelegateCommand<PictureViewModel> PictureSelectedCommand { get; private set; }
@@ -33,12 +35,12 @@ namespace Socialalert.ViewModels
 
         private void GotoCategroyDetail(PictureCategoryViewModel category)
         {
-            NavigationService.Navigate("CategoryDetail", category);
+            NavigationService.Navigate("CategoryDetail", category.Id);
         }
 
         private bool CanGotoCategoryDetail(PictureCategoryViewModel category)
         {
-            return category.Items.Count > 0;
+            return category != null && category.Items.Count > 0;
         }
 
         public async override void OnNavigatedTo(object navigationParameter, NavigationMode navigationMode, Dictionary<string, object> viewModelState)

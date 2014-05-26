@@ -3,26 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 
-namespace Socialalert.Views
+namespace Socialalert.Converters
 {
-    public class ItemClickedConverter : IValueConverter
+    public sealed class StringFormatConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            var args = value as ItemClickEventArgs;
+            // No format provided.
+            if (parameter == null)
+            {
+                return value;
+            }
 
-            if (args != null)
-                return args.ClickedItem;
-
-            return null;
+            return String.Format((String)parameter, value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            throw new NotImplementedException();
+            return value;
         }
     }
 }

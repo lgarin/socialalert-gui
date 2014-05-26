@@ -11,7 +11,7 @@ using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json.Converters;
 using System.Threading;
 
-namespace Socialalert.Services
+namespace Socialalert.UI.Data
 {
     sealed class EpochDateTimeConverter : DateTimeConverterBase
     {
@@ -20,7 +20,7 @@ namespace Socialalert.Services
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
           DateTime dateTime = (DateTime) value;
-          writer.WriteValue((dateTime.Ticks - epoch.Ticks) / TimeSpan.TicksPerMillisecond);
+          writer.WriteValue(dateTime.Ticks - epoch.Ticks);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -33,7 +33,7 @@ namespace Socialalert.Services
         }
     }
 
-    public sealed class JsonRpcException : Exception
+    public class JsonRpcException : Exception
     {
         public JsonRpcException(String message, int? errorCode)
             : base(message)
@@ -45,56 +45,31 @@ namespace Socialalert.Services
         }
     }
 
-    [JsonObject]
-    public abstract class JsonRpcRequest<T>
-    {
-        [JsonIgnore]
-        private readonly string methodName;
-        [JsonIgnore]
-        private readonly string serviceName;
-
-        protected JsonRpcRequest(string serviceName, string methodName)
-        {
-            this.serviceName = serviceName;
-            this.methodName = methodName;
-        }
-
-        [JsonIgnore]
-        public String ServiceName { get { return serviceName; } }
-
-        [JsonIgnore]
-        public String MethodName { get { return methodName; } }
-
-    }
-
-    public interface IJsonRpcClient
-    {
-        Task<T> InvokeAsync<T>(Uri serverUri, JsonRpcRequest<T> requestObject);
-    }
-
-    public sealed class JsonRpcClient : IJsonRpcClient, IDisposable
+    public class JsonRpcClient 
     {
         private int requestCounter;
         private readonly JsonSerializer serializer;
         private readonly HttpClient client = new HttpClient();
+        public Uri ServerUri { get; private set; }
 
-        public JsonRpcClient()
+        public JsonRpcClient(Uri serverUri)
         {
+            this.ServerUri = serverUri;
             client.DefaultRequestHeaders["contentType"] = "application/json-rpc";
             serializer = new JsonSerializer();
             serializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
             serializer.Converters.Add(new EpochDateTimeConverter());
         }
 
-        public async Task<T> InvokeAsync<T>(Uri serverUri, JsonRpcRequest<T> requestObject) 
+        public async Task<T> InvokeAsync<T>(string method, object param) 
         {
-            using (var request = new HttpRequestMessage(HttpMethod.Post, new Uri(serverUri, requestObject.ServiceName)))
+            using (var request = new HttpRequestMessage(HttpMethod.Post, ServerUri))
             {
                 var input = new JObject();
                 input["id"] = Interlocked.Increment(ref requestCounter).ToString();
                 input["jsonrpc"] = "2.0";
-                input["method"] = requestObject.MethodName;
-                input["params"] = JObject.FromObject(requestObject, serializer);
+                input["method"] = method;
+                input["params"] = JObject.FromObject(param, serializer);
                 String inputString = input.ToString(Formatting.None);
                 request.Content = new HttpStringContent(inputString, Windows.Storage.Streams.UnicodeEncoding.Utf8);
                 using (var response = await client.SendRequestAsync(request, HttpCompletionOption.ResponseContentRead))
@@ -115,10 +90,6 @@ namespace Socialalert.Services
                 }
             }
         }
-
-        public void Dispose()
-        {
-            client.Dispose();
-        }
     }
+
 }
