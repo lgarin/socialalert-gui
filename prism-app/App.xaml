@@ -10,10 +10,20 @@
         <x:String x:Key="BaseThumbnailUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/thumbnail/</x:String>
         <x:String x:Key="BaseImageUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/media/</x:String>
         <x:Int32 x:Key="LoadDelay">0</x:Int32>
-        <FontFamily x:Key="AwesomeIcons">fontawesome-webfont.ttf#FontAwesome</FontFamily>
+        <FontFamily x:Key="AwesomeIcons">/Views/fontawesome-webfont.ttf#FontAwesome</FontFamily>
         <Visibility x:Key="Debug">Visible</Visibility>
         <conv:ItemClickedConverter x:Name="ItemClickedConverter" />
         <conv:BooleanToVisibilityConverter x:Name="BooleanToVisibilityConverter" />
+        <conv:StringToVisibilityConverter x:Name="StringToVisibilityConverter"/>
         <conv:StringFormatConverter x:Name="StringFormatConverter"/>
+        <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
+        <x:String x:Key="OnlineGlyph">&#xf007;</x:String>
+        <x:String x:Key="OfflineGlyph">&#xf056;</x:String>
+        <x:String x:Key="LocalityGlyph">&#xf124;</x:String>
+        <x:String x:Key="CountryGlyph">&#xf024;</x:String>
+        <x:String x:Key="CameraGlyph">&#xf030;</x:String>
+        <x:String x:Key="ResolutionGlyph">&#xf047;</x:String>
+        <x:String x:Key="HomePage">Socialalert.Views.HubPage</x:String>
+        <x:String x:Key="BingMapKey">AuXHB715SopOp7_UWBAwr0OzWS7-VZuepw59IdjV6E4DmYYGb0JVGuq5FUOF4TFT</x:String>
     </prism:MvvmAppBase.Resources>
 </prism:MvvmAppBase>

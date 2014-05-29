@@ -21,4 +21,18 @@ namespace Socialalert.Converters
             return value is Visibility && (Visibility)value == Visibility.Visible;
         }
     }
+
+    public class StringToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return string.IsNullOrWhiteSpace((string)value) ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            var visiblity = (Visibility)value;
+            return visiblity == Visibility.Visible;
+        }
+    }
 }

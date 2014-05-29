@@ -106,7 +106,8 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\MapBindings.cs" />
+    <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\PictureServiceResponse.cs" />
@@ -117,10 +118,14 @@
     <Compile Include="ViewModels\HubPageViewModel.cs" />
     <Compile Include="ViewModels\LoadableViewModel.cs" />
     <Compile Include="ViewModels\PictureCategoryViewModel.cs" />
+    <Compile Include="ViewModels\CategoryDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\SimpleViewModel.cs" />
     <Compile Include="ViewModels\ViewModelContractResolver.cs" />
+    <Compile Include="Views\CategoryDetailPage.xaml.cs">
+      <DependentUpon>CategoryDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PictureDetailPage.xaml.cs">
       <DependentUpon>PictureDetailPage.xaml</DependentUpon>
     </Compile>
@@ -128,6 +133,9 @@
       <DependentUpon>HubPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ItemClickedConverter.cs" />
+    <Compile Include="Views\TopAppBarUserControl.xaml.cs">
+      <DependentUpon>TopAppBarUserControl.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -136,12 +144,12 @@
     <Content Include="Assets\Logo.scale-180.png" />
     <Content Include="Assets\SmallLogo.scale-180.png" />
     <Content Include="Views\fontawesome-webfont.ttf" />
-    <DesignData Include="Data\HubPage.json" />
+    <Content Include="Data\HubPage.json" />
     <Content Include="Data\PictureDetailPage.json" />
+    <Content Include="Data\CategoryDetailPage.json" />
     <None Include="packages.config" />
     <None Include="prism-app_TemporaryKey.pfx" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
-    <PRIResource Include="Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Logo.scale-100.png" />
@@ -159,11 +167,19 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\CategoryDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PictureDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TopAppBarUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -183,6 +199,12 @@
   <ItemGroup>
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
+    <SDKReference Include="Bing.Maps.Xaml, Version=1.313.0825.0">
+      <Name>Bing Maps for C#, C++, or Visual Basic</Name>
+    </SDKReference>
+    <SDKReference Include="Microsoft.VCLibs, version=12.0">
+      <Name>Microsoft Visual C++ 2013 Runtime Package for Windows</Name>
     </SDKReference>
   </ItemGroup>
   <ItemGroup />

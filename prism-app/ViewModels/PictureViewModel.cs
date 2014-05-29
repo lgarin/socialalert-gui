@@ -1,4 +1,5 @@
-﻿using Socialalert.Models;
+﻿using Bing.Maps;
+using Socialalert.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,8 +17,35 @@ namespace Socialalert.ViewModels
             PictureUri = picture.PictureUri;
             Title = picture.Title;
             Description = picture.Description;
+            ProfileId = picture.ProfileId;
             Creation = picture.Creation;
+            LastUpdate = picture.LastUpdate;
+            PictureTimestamp = picture.PictureTimestamp;
+            PictureWidth = picture.PictureWidth;
+            PictureHeight = picture.PictureHeight;
+            PictureLongitude = picture.PictureLongitude;
+            PictureLatitude = picture.PictureLatitude;
+            Locality = picture.Locality;
+            Country = picture.Country;
+            CameraMaker = picture.CameraMaker;
+            CameraModel = picture.CameraModel;
+            HitCount = picture.HitCount;
+            DislikeCount = picture.DislikeCount;
+            CommentCount = picture.CommentCount;
+            UserApprovalModifier = picture.UserApprovalModifier;
+
+            foreach (var category in picture.Categories)
+            {
+                Categories.Add(category);
+            }
+
+            foreach (var tag in picture.Tags)
+            {
+                Tags.Add(tag);
+            }
+
             Creator = picture.Creator;
+            Online = picture.Online;
             ImageUrl = new Uri(basePicutreUrl, picture.PictureUri);
         }
 
@@ -46,5 +74,26 @@ namespace Socialalert.ViewModels
         public string UserApprovalModifier { get { return Get<string>(); } set { Set(value); } }
         public string Creator { get { return Get<string>(); } set { Set(value); } }
         public bool Online { get { return Get<bool>(); } set { Set(value); } }
+        public bool Offline { get { return !Online; } }
+        public bool HasGeoLocation { get { return PictureLatitude.HasValue && PictureLongitude.HasValue; } }
+        public Location GeoLocation { get { return HasGeoLocation ? new Location(PictureLatitude.Value, PictureLongitude.Value) : null; } }
+        public string FormattedCamera { 
+            get {
+                if (CameraMaker != null && CameraModel != null)
+                    return CameraMaker + " " + CameraModel;
+                else if (CameraModel != null)
+                    return CameraModel;
+                else if (CameraMaker != null)
+                    return CameraMaker;
+                return null;
+            } 
+        }
+        public string FormattedResolution
+        {
+            get
+            {
+                return PictureWidth.ToString() + " x " + PictureHeight.ToString(); 
+            }
+        }
     }
 }

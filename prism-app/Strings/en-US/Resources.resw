@@ -117,6 +117,18 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Camera.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Camera</value>
+  </data>
+  <data name="Comments.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Comments</value>
+  </data>
+  <data name="Country.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="Dislikes.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Dislikes</value>
+  </data>
   <data name="ErrorServiceUnreachable" xml:space="preserve">
     <value>Service is unreachable.</value>
     <comment>Error message for when the service is unreachable</comment>
@@ -125,7 +137,25 @@
     <value>The following error messages were received from the service: {0} {1}</value>
     <comment>Message for general service errors</comment>
   </data>
+  <data name="Hits.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Hits</value>
+  </data>
   <data name="HubPageTitle.Text" xml:space="preserve">
     <value>Popular pictures</value>
+  </data>
+  <data name="Likes.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Likes</value>
+  </data>
+  <data name="Locality.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Locality</value>
+  </data>
+  <data name="Offline.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Online.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Resolution.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Picture resolution</value>
   </data>
 </root>

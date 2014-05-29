@@ -10,22 +10,18 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
+    xmlns:bm="using:Bing.Maps"
+    xmlns:conv="using:Socialalert.Converters"
     mc:Ignorable="d"
     prism:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{Binding Source={d:DesignData Source=/Data/PictureDetailPage.json, Type=vm:PictureDetailPageViewModel}}">
     
     <prism:VisualStateAwarePage.Resources>
-        <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
     </prism:VisualStateAwarePage.Resources>
 
     <prism:VisualStateAwarePage.TopAppBar>
         <AppBar x:Uid="TopAppBar">
-            <AppBarButton Visibility="{StaticResource Debug}" Name="dumpData" FontFamily="Global User Interface" Label="Dump data" Command="{Binding DumpData}">
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf083;"/>
-                </AppBarButton.Icon>
-
-            </AppBarButton>
+            <local:TopAppBarUserControl/>
         </AppBar>
     </prism:VisualStateAwarePage.TopAppBar>
 
@@ -41,27 +37,90 @@
                 <EntranceThemeTransition/>
             </TransitionCollection>
         </Grid.ChildrenTransitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="140"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" x:Name="contentRegion" DataContext="{Binding Info}">
+        <Grid Grid.ColumnSpan="2" Grid.Row="1" x:Name="contentRegion" DataContext="{Binding Info}">
             <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                <Image Source="{Binding ImageUrl}" Stretch="Uniform" AutomationProperties.Name="{Binding Title}" Margin="48,10,-48,-10"/>
+                <Image Source="{Binding ImageUrl}" Stretch="Uniform" AutomationProperties.Name="{Binding Title}" Margin="20,0,20,10" HorizontalAlignment="Left"/>
             </Border>
-            <Grid Height="32" VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
+            <Grid Height="64" x:Name="pictureInfo" VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
+					<ColumnDefinition Width="1.5*"/>
                     <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="4*"/>
                 </Grid.ColumnDefinitions>
-                <TextBlock Text="{Binding Creation}" TextWrapping="NoWrap" Margin="15,0,15,10"/>
-                <TextBlock Text="{Binding Creator}" Grid.Column="1" TextWrapping="NoWrap" Margin="15,0,15,10"/>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="30"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="20,0">
+                    <FontIcon x:Uid="Online" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <FontIcon x:Uid="Offline" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding Offline, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Vertical" Margin="20,0">
+                    <TextBlock Text="{Binding Creation}" TextWrapping="NoWrap"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="20,0">
+                    <FontIcon x:Uid="Likes" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf087;"/>
+                    <TextBlock TextWrapping="NoWrap" Text="{Binding LikeCount}" Margin="10,0,0,0" VerticalAlignment="Center" />
+                </StackPanel>
+                <StackPanel Grid.Column="2" Grid.Row="0" Orientation="Horizontal" Margin="20,0">
+                    <FontIcon x:Uid="Dislikes" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf088;" VerticalAlignment="Center"/>
+                    <TextBlock TextWrapping="NoWrap" Text="{Binding DislikeCount}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="20,0">
+                    <FontIcon x:Uid="Hits" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf06e;" VerticalAlignment="Center"/>
+                    <TextBlock TextWrapping="NoWrap" Text="{Binding HitCount}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Grid.Row="1"  Orientation="Horizontal" Margin="20,0">
+                    <FontIcon x:Uid="Comments" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf075;" VerticalAlignment="Center"/>
+                    <TextBlock TextWrapping="NoWrap" Text="{Binding CommentCount}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="3" Grid.Row="0"  Orientation="Horizontal" Margin="20,0">
+                    <FontIcon x:Uid="Locality" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=LocalityGlyph}" Visibility="{Binding Locality, Converter={StaticResource StringToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding Locality}" TextWrapping="NoWrap" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="3" Grid.Row="1"  Orientation="Horizontal" Margin="20,0">
+                    <FontIcon x:Uid="Country" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=CountryGlyph}" Visibility="{Binding Country, Converter={StaticResource StringToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding Country}" TextWrapping="NoWrap" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="4" Grid.Row="0"  Orientation="Horizontal" Margin="20,0">
+                    <FontIcon x:Uid="Camera" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=CameraGlyph}" Visibility="{Binding FormattedCamera, Converter={StaticResource StringToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding FormattedCamera}" TextWrapping="NoWrap" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="4" Grid.Row="1"  Orientation="Horizontal" Margin="20,0">
+                    <FontIcon x:Uid="Resolution" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=ResolutionGlyph}" Visibility="{Binding FormattedResolution, Converter={StaticResource StringToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding FormattedResolution}" TextWrapping="NoWrap" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Column="5" Grid.Row="0" Grid.RowSpan="2" Orientation="Horizontal" Margin="20,10">
+                    <TextBlock Text="{Binding Description}" TextWrapping="WrapWholeWords"/>
+                </StackPanel>
             </Grid>
         </Grid>
 
+        <bm:Map Grid.Column="1" Grid.Row="1" conv:MapBindings.MapCenter="{Binding Info.GeoLocation}" Credentials="{StaticResource ResourceKey=BingMapKey}" x:Name="map" ZoomLevel="15" Visibility="{Binding Info.HasGeoLocation, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,0,64">
+            <bm:Map.Children>
+                <bm:Pushpin>
+                    <bm:MapLayer.Position>
+                        <bm:Location Latitude="{Binding Info.PictureLatitude}" Longitude="{Binding Info.PictureLongitude}" />
+                    </bm:MapLayer.Position>
+                </bm:Pushpin>
+            </bm:Map.Children>
+        </bm:Map>
+
         <!-- Back button and page title -->
-        <Grid x:Name="titleGrid">
+        <Grid x:Name="titleGrid" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120" />
                 <ColumnDefinition Width="120" />

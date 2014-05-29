@@ -15,11 +15,6 @@
     d:DataContext="{d:DesignData Source=/Data/HubPage.json, Type=vm:HubPageViewModel}">
 
     <prism:VisualStateAwarePage.Resources>
-        <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
-        <!--
-            Collection of grouped items displayed by this page, bound to a subset
-            of the complete item list because items in groups cannot be virtualized
-        -->
         <CollectionViewSource
             x:Name="groupedItemsViewSource"
             Source="{Binding Groups}"
@@ -29,11 +24,7 @@
 
     <prism:VisualStateAwarePage.TopAppBar>
         <AppBar x:Uid="TopAppBar">
-            <AppBarButton Visibility="{StaticResource Debug}" Name="dumpData" FontFamily="Global User Interface" Label="Dump data" Command="{Binding DumpData}">
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf083;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>
+            <local:TopAppBarUserControl/>
         </AppBar>
     </prism:VisualStateAwarePage.TopAppBar>
 
@@ -78,12 +69,23 @@
                             <Image Source="{Binding ImageUrl}" Stretch="Uniform" AutomationProperties.Name="{Binding Title}"/>
                         </Border>
                         <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
-                            <TextBlock Text="{Binding Title}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="30" Margin="15,0,15,0"/>
-                            <!-- <TextBlock Text="{Binding Description}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10"/> -->
-                            <Grid Height="29">
-                                <TextBlock Text="{Binding Creator}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" Grid.Column="0" TextWrapping="NoWrap" Margin="15,0,15,0" HorizontalAlignment="Left"/>
-                                <TextBlock Text="{Binding Creation}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" Grid.Column="1" TextWrapping="NoWrap" Margin="15,0,15,0" HorizontalAlignment="Right"/>
+                            <Grid>
+                                <TextBlock Grid.Column="0" Text="{Binding Title}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="30" Margin="15,0,15,0" HorizontalAlignment="Left"/>
+                                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Margin="15,0,15,0">
+                                    <FontIcon x:Uid="Likes" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf087;"/>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding LikeCount}" Margin="10,0,0,0" VerticalAlignment="Center" />
+                                    <FontIcon x:Uid="Hits" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf06e;" Margin="20,0,0,0" VerticalAlignment="Center"/>
+                                    <TextBlock TextWrapping="Wrap" Text="{Binding HitCount}" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                                </StackPanel>
                             </Grid>
+                            <Grid>
+                                <StackPanel Grid.Column="0" Orientation="Horizontal">
+                                    <FontIcon x:Uid="Online" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="15,0,0,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontWeight="Bold" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}"  Margin="15,0,15,10" />
+                                </StackPanel>
+                                <TextBlock Grid.Column="1" Text="{Binding Creation}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" HorizontalAlignment="Right"/>
+                            </Grid>
+                            
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
