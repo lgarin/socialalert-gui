@@ -9,6 +9,7 @@
         <x:String x:Key="BaseServerUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/rest/</x:String>
         <x:String x:Key="BaseThumbnailUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/thumbnail/</x:String>
         <x:String x:Key="BaseImageUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/media/</x:String>
+        <x:String x:Key="BasePreviewUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/preview/</x:String>
         <x:Int32 x:Key="LoadDelay">0</x:Int32>
         <FontFamily x:Key="AwesomeIcons">/Views/fontawesome-webfont.ttf#FontAwesome</FontFamily>
         <Visibility x:Key="Debug">Visible</Visibility>

@@ -47,12 +47,16 @@ namespace Socialalert.ViewModels
         {
             try
             {
-                string serverUrl = ResourceDictionary["BaseThumbnailUrl"] as string;
+                var basePictureUri = new Uri(ResourceDictionary["BaseThumbnailUrl"] as string, UriKind.Absolute);
                 var result = await ExecuteAsync(new SearchTopPicturesByCategoriesRequest { MaxAge = 180 * Constants.MillisPerDay, GroupSize = 10, Categories = Constants.AllCategories });
                 var groupSelectionCommand = new DelegateCommand<PictureCategoryViewModel>(GotoCategroyDetail, CanGotoCategoryDetail);
                 foreach (var category in result.Keys.Where((key) => result[key].Count > 0).OrderBy((key) => key))
                 {
-                    Groups.Add(new PictureCategoryViewModel(category, new Uri(serverUrl, UriKind.Absolute), result[category], groupSelectionCommand));
+                    var items = new ObservableCollection<PictureViewModel>();
+                    foreach (PictureInfo picture in result[category]) {
+                        items.Add(new PictureViewModel(basePictureUri, picture));
+                    }
+                    Groups.Add(new PictureCategoryViewModel(category, items, groupSelectionCommand));
                 }
             }
             catch (Exception)

@@ -34,6 +34,7 @@ namespace Socialalert
             container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
             container.RegisterType<IAlertMessageService, AlertMessageService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IJsonRpcClient, JsonRpcClient>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IGeoLocationService, GeoLocationService>(new ContainerControlledLifetimeManager());
         }
 
         protected override object Resolve(Type type)

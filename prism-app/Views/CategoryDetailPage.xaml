@@ -10,6 +10,8 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
+    xmlns:bm="using:Bing.Maps"
+    xmlns:conv="using:Socialalert.Converters"
     mc:Ignorable="d"
     prism:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{Binding Source={d:DesignData Source=/Data/CategoryDetailPage.json, Type=vm:CategoryDetailPageViewModel}}">
@@ -24,6 +26,12 @@
             x:Name="itemsViewSource"
             Source="{Binding Category.Items}"
              />
+
+        <DataTemplate x:Key="locationTemplate">
+            <Grid bm:MapLayer.Position="{Binding GeoLocation}" >
+                <Image Width="32" Height="32" Source="{Binding ImageUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+            </Grid>
+        </DataTemplate>
     </prism:VisualStateAwarePage.Resources>
 
     <prism:VisualStateAwarePage.TopAppBar>
@@ -85,9 +93,12 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
             <GridView.Header>
-                <StackPanel Width="480" Margin="0,4,14,0">
-                    <Image Source="ms-appx:///Assets/LightGray.png" Height="400" Margin="0,0,0,20" Stretch="UniformToFill" AutomationProperties.Name="{Binding Category.Title}"/>
-                    <TextBlock Text="{Binding Category.Title}" Margin="0,0,0,20" Style="{StaticResource SubheaderTextBlockStyle}" MaxHeight="60"/>
+                <StackPanel Width="480" Height="480" Margin="0,4,14,0">
+                    <bm:Map Grid.Column="1" Grid.Row="1" Credentials="{StaticResource ResourceKey=BingMapKey}" x:Name="map" ZoomLevel="2" Height="480">
+                        <bm:MapItemsControl x:Name="ListOfItems" ItemsSource="{Binding Category.GeoLocatedItems}" ItemTemplate="{StaticResource locationTemplate}">
+                            
+                        </bm:MapItemsControl>
+                    </bm:Map>
                 </StackPanel>
             </GridView.Header>
             <GridView.ItemContainerStyle>
