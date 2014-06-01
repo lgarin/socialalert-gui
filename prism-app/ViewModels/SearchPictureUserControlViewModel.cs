@@ -1,0 +1,64 @@
+﻿using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Practices.Prism.StoreApps;
+using Socialalert.Services;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Windows.UI.Xaml.Controls;
+
+namespace Socialalert.ViewModels
+{
+    public class SearchPictureUserControlEvent : PubSubEvent<string>
+    {
+
+    }
+
+    public class SearchPictureUserControlViewModel : LoadableViewModel
+    {
+        private IEventAggregator eventAggregator;
+
+        public SearchPictureUserControlViewModel(IEventAggregator eventAggregator) 
+        {
+            this.eventAggregator = eventAggregator;
+            SearchSuggestionsCommand = new DelegateCommand<SearchBoxSuggestionsRequestedEventArgs>(SearchSuggestion);
+            SearchCommand = new DelegateCommand<SearchBoxQuerySubmittedEventArgs>(Search);
+        }
+
+        private async void SearchSuggestion(SearchBoxSuggestionsRequestedEventArgs args)
+        {
+            if (args.QueryText.Trim().Count() < 3)
+            {
+                return;
+            }
+            var deferral = args.Request.GetDeferral();
+            try
+            {
+                var result = await ExecuteAsync(new FindKeywordSuggestionsRequest(args.QueryText));
+                args.Request.SearchSuggestionCollection.AppendQuerySuggestions(result);
+            }
+            catch (Exception)
+            {
+                args.Request.SearchSuggestionCollection.AppendQuerySuggestion(args.QueryText.Trim());
+            }
+            finally
+            {
+                deferral.Complete();
+            }
+        }
+
+        private void Search(SearchBoxQuerySubmittedEventArgs args)
+        {
+            var query = args.QueryText.Trim();
+            if (query.Length == 0)
+            {
+                query = null;
+            }
+            eventAggregator.GetEvent<SearchPictureUserControlEvent>().Publish(query);
+        }
+
+        public DelegateCommand<SearchBoxSuggestionsRequestedEventArgs> SearchSuggestionsCommand { get; private set; }
+        public DelegateCommand<SearchBoxQuerySubmittedEventArgs> SearchCommand { get; private set; }
+    }
+}

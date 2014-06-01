@@ -34,7 +34,7 @@
         * Row 1 contains the rest of the page layout
     -->
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        
+
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -58,9 +58,9 @@
             IsSwipeEnabled="false"
             IsItemClickEnabled="True">
             <i:Interaction.Behaviors>
-                    <core:EventTriggerBehavior EventName="ItemClick">
-                        <core:InvokeCommandAction Command="{Binding PictureSelectedCommand}" InputConverter="{StaticResource ItemClickedConverter}" />
-                    </core:EventTriggerBehavior>
+                <core:EventTriggerBehavior EventName="ItemClick">
+                    <core:InvokeCommandAction Command="{Binding PictureSelectedCommand}" InputConverter="{StaticResource ItemClickedConverter}" />
+                </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <GridView.ItemTemplate>
                 <DataTemplate>
@@ -85,7 +85,7 @@
                                 </StackPanel>
                                 <TextBlock Grid.Column="1" Text="{Binding Creation}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" HorizontalAlignment="Right"/>
                             </Grid>
-                            
+
                         </StackPanel>
                     </Grid>
                 </DataTemplate>
@@ -104,12 +104,12 @@
                                     AutomationProperties.Name="Group Title"
                                     Style="{StaticResource TextBlockButtonStyle}"
                                     Command="{Binding CategorySelectedCommand}" CommandParameter="{Binding}">
-                                    
+
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding Title}" Margin="0,-11,10,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
                                         <TextBlock Text="{StaticResource ChevronGlyph}" FontFamily="Segoe UI Symbol" Margin="0,-11,0,10" Style="{StaticResource SubheaderTextBlockStyle}" TextWrapping="NoWrap" />
                                     </StackPanel>
-                                    
+
                                 </Button>
                             </Grid>
                         </DataTemplate>
@@ -123,6 +123,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120" />
                 <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
             <Button x:Name="backButton" Margin="39,59,39,0" VerticalAlignment="Top"
@@ -135,6 +136,11 @@
             <TextBlock x:Name="pageTitle" x:Uid="HubPageTitle" Text="Popular Pictures" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="2" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,0,40" Height="40"/>
             <TextBlock TextWrapping="Wrap" Text="&#xf083;" Margin="10,30,0,10" Grid.Column="1" HorizontalAlignment="Left" FontFamily="{StaticResource AwesomeIcons}" FontSize="72" Height="80" VerticalAlignment="Center" Width="80"/>
+            <local:SearchPictureUserControl x:Name="searchUserControl"
+                                     Height="80"
+                                     Grid.Column="3"
+                                     HorizontalAlignment="Left"
+                                     Width="400" />
         </Grid>
 
         <ProgressRing Grid.Row="1" IsActive="{Binding LoadingData}" Height="100" Width="100" />

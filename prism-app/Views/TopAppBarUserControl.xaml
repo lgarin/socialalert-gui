@@ -25,7 +25,7 @@
             </i:Interaction.Behaviors>
         </AppBarButton>
         
-        <AppBarButton Visibility="{StaticResource Debug}" Name="dumpData" FontFamily="Global User Interface" Label="Dump data" Command="{Binding DumpData}">
+        <AppBarButton Visibility="{StaticResource Debug}" Name="dumpData" FontFamily="Global User Interface" Label="Dump data" Command="{Binding DumpDataCommand}">
             <AppBarButton.Icon>
                 <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf083;"/>
             </AppBarButton.Icon>

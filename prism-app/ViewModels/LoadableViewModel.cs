@@ -25,7 +25,7 @@ namespace Socialalert.ViewModels
 
         public LoadableViewModel()
         {
-            DumpData = new DelegateCommand(WriteJson);
+            DumpDataCommand = new DelegateCommand(WriteJson);
         }
 
         [InjectionMethod]
@@ -50,7 +50,7 @@ namespace Socialalert.ViewModels
         [Dependency]
         protected ResourceDictionary ResourceDictionary { get; set; }
 
-        public DelegateCommand DumpData { get; private set; }
+        public DelegateCommand DumpDataCommand { get; private set; }
 
         private void WriteJson()
         {

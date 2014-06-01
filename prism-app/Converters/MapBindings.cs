@@ -50,5 +50,49 @@ namespace Socialalert.Converters
                 map.Center = (Location)e.NewValue;
             }
         }
+
+
+        public static double GetZoomLevel(DependencyObject obj)
+        {
+            return (double)obj.GetValue(ZoomLevelProperty);
+        }
+
+        public static void SetZoomLevel(DependencyObject obj, double value)
+        {
+            obj.SetValue(ZoomLevelProperty, value);
+        }
+
+        public static readonly DependencyProperty ZoomLevelProperty = DependencyProperty.RegisterAttached("ZoomLevel", typeof(double), typeof(MapBindings), new PropertyMetadata(null, OnZoomLevelChanged));
+
+        private static void OnZoomLevelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var map = d as Bing.Maps.Map;
+            if (map != null)
+            {
+                map.ZoomLevel = (double)e.NewValue;
+            }
+        }
+
+
+        public static LocationRect GetMapBounds(DependencyObject obj)
+        {
+            return (LocationRect)obj.GetValue(MapBoundsProperty);
+        }
+
+        public static void SetMapBounds(DependencyObject obj, LocationRect value)
+        {
+            obj.SetValue(MapBoundsProperty, value);
+        }
+
+        public static readonly DependencyProperty MapBoundsProperty = DependencyProperty.RegisterAttached("MapBounds", typeof(LocationRect), typeof(MapBindings), new PropertyMetadata(null, OnMapBoundsChanged));
+
+        private static void OnMapBoundsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var map = d as Bing.Maps.Map;
+            if (map != null)
+            {
+                map.SetView((LocationRect)e.NewValue);
+            }
+        }
     }
 }

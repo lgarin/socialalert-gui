@@ -62,4 +62,16 @@ namespace Socialalert.Services
 
         public SearchPicturesInCategoryRequest() : base("pictureFacade", "searchPicturesInCategory") { }
     }
+
+    public class FindKeywordSuggestionsRequest : JsonRpcRequest<IEnumerable<String>>
+    {
+        public string Partial;
+
+        public FindKeywordSuggestionsRequest() : base("pictureFacade", "findKeywordSuggestions") { }
+
+        public FindKeywordSuggestionsRequest(string partial) : this()
+        {
+            Partial = partial;
+        }
+    }
 }

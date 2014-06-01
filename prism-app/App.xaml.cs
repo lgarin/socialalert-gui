@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Prism.StoreApps;
+﻿using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using Microsoft.Practices.Unity;
 using Socialalert.Services;
@@ -32,6 +33,7 @@ namespace Socialalert
             container.RegisterInstance(NavigationService);
             container.RegisterInstance(Resources);
             container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
+            container.RegisterType<IEventAggregator, EventAggregator>(new ContainerControlledLifetimeManager());
             container.RegisterType<IAlertMessageService, AlertMessageService>(new ContainerControlledLifetimeManager());
             container.RegisterType<IJsonRpcClient, JsonRpcClient>(new ContainerControlledLifetimeManager());
             container.RegisterType<IGeoLocationService, GeoLocationService>(new ContainerControlledLifetimeManager());

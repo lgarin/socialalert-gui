@@ -123,6 +123,7 @@
     <Compile Include="ViewModels\CategoryDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
+    <Compile Include="ViewModels\SearchPictureUserControlViewModel.cs" />
     <Compile Include="ViewModels\SimpleViewModel.cs" />
     <Compile Include="ViewModels\ViewModelContractResolver.cs" />
     <Compile Include="Views\CategoryDetailPage.xaml.cs">
@@ -135,6 +136,9 @@
       <DependentUpon>HubPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ItemClickedConverter.cs" />
+    <Compile Include="Views\SearchPictureUserControl.xaml.cs">
+      <DependentUpon>SearchPictureUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TopAppBarUserControl.xaml.cs">
       <DependentUpon>TopAppBarUserControl.xaml</DependentUpon>
     </Compile>
@@ -181,12 +185,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SearchPictureUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\TopAppBarUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Practices.Prism.PubSubEvents">
+      <HintPath>..\..\C#\Prism.PubSubEvents\bin\Debug\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.Prism.StoreApps, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.StoreApps.1.1.0\lib\windows8\Microsoft.Practices.Prism.StoreApps.dll</HintPath>

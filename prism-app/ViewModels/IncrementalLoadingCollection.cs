@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
@@ -28,6 +30,18 @@ namespace Socialalert.ViewModels
             this.loadItemsDelegate = loadItemsDelegate;
             this.itemsPerPage = itemsPerPage;
             this.hasMoreItems = loadItemsDelegate != null;
+            CollectionChanged += IncrementalLoadingCollectionCollectionChanged;
+        }
+
+        async void IncrementalLoadingCollectionCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                currentPage = 0;
+                hasMoreItems = true;
+                OnPropertyChanged(new PropertyChangedEventArgs("HasMoreItems"));
+                await LoadMoreItemsAsync((uint) itemsPerPage);
+            }
         }
 
         public void AddRange(IEnumerable<T> items)
