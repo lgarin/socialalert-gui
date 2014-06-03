@@ -24,8 +24,7 @@
         -->
         <CollectionViewSource
             x:Name="itemsViewSource"
-            Source="{Binding Category.Items}"
-             />
+            Source="{Binding Category.Items}"/>
 
         <DataTemplate x:Key="locationTemplate">
             <Grid bm:MapLayer.Position="{Binding GeoLocation}" >

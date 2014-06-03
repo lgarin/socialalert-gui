@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Prism.StoreApps;
+﻿using Microsoft.Practices.Prism.PubSubEvents;
+using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
@@ -23,11 +24,6 @@ namespace Socialalert.ViewModels
         private int loadDelay;
         private bool loadingData;
 
-        public LoadableViewModel()
-        {
-            DumpDataCommand = new DelegateCommand(WriteJson);
-        }
-
         [InjectionMethod]
         public void Init(ResourceDictionary resourceDictionary)
         {
@@ -50,9 +46,10 @@ namespace Socialalert.ViewModels
         [Dependency]
         protected ResourceDictionary ResourceDictionary { get; set; }
 
-        public DelegateCommand DumpDataCommand { get; private set; }
+        [Dependency]
+        protected IEventAggregator EventAggregator { get; set; }
 
-        private void WriteJson()
+        protected void WriteJson(string dummy)
         {
             var serializer = new JsonSerializer();
             serializer.Formatting = Formatting.Indented;

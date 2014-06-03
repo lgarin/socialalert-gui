@@ -20,11 +20,10 @@ namespace Socialalert.ViewModels
 {
     public sealed class HubPageViewModel : LoadableViewModel
     {
-        public HubPageViewModel(IEventAggregator eventAggregator) 
+        public HubPageViewModel() 
         {
             Groups = new ObservableCollection<PictureCategoryViewModel>();
             PictureSelectedCommand = new DelegateCommand<PictureViewModel>(GotoPictureDetail);
-            eventAggregator.GetEvent<SearchPictureUserControlEvent>().Subscribe(LoadPictures);
         }
 
         private void GotoPictureDetail(PictureViewModel picture)
@@ -83,7 +82,7 @@ namespace Socialalert.ViewModels
                     {
                         items.Add(new PictureViewModel(basePictureUri, picture));
                     }
-                    Groups.Add(new PictureCategoryViewModel(category, items, groupSelectionCommand));
+                    Groups.Add(new PictureCategoryViewModel(category, groupSelectionCommand, items));
                 }
             }
             catch (Exception)
@@ -92,8 +91,18 @@ namespace Socialalert.ViewModels
             }
         }
 
-        public override void OnNavigatedTo(object navigationParameter, NavigationMode navigationMode, Dictionary<string, object> viewModelState)
+        public override void OnNavigatedFrom(Dictionary<string, object> viewModelState, bool suspending)
         {
+            EventAggregator.GetEvent<SearchPictureUserControlEvent>().Unsubscribe(LoadPictures);
+            EventAggregator.GetEvent<DumpDataUserControlEvent>().Unsubscribe(WriteJson);
+            base.OnNavigatedFrom(viewModelState, suspending);
+        }
+
+        public override void OnNavigatedTo(object navigationParameter, Windows.UI.Xaml.Navigation.NavigationMode navigationMode, Dictionary<string, object> viewModelState)
+        {
+            base.OnNavigatedTo(navigationParameter, navigationMode, viewModelState);
+            EventAggregator.GetEvent<SearchPictureUserControlEvent>().Subscribe(LoadPictures);
+            EventAggregator.GetEvent<DumpDataUserControlEvent>().Subscribe(WriteJson);
             LoadPictures();
         }
     }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
@@ -20,7 +21,7 @@ namespace Socialalert.ViewModels
     {
         private readonly int itemsPerPage;
         private bool hasMoreItems;
-        private int currentPage;
+        private volatile int currentPage;
         private readonly LoadItemsDelegate loadItemsDelegate;
 
         public delegate Task<IEnumerable<T>> LoadItemsDelegate(int pageIndex, int pageSize);
@@ -30,25 +31,27 @@ namespace Socialalert.ViewModels
             this.loadItemsDelegate = loadItemsDelegate;
             this.itemsPerPage = itemsPerPage;
             this.hasMoreItems = loadItemsDelegate != null;
-            CollectionChanged += IncrementalLoadingCollectionCollectionChanged;
         }
 
-        async void IncrementalLoadingCollectionCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void AddLoadedItems(IEnumerable<T> items, int pageNumber)
         {
-            if (e.Action == NotifyCollectionChangedAction.Reset)
+            if (pageNumber != currentPage)
             {
-                currentPage = 0;
-                hasMoreItems = true;
-                OnPropertyChanged(new PropertyChangedEventArgs("HasMoreItems"));
-                await LoadMoreItemsAsync((uint) itemsPerPage);
+                // several threads tried to load more data at the same time
+                return;
             }
-        }
 
-        public void AddRange(IEnumerable<T> items)
-        {
+            currentPage++;
+
             foreach (T item in items)
-            { 
+            {
                 this.Add(item);
+            }
+
+            if (items.Count() < itemsPerPage)
+            {
+                hasMoreItems = false;
+                OnPropertyChanged(new PropertyChangedEventArgs("HasMoreItems"));
             }
         }
 
@@ -62,21 +65,16 @@ namespace Socialalert.ViewModels
             return AsyncInfo.Run((c) => LoadMoreItemsAsync(c));
         }
 
-        public async Task<LoadMoreItemsResult> LoadMoreItemsAsync(CancellationToken c)
+        private async Task<LoadMoreItemsResult> LoadMoreItemsAsync(CancellationToken c)
         {
-            var result = await loadItemsDelegate(currentPage++, itemsPerPage);
+            int pageNumber = currentPage;
+            var result = await loadItemsDelegate(pageNumber, itemsPerPage);
             int resultCount = result.Count();
 
-            if (resultCount == 0)
-            {
-                hasMoreItems = false;
-            }
-            else
-            {
-                await Window.Current.Dispatcher.RunAsync(
-                    CoreDispatcherPriority.Normal,
-                    () => AddRange(result));
-            }
+            // update state on the dispatcher thread
+            await Window.Current.Dispatcher.RunAsync(
+                   CoreDispatcherPriority.Normal,
+                   () => AddLoadedItems(result, pageNumber));
 
             return new LoadMoreItemsResult() { Count = (uint) resultCount };
         }

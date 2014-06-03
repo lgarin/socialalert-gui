@@ -16,6 +16,8 @@ namespace Socialalert.ViewModels
 
         public async override void OnNavigatedTo(object navigationParameter, NavigationMode navigationMode, Dictionary<string, object> viewModelState)
         {
+            base.OnNavigatedTo(navigationParameter, navigationMode, viewModelState);
+            EventAggregator.GetEvent<DumpDataUserControlEvent>().Subscribe(WriteJson);
             try
             {
                 string serverUrl = ResourceDictionary["BaseImageUrl"] as string;
@@ -27,6 +29,13 @@ namespace Socialalert.ViewModels
                 Info = null;
                 NavigationService.GoBack();
             }
+            
+        }
+
+        public override void OnNavigatedFrom(Dictionary<string, object> viewModelState, bool suspending)
+        {
+            EventAggregator.GetEvent<DumpDataUserControlEvent>().Unsubscribe(WriteJson);
+            base.OnNavigatedFrom(viewModelState, suspending);
         }
 
         public PictureViewModel Info

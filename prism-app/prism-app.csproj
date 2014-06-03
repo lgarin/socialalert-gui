@@ -119,12 +119,14 @@
     <Compile Include="ViewModels\HubPageViewModel.cs" />
     <Compile Include="ViewModels\IncrementalLoadingCollection.cs" />
     <Compile Include="ViewModels\LoadableViewModel.cs" />
+    <Compile Include="ViewModels\ObservableViewCollection.cs" />
     <Compile Include="ViewModels\PictureCategoryViewModel.cs" />
     <Compile Include="ViewModels\CategoryDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\SearchPictureUserControlViewModel.cs" />
     <Compile Include="ViewModels\SimpleViewModel.cs" />
+    <Compile Include="ViewModels\TopAppBarUserControlViewModel.cs" />
     <Compile Include="ViewModels\ViewModelContractResolver.cs" />
     <Compile Include="Views\CategoryDetailPage.xaml.cs">
       <DependentUpon>CategoryDetailPage.xaml</DependentUpon>

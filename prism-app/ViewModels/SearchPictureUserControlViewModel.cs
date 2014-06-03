@@ -17,11 +17,9 @@ namespace Socialalert.ViewModels
 
     public class SearchPictureUserControlViewModel : LoadableViewModel
     {
-        private IEventAggregator eventAggregator;
 
-        public SearchPictureUserControlViewModel(IEventAggregator eventAggregator) 
+        public SearchPictureUserControlViewModel() 
         {
-            this.eventAggregator = eventAggregator;
             SearchSuggestionsCommand = new DelegateCommand<SearchBoxSuggestionsRequestedEventArgs>(SearchSuggestion);
             SearchCommand = new DelegateCommand<SearchBoxQuerySubmittedEventArgs>(Search);
         }
@@ -55,7 +53,7 @@ namespace Socialalert.ViewModels
             {
                 query = null;
             }
-            eventAggregator.GetEvent<SearchPictureUserControlEvent>().Publish(query);
+            EventAggregator.GetEvent<SearchPictureUserControlEvent>().Publish(query);
         }
 
         public DelegateCommand<SearchBoxSuggestionsRequestedEventArgs> SearchSuggestionsCommand { get; private set; }

@@ -23,7 +23,7 @@ namespace Socialalert.Services
         {
             locator.DesiredAccuracy = accuracy;
             var location = await locator.GetGeopositionAsync();
-            return new Location(location.Coordinate.Latitude, location.Coordinate.Longitude);
+            return new Location(location.Coordinate.Point.Position.Latitude, location.Coordinate.Point.Position.Longitude);
         }
 
         public LocationRect ComputeLocationBounds(IEnumerable<Location> locations)

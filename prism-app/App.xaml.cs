@@ -32,6 +32,7 @@ namespace Socialalert
         {
             container.RegisterInstance(NavigationService);
             container.RegisterInstance(Resources);
+            
             container.RegisterInstance<IResourceLoader>(new ResourceLoaderAdapter(new ResourceLoader()));
             container.RegisterType<IEventAggregator, EventAggregator>(new ContainerControlledLifetimeManager());
             container.RegisterType<IAlertMessageService, AlertMessageService>(new ContainerControlledLifetimeManager());

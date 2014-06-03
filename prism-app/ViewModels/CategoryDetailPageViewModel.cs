@@ -1,6 +1,7 @@
 ﻿using Bing.Maps;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.StoreApps;
+using Microsoft.Practices.Unity;
 using Socialalert.Models;
 using Socialalert.Services;
 using System;
@@ -16,17 +17,21 @@ namespace Socialalert.ViewModels
 {
     public sealed class CategoryDetailPageViewModel : LoadableViewModel
     {
-
-        private PictureCategoryViewModel category;
         private LocationRect mapBounds;
         private IGeoLocationService geoLoationService;
-        private string keywords;
+        private PictureCategoryViewModel category;
 
-        public CategoryDetailPageViewModel(IEventAggregator eventAggregator, IGeoLocationService geoLoationService) 
+        public CategoryDetailPageViewModel(IGeoLocationService geoLoationService) 
         {
             this.geoLoationService = geoLoationService;
             PictureSelectedCommand = new DelegateCommand<PictureViewModel>(GotoPictureDetail);
-            eventAggregator.GetEvent<SearchPictureUserControlEvent>().Subscribe(ReloadPictures);
+        }
+
+        public override void OnNavigatedFrom(Dictionary<string, object> viewModelState, bool suspending)
+        {
+            EventAggregator.GetEvent<SearchPictureUserControlEvent>().Unsubscribe(ReloadPictures);
+            EventAggregator.GetEvent<DumpDataUserControlEvent>().Unsubscribe(WriteJson);
+            base.OnNavigatedFrom(viewModelState, suspending);
         }
 
         public DelegateCommand<PictureViewModel> PictureSelectedCommand { get; private set; }
@@ -43,21 +48,23 @@ namespace Socialalert.ViewModels
 
         private void ReloadPictures(string keywords = null)
         {
-            this.keywords = keywords;
             if (Category != null)
             {
-                Category.Items.Clear();
+                Category.Items = new IncrementalLoadingCollection<PictureViewModel>((i, s) => LoadMorePictures(keywords, i, s));
+                Category.GeoLocatedItems.CollectionChanged += (s, e) => ComputeMapBounds();
             }
         }
 
         public override void OnNavigatedTo(object navigationParameter, NavigationMode navigationMode, Dictionary<string, object> viewModelState)
         {
+            base.OnNavigatedTo(navigationParameter, navigationMode, viewModelState);
+            EventAggregator.GetEvent<SearchPictureUserControlEvent>().Subscribe(ReloadPictures);
+            EventAggregator.GetEvent<DumpDataUserControlEvent>().Subscribe(WriteJson);
             try
             {
                 var category = navigationParameter as string;
-                var pictures = new IncrementalLoadingCollection<PictureViewModel>(LoadMorePictures);
-                Category = new PictureCategoryViewModel(category, pictures, new DelegateCommand<PictureCategoryViewModel>(GotoCategoryDetail));
-                Category.GeoLocatedItems.CollectionChanged += (s, e) => ComputeMapBounds();
+                Category = new PictureCategoryViewModel(category, new DelegateCommand<PictureCategoryViewModel>(GotoCategoryDetail));
+                ReloadPictures();
             }
             catch (Exception)
             {
@@ -73,7 +80,7 @@ namespace Socialalert.ViewModels
             MapBounds = new LocationRect(tempBound.Center, tempBound.Width + 2, tempBound.Height + 2);
         }
 
-        private async Task<IEnumerable<PictureViewModel>> LoadMorePictures(int pageIndex, int pageSize)
+        private async Task<IEnumerable<PictureViewModel>> LoadMorePictures(string keywords, int pageIndex, int pageSize)
         {
             try
             {
