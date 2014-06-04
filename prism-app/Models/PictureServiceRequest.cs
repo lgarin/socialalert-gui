@@ -74,4 +74,13 @@ namespace Socialalert.Services
             Partial = partial;
         }
     }
+
+    public class ListCommentsRequest : JsonRpcRequest<QueryResult<CommentInfo>>
+    {
+        public Uri PictureUri;
+        public int PageSize;
+        public int PageNumber;
+
+        public ListCommentsRequest() : base("pictureFacade", "listComments") { }
+    }
 }

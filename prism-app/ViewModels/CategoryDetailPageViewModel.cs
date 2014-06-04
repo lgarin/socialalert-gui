@@ -1,11 +1,11 @@
 ﻿using Bing.Maps;
-using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Unity;
 using Socialalert.Models;
 using Socialalert.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -18,21 +18,26 @@ namespace Socialalert.ViewModels
     public sealed class CategoryDetailPageViewModel : LoadableViewModel
     {
         private LocationRect mapBounds;
+        private double? mapRadius;
         private IGeoLocationService geoLoationService;
         private PictureCategoryViewModel category;
+
+        [Dependency]
+        public SearchPictureUserControlViewModel PictureSearch { get; set; }
 
         public CategoryDetailPageViewModel(IGeoLocationService geoLoationService) 
         {
             this.geoLoationService = geoLoationService;
             PictureSelectedCommand = new DelegateCommand<PictureViewModel>(GotoPictureDetail);
+            MapViewChangedCommand = new DelegateCommand<LocationRect>(RecomputeMapRadius);
         }
 
-        public override void OnNavigatedFrom(Dictionary<string, object> viewModelState, bool suspending)
+        private void RecomputeMapRadius(LocationRect box)
         {
-            EventAggregator.GetEvent<SearchPictureUserControlEvent>().Unsubscribe(ReloadPictures);
-            EventAggregator.GetEvent<DumpDataUserControlEvent>().Unsubscribe(WriteJson);
-            base.OnNavigatedFrom(viewModelState, suspending);
+            MapRadius = geoLoationService.ComputeRadiusInKm(box);
         }
+
+        public DelegateCommand<LocationRect> MapViewChangedCommand { get; private set; }
 
         public DelegateCommand<PictureViewModel> PictureSelectedCommand { get; private set; }
 
@@ -57,13 +62,11 @@ namespace Socialalert.ViewModels
 
         public override void OnNavigatedTo(object navigationParameter, NavigationMode navigationMode, Dictionary<string, object> viewModelState)
         {
-            base.OnNavigatedTo(navigationParameter, navigationMode, viewModelState);
-            EventAggregator.GetEvent<SearchPictureUserControlEvent>().Subscribe(ReloadPictures);
-            EventAggregator.GetEvent<DumpDataUserControlEvent>().Subscribe(WriteJson);
             try
             {
                 var category = navigationParameter as string;
                 Category = new PictureCategoryViewModel(category, new DelegateCommand<PictureCategoryViewModel>(GotoCategoryDetail));
+                PictureSearch.SearchAction = new Action<string>(ReloadPictures);
                 ReloadPictures();
             }
             catch (Exception)
@@ -109,6 +112,12 @@ namespace Socialalert.ViewModels
         {
             get { return mapBounds; }
             private set { SetProperty(ref mapBounds, value); }
+        }
+
+        public double? MapRadius
+        {
+            get { return mapRadius; }
+            private set { SetProperty(ref mapRadius, value); }
         }
     }
 }

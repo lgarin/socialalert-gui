@@ -110,5 +110,6 @@
     ],
     "IsValidationEnabled": true
   },
+  "MapRadius": 50.0
   "LoadingData": false
 }

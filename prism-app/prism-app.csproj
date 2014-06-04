@@ -106,6 +106,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\ViewChangeEndedConverter.cs" />
     <Compile Include="Converters\MapBindings.cs" />
     <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
@@ -122,6 +123,8 @@
     <Compile Include="ViewModels\ObservableViewCollection.cs" />
     <Compile Include="ViewModels\PictureCategoryViewModel.cs" />
     <Compile Include="ViewModels\CategoryDetailPageViewModel.cs" />
+    <Compile Include="ViewModels\PictureCommentUserControlViewModel.cs" />
+    <Compile Include="ViewModels\PictureCommentViewModel.cs" />
     <Compile Include="ViewModels\PictureDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\SearchPictureUserControlViewModel.cs" />
@@ -130,6 +133,9 @@
     <Compile Include="ViewModels\ViewModelContractResolver.cs" />
     <Compile Include="Views\CategoryDetailPage.xaml.cs">
       <DependentUpon>CategoryDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PictureCommentUserControl.xaml.cs">
+      <DependentUpon>PictureCommentUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PictureDetailPage.xaml.cs">
       <DependentUpon>PictureDetailPage.xaml</DependentUpon>
@@ -155,6 +161,7 @@
     <Content Include="Data\HubPage.json" />
     <Content Include="Data\PictureDetailPage.json" />
     <Content Include="Data\CategoryDetailPage.json" />
+    <Content Include="Data\PictureCommentUserControl.json" />
     <None Include="packages.config" />
     <None Include="prism-app_TemporaryKey.pfx" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
@@ -179,6 +186,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\PictureCommentUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\PictureDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -197,9 +208,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.Prism.PubSubEvents">
-      <HintPath>..\..\C#\Prism.PubSubEvents\bin\Debug\Microsoft.Practices.Prism.PubSubEvents.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.Prism.StoreApps, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Prism.StoreApps.1.1.0\lib\windows8\Microsoft.Practices.Prism.StoreApps.dll</HintPath>

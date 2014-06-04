@@ -1,4 +1,5 @@
 ﻿using Microsoft.Practices.Prism.StoreApps;
+using Socialalert.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,9 +29,11 @@ namespace Socialalert.Views
             this.InitializeComponent();
         }
 
-        private void itemGridView_ItemClick(object sender, ItemClickEventArgs e)
+        public void map_ViewChangeEnded(object sender, Bing.Maps.ViewChangeEndedEventArgs e)
         {
-
+            CategoryDetailPageViewModel vm = DataContext as CategoryDetailPageViewModel;
+            vm.MapViewChangedCommand.Execute(map.Bounds);
         }
+
     }
 }

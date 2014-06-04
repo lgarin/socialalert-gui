@@ -136,7 +136,7 @@
             <TextBlock x:Name="pageTitle" x:Uid="HubPageTitle" Text="Popular Pictures" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="2" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,0,40" Height="40"/>
             <TextBlock TextWrapping="Wrap" Text="&#xf083;" Margin="10,30,0,10" Grid.Column="1" HorizontalAlignment="Left" FontFamily="{StaticResource AwesomeIcons}" FontSize="72" Height="80" VerticalAlignment="Center" Width="80"/>
-            <local:SearchPictureUserControl x:Name="searchUserControl"
+            <local:SearchPictureUserControl x:Name="searchUserControl" DataContext="{Binding PictureSearch}"
                                      Height="80"
                                      Grid.Column="3"
                                      HorizontalAlignment="Left"

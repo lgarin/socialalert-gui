@@ -1,5 +1,4 @@
-﻿using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.Prism.StoreApps;
+﻿using Microsoft.Practices.Prism.StoreApps;
 using Socialalert.Services;
 using System;
 using System.Collections.Generic;
@@ -10,19 +9,15 @@ using Windows.UI.Xaml.Controls;
 
 namespace Socialalert.ViewModels
 {
-    public class SearchPictureUserControlEvent : PubSubEvent<string>
-    {
-
-    }
-
     public class SearchPictureUserControlViewModel : LoadableViewModel
     {
-
         public SearchPictureUserControlViewModel() 
         {
             SearchSuggestionsCommand = new DelegateCommand<SearchBoxSuggestionsRequestedEventArgs>(SearchSuggestion);
             SearchCommand = new DelegateCommand<SearchBoxQuerySubmittedEventArgs>(Search);
         }
+
+        public Action<string> SearchAction { get; set; }
 
         private async void SearchSuggestion(SearchBoxSuggestionsRequestedEventArgs args)
         {
@@ -53,7 +48,10 @@ namespace Socialalert.ViewModels
             {
                 query = null;
             }
-            EventAggregator.GetEvent<SearchPictureUserControlEvent>().Publish(query);
+            if (SearchAction != null)
+            {
+                SearchAction(query);
+            }
         }
 
         public DelegateCommand<SearchBoxSuggestionsRequestedEventArgs> SearchSuggestionsCommand { get; private set; }

@@ -1,34 +1,34 @@
-﻿using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.Prism.StoreApps;
+﻿using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Unity;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Socialalert.ViewModels
 {
-    public class DumpDataUserControlEvent : PubSubEvent<string>
-    {
-
-    }
-
     public class TopAppBarUserControlViewModel : ViewModel
     {
         [Dependency]
-        protected IEventAggregator EventAggregator { get; set; }
-
+        public IUnityContainer Container {get; set;}
+        
         public DelegateCommand DumpDataCommand { get; private set; }
 
         public TopAppBarUserControlViewModel()
         {
-            DumpDataCommand = new DelegateCommand(PublishDumpDataEvent);
+            DumpDataCommand = new DelegateCommand(DumpData);
         }
 
-        private void PublishDumpDataEvent()
+        private void DumpData()
         {
-            EventAggregator.GetEvent<DumpDataUserControlEvent>().Publish(null);
+            var viewModel = Container.Resolve<PictureCommentUserControlViewModel>();
+            string json = viewModel.SerializeToJson();
+            Debug.WriteLine(viewModel.GetType().Name);
+            Debug.WriteLine(json);
+            Debug.WriteLine("----------------------------------");
         }
+
     }
 }

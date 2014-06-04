@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "socialalert-gui", "socialalert-gui\socialalert-gui.csproj", "{B1709D14-EA71-4032-BA85-FE61EC0FF53C}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "unit-test", "unit-test\unit-test.csproj", "{E0B71124-49C2-4C74-8262-2A46AD45E704}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "prism-app", "prism-app\prism-app.csproj", "{13211B4C-46D8-4244-BD4C-01A858A45F39}"
@@ -21,30 +19,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Debug|ARM.ActiveCfg = Debug|ARM
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Debug|ARM.Build.0 = Debug|ARM
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Debug|ARM.Deploy.0 = Debug|ARM
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Debug|x64.ActiveCfg = Debug|x64
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Debug|x64.Build.0 = Debug|x64
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Debug|x64.Deploy.0 = Debug|x64
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Debug|x86.ActiveCfg = Debug|x86
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Debug|x86.Build.0 = Debug|x86
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Debug|x86.Deploy.0 = Debug|x86
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Release|ARM.ActiveCfg = Release|ARM
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Release|ARM.Build.0 = Release|ARM
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Release|ARM.Deploy.0 = Release|ARM
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Release|x64.ActiveCfg = Release|x64
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Release|x64.Build.0 = Release|x64
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Release|x64.Deploy.0 = Release|x64
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Release|x86.ActiveCfg = Release|x86
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Release|x86.Build.0 = Release|x86
-		{B1709D14-EA71-4032-BA85-FE61EC0FF53C}.Release|x86.Deploy.0 = Release|x86
 		{E0B71124-49C2-4C74-8262-2A46AD45E704}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E0B71124-49C2-4C74-8262-2A46AD45E704}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E0B71124-49C2-4C74-8262-2A46AD45E704}.Debug|Any CPU.Deploy.0 = Debug|Any CPU

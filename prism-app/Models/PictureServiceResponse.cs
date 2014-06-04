@@ -39,4 +39,16 @@ namespace Socialalert.Models
         public string Creator;
         public bool Online;
     }
+
+    [JsonObject]
+    public class CommentInfo
+    {
+	    public Guid CommentId;
+        public Uri MediaUri;
+        public Guid ProfileId;
+        public DateTime Creation;
+        public string Comment;
+        public string Creator;
+        public bool Online;
+    }
 }

@@ -45,7 +45,7 @@
 
         <StackPanel Grid.Row="1" x:Name="contentRegion" Orientation="Horizontal">
             <Image Source="{Binding Info.ImageUrl}" Stretch="Uniform" AutomationProperties.Name="{Binding Info.Title}" Margin="20,0" HorizontalAlignment="Left"/>
-            <!-- TODO add comments -->
+            <local:PictureCommentUserControl DataContext="{Binding Comments}" x:Name="commentList" MinWidth="300" HorizontalAlignment="Right"/>
         </StackPanel>
 
         <!-- Back button and page title -->

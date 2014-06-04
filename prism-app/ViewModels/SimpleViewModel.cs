@@ -10,6 +10,14 @@ using System.Threading.Tasks;
 
 namespace Socialalert.ViewModels
 {
+    /**
+     * use regex
+     * public (\w+\??) (\w+);
+     * public $1 $2 { get { return Get<$1>(); } set { Set(value); } }
+     * 
+     * public (\w+\??)\[\] (\w+);
+     * public ObservableCollection<$1> $2 = new ObservableCollection<$1>();
+     */
     public abstract class SimpleViewModel : BindableBase  // ValidatableBindableBase
     {
         private readonly Dictionary<string, object> propertyBackingDictionary = new Dictionary<string, object>();

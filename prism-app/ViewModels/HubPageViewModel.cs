@@ -1,5 +1,4 @@
-﻿using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.Prism.StoreApps;
+﻿using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
@@ -20,6 +19,9 @@ namespace Socialalert.ViewModels
 {
     public sealed class HubPageViewModel : LoadableViewModel
     {
+        [Dependency]
+        public SearchPictureUserControlViewModel PictureSearch { get; set; }
+
         public HubPageViewModel() 
         {
             Groups = new ObservableCollection<PictureCategoryViewModel>();
@@ -91,18 +93,9 @@ namespace Socialalert.ViewModels
             }
         }
 
-        public override void OnNavigatedFrom(Dictionary<string, object> viewModelState, bool suspending)
-        {
-            EventAggregator.GetEvent<SearchPictureUserControlEvent>().Unsubscribe(LoadPictures);
-            EventAggregator.GetEvent<DumpDataUserControlEvent>().Unsubscribe(WriteJson);
-            base.OnNavigatedFrom(viewModelState, suspending);
-        }
-
         public override void OnNavigatedTo(object navigationParameter, Windows.UI.Xaml.Navigation.NavigationMode navigationMode, Dictionary<string, object> viewModelState)
         {
-            base.OnNavigatedTo(navigationParameter, navigationMode, viewModelState);
-            EventAggregator.GetEvent<SearchPictureUserControlEvent>().Subscribe(LoadPictures);
-            EventAggregator.GetEvent<DumpDataUserControlEvent>().Subscribe(WriteJson);
+            PictureSearch.SearchAction = new Action<string>(LoadPictures);
             LoadPictures();
         }
     }

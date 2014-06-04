@@ -1,11 +1,11 @@
-﻿using Microsoft.Practices.Prism.PubSubEvents;
-using Microsoft.Practices.Prism.StoreApps;
+﻿using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using Microsoft.Practices.Unity;
 using Newtonsoft.Json;
 using Socialalert.Services;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -46,10 +46,7 @@ namespace Socialalert.ViewModels
         [Dependency]
         protected ResourceDictionary ResourceDictionary { get; set; }
 
-        [Dependency]
-        protected IEventAggregator EventAggregator { get; set; }
-
-        protected void WriteJson(string dummy)
+        public string SerializeToJson()
         {
             var serializer = new JsonSerializer();
             serializer.Formatting = Formatting.Indented;
@@ -58,10 +55,7 @@ namespace Socialalert.ViewModels
             using (var writer = new StringWriter())
             {
                 serializer.Serialize(writer, this);
-                DataPackage dataPackage = new DataPackage();
-                dataPackage.RequestedOperation = DataPackageOperation.Copy;
-                dataPackage.SetText(writer.ToString());
-                Clipboard.SetContent(dataPackage);
+                return writer.ToString();
             }
         }
 
