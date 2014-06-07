@@ -15,6 +15,8 @@ namespace Socialalert.Services
         LocationRect ComputeLocationBounds(IEnumerable<Location> locations);
 
         double ComputeRadiusInKm(LocationRect box);
+
+        bool AreClose(LocationRect rect1, LocationRect rect2, double percentage);
     }
 
     public sealed class GeoLocationService : IGeoLocationService
@@ -42,7 +44,38 @@ namespace Socialalert.Services
 
         public double ComputeRadiusInKm(LocationRect box)
         {
-            return Math.Max(box.Height, box.Width) * DEGREES_TO_RADIANS * EARTH_MEAN_RADIUS_KM;
+            return Math.Max(box.Height, box.Width) * DEGREES_TO_RADIANS * EARTH_MEAN_RADIUS_KM / 2.0;
+        }
+
+        public bool AreClose(LocationRect rect1, LocationRect rect2, double percentage)
+        {
+            if (Math.Abs(rect1.Width - rect2.Width) > 180.0 * percentage)
+            {
+                return false;
+            }
+            if (Math.Abs(rect1.Height - rect2.Height) > 90.0 * percentage)
+            {
+                return false;
+            }
+            var averageWidth = (rect1.Width + rect2.Width) / 2;
+            if (Math.Abs(rect1.East - rect2.East) > averageWidth * percentage)
+            {
+                return false;
+            }
+            if (Math.Abs(rect1.West - rect2.West) > averageWidth * percentage)
+            {
+                return false;
+            }
+            var averageHeigth = (rect1.Height + rect2.Height) / 2;
+            if (Math.Abs(rect1.North - rect2.North) > averageHeigth * percentage)
+            {
+                return false;
+            }
+            if (Math.Abs(rect1.South - rect2.South) > averageHeigth * percentage)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

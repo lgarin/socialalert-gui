@@ -27,8 +27,13 @@
             Source="{Binding Category.Items}"/>
 
         <DataTemplate x:Key="locationTemplate">
-            <Grid bm:MapLayer.Position="{Binding GeoLocation}" >
-                <Image Width="32" Height="32" Source="{Binding ImageUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+            <Grid bm:MapLayer.Position="{Binding GeoLocation}" HorizontalAlignment="Left" Width="64" Height="64" >
+                <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                    <Image  Source="{Binding ImageUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
+                 </Border>
+                <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
+                    <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap" Margin="2"/>
+                </StackPanel>
             </Grid>
         </DataTemplate>
     </prism:VisualStateAwarePage.Resources>
@@ -59,12 +64,11 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <bm:Map  Grid.Row="1" Grid.Column="0" conv:MapBindings.MapBounds="{Binding MapBounds}" Credentials="{StaticResource ResourceKey=BingMapKey}" ViewChangeEnded="map_ViewChangeEnded" x:Name="map">
+        <bm:Map Grid.Row="1" Grid.Column="0" conv:MapBindings.MapBounds="{Binding MapBounds}" Credentials="{StaticResource ResourceKey=BingMapKey}" ViewChangeEnded="map_ViewChangeEnded" x:Name="map">
             <bm:MapItemsControl x:Name="ListOfItems" ItemsSource="{Binding Category.GeoLocatedItems}" ItemTemplate="{StaticResource locationTemplate}">
 
             </bm:MapItemsControl>
         </bm:Map>
-        
 
         <!-- Horizontal scrolling grid -->
 
@@ -103,7 +107,6 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding MapRadius}" Height="40" HorizontalAlignment="Left" VerticalAlignment="Bottom" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Width="100"/>
 
         <!-- Back button and page title -->
         <Grid Grid.ColumnSpan="2">

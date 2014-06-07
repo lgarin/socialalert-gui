@@ -13,24 +13,32 @@ namespace Socialalert.ViewModels
 {
     public sealed class PictureCategoryViewModel : SimpleViewModel
     {
-        private ObservableCollection<PictureViewModel> items;
-        private ObservableCollectionView<PictureViewModel> geoLocatedItems;
+        private readonly ObservableCollection<PictureViewModel> items = new ObservableCollection<PictureViewModel>();
+        private readonly ObservableCollection<PictureViewModel> geoLocatedItems = new ObservableCollection<PictureViewModel>();
 
-        public PictureCategoryViewModel(String name, DelegateCommand<PictureCategoryViewModel> selectedCommand, ObservableCollection<PictureViewModel> items = null)
+        public PictureCategoryViewModel(String name, DelegateCommand<PictureCategoryViewModel> selectedCommand, IEnumerable<PictureViewModel> items = null)
         {
             Id = name;
             Title = name; // TODO translate with resources
             CategorySelectedCommand = selectedCommand;
             PropertyChanged += (s, e) => { CategorySelectedCommand.RaiseCanExecuteChanged(); };
-            Items = items;
+            if (items != null)
+            {
+                SetItems(items);
+            }
         }
 
-        private void ItemsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        public void SetItems(IEnumerable<PictureViewModel> items)
         {
-            GeoLocatedItems.Clear();
-            foreach (var picture in Items.Where(p => p.HasGeoLocation))
+            Items.Clear();
+            foreach (var item in items)
             {
-                GeoLocatedItems.Add(picture);
+                Items.Add(item);
+            }
+            GeoLocatedItems.Clear();
+            foreach (var item in items.Where(p => p.HasGeoLocation).Reverse())
+            {
+                GeoLocatedItems.Add(item);
             }
         }
 
@@ -38,23 +46,7 @@ namespace Socialalert.ViewModels
 
         public string Id { get { return Get<string>(); } set { Set(value); } }
         public string Title { get { return Get<string>(); } set { Set(value); } }
-        public ObservableCollection<PictureViewModel> Items { 
-            get {
-                return items;
-            }
-            set {
-                SetProperty(ref items, value);
-                if (items != null)
-                {
-                    GeoLocatedItems = new ObservableCollectionView<PictureViewModel>(items, i => i.HasGeoLocation);
-                }
-                else
-                {
-                    GeoLocatedItems = null;
-                }
-            }
-        }
-
-        public ObservableCollectionView<PictureViewModel> GeoLocatedItems { get { return geoLocatedItems; } private set { SetProperty(ref geoLocatedItems, value); } }
+        public ObservableCollection<PictureViewModel> Items { get { return items; } }
+        public ObservableCollection<PictureViewModel> GeoLocatedItems { get { return geoLocatedItems; } }
     }
 }

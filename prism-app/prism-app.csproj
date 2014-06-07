@@ -117,6 +117,7 @@
     <Compile Include="Services\GeoLocationService.cs" />
     <Compile Include="Services\JsonRpcClient.cs" />
     <Compile Include="Models\PictureServiceRequest.cs" />
+    <Compile Include="ViewModels\EventAggregator.cs" />
     <Compile Include="ViewModels\HubPageViewModel.cs" />
     <Compile Include="ViewModels\IncrementalLoadingCollection.cs" />
     <Compile Include="ViewModels\LoadableViewModel.cs" />

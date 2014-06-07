@@ -5,6 +5,7 @@ using Socialalert.Models;
 using Socialalert.Services;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -17,8 +18,9 @@ namespace Socialalert.ViewModels
 {
     public sealed class CategoryDetailPageViewModel : LoadableViewModel
     {
+        private string keywords;
         private LocationRect mapBounds;
-        private double? mapRadius;
+        private LocationRect searchBounds;
         private IGeoLocationService geoLoationService;
         private PictureCategoryViewModel category;
 
@@ -28,13 +30,31 @@ namespace Socialalert.ViewModels
         public CategoryDetailPageViewModel(IGeoLocationService geoLoationService) 
         {
             this.geoLoationService = geoLoationService;
-            PictureSelectedCommand = new DelegateCommand<PictureViewModel>(GotoPictureDetail);
-            MapViewChangedCommand = new DelegateCommand<LocationRect>(RecomputeMapRadius);
+            PictureSelectedCommand = new DelegateCommand<PictureViewModel>(CenterMapOnPicture);
+            MapViewChangedCommand = new DelegateCommand<LocationRect>(StartMapSearch);
         }
 
-        private void RecomputeMapRadius(LocationRect box)
+        private void CenterMapOnPicture(PictureViewModel picture)
         {
-            MapRadius = geoLoationService.ComputeRadiusInKm(box);
+            if (picture.HasGeoLocation)
+            {
+                var bounds = SearchBounds ?? MapBounds;
+                MapBounds = new LocationRect(picture.GeoLocation, bounds.Width, bounds.Height);
+            }
+        }
+
+        private void StartMapSearch(LocationRect box)
+        {
+            if (SearchBounds == null && MapBounds == null || Category == null || Category.Items.Count == 0)
+            {
+                return;
+            }
+
+            if (!geoLoationService.AreClose(SearchBounds ?? MapBounds, box, 0.25))
+            {
+                SearchBounds = box;
+                TriggerNewSearch();
+            }
         }
 
         public DelegateCommand<LocationRect> MapViewChangedCommand { get; private set; }
@@ -51,12 +71,22 @@ namespace Socialalert.ViewModels
             NavigationService.Navigate("CategoryDetail", category.Id);
         }
 
-        private void ReloadPictures(string keywords = null)
+        private void StartKeywordSearch(string keywords = null)
+        {
+            if (!object.Equals(Keywords, keywords)) { 
+                Keywords = keywords;
+                SearchBounds = null;
+                TriggerNewSearch();
+            }
+            
+        }
+
+        private async void TriggerNewSearch()
         {
             if (Category != null)
             {
-                Category.Items = new IncrementalLoadingCollection<PictureViewModel>((i, s) => LoadMorePictures(keywords, i, s));
-                Category.GeoLocatedItems.CollectionChanged += (s, e) => ComputeMapBounds();
+                Category.SetItems(await LoadMorePictures(Keywords, SearchBounds));
+                ComputeMapBounds();
             }
         }
 
@@ -66,28 +96,42 @@ namespace Socialalert.ViewModels
             {
                 var category = navigationParameter as string;
                 Category = new PictureCategoryViewModel(category, new DelegateCommand<PictureCategoryViewModel>(GotoCategoryDetail));
-                PictureSearch.SearchAction = new Action<string>(ReloadPictures);
-                ReloadPictures();
+                PictureSearch.SearchAction = new Action<string>(StartKeywordSearch);
+                TriggerNewSearch();
             }
             catch (Exception)
             {
                 MapBounds = null;
+                Keywords = null;
+                SearchBounds = null;
                 Category = null;
                 NavigationService.GoBack();
             }
         }
 
-        void ComputeMapBounds()
+        private void ComputeMapBounds()
         {
-            LocationRect tempBound = geoLoationService.ComputeLocationBounds(Category.GeoLocatedItems.Select((i) => i.GeoLocation));
-            MapBounds = new LocationRect(tempBound.Center, tempBound.Width + 2, tempBound.Height + 2);
+            if (SearchBounds == null)
+            {
+                LocationRect tempBound = geoLoationService.ComputeLocationBounds(Category.GeoLocatedItems.Select((i) => i.GeoLocation));
+                MapBounds = new LocationRect(tempBound.Center, tempBound.Width * 1.2, tempBound.Height * 1.2);
+            }
         }
 
-        private async Task<IEnumerable<PictureViewModel>> LoadMorePictures(string keywords, int pageIndex, int pageSize)
+        private async Task<IEnumerable<PictureViewModel>> LoadMorePictures(string keywords, LocationRect searchBounds)
         {
             try
             {
-                var items = await ExecuteAsync(new SearchPicturesInCategoryRequest { Keywords = keywords, MaxAge = 180 * Constants.MillisPerDay, PageNumber = pageIndex, PageSize = pageSize, Category = Category.Id });
+                double? maxDistance = null;
+                double? longitude = null;
+                double? latitude = null;
+                if (searchBounds != null)
+                {
+                    maxDistance = geoLoationService.ComputeRadiusInKm(searchBounds);
+                    longitude = searchBounds.Center.Longitude;
+                    latitude = searchBounds.Center.Latitude;
+                }
+                var items = await ExecuteAsync(new SearchPicturesInCategoryRequest { Keywords = keywords, MaxDistance = maxDistance, Latitude = latitude, Longitude = longitude, MaxAge = 180 * Constants.MillisPerDay, PageNumber = 0, PageSize = Constants.ItemsPerPage, Category = Category.Id });
                 var basePictureUri = new Uri(ResourceDictionary["BaseThumbnailUrl"] as string, UriKind.Absolute);
                 var result = new List<PictureViewModel>(items.Content.Count());
                 foreach (var item in items.Content)
@@ -114,10 +158,17 @@ namespace Socialalert.ViewModels
             private set { SetProperty(ref mapBounds, value); }
         }
 
-        public double? MapRadius
+        public LocationRect SearchBounds
         {
-            get { return mapRadius; }
-            private set { SetProperty(ref mapRadius, value); }
+            get { return searchBounds; }
+            private set { SetProperty(ref searchBounds, value); }
+        }
+
+        public string Keywords
+        {
+            get { return keywords;  }
+            private set { SetProperty(ref keywords, value);  }
         }
     }
 }
+
