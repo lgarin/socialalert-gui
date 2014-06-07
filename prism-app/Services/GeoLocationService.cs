@@ -57,7 +57,9 @@ namespace Socialalert.Services
             {
                 return false;
             }
-            var averageWidth = (rect1.Width + rect2.Width) / 2;
+
+            var averageWidth = Math.Max(rect1.Width + rect2.Width / 2, 0.01);
+
             if (Math.Abs(rect1.East - rect2.East) > averageWidth * percentage)
             {
                 return false;
@@ -66,7 +68,9 @@ namespace Socialalert.Services
             {
                 return false;
             }
-            var averageHeigth = (rect1.Height + rect2.Height) / 2;
+
+            var averageHeigth = Math.Max(rect1.Height + rect2.Height / 2, 0.01);
+
             if (Math.Abs(rect1.North - rect2.North) > averageHeigth * percentage)
             {
                 return false;

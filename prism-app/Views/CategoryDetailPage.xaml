@@ -30,7 +30,7 @@
             <Grid bm:MapLayer.Position="{Binding GeoLocation}" HorizontalAlignment="Left" Width="64" Height="64" >
                 <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
                     <Image  Source="{Binding ImageUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}"/>
-                 </Border>
+                </Border>
                 <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
                     <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap" Margin="2"/>
                 </StackPanel>
@@ -69,6 +69,7 @@
 
             </bm:MapItemsControl>
         </bm:Map>
+        
 
         <!-- Horizontal scrolling grid -->
 
@@ -113,6 +114,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="backButton" Margin="39,59,39,0"  VerticalAlignment="Top"
@@ -123,6 +125,23 @@
                           Style="{StaticResource NavigationBackButtonNormalStyle}" />
             <TextBlock x:Name="pageTitle" Text="{Binding Category.Title}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="1" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,30,40"/>
+            <StackPanel x:Name="mapLock"  Grid.Column="2" Orientation="Horizontal" >
+                <TextBlock Text="Map" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <Button x:Uid="lockMap" Content="&#xf023;" FontFamily="{StaticResource AwesomeIcons}" FontSize="32" BorderBrush="{x:Null}" Visibility="{Binding HasSearchBounds, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <i:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="Click">
+                            <core:InvokeCommandAction Command="{Binding UnlockMapCommand}" CommandParameter="{x:Null}" />
+                        </core:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </Button>
+                <Button x:Uid="unlockMap" Content="&#xf09c;" FontFamily="{StaticResource AwesomeIcons}" FontSize="32" BorderBrush="{x:Null}" Visibility="{Binding HasSearchBounds, Converter={StaticResource BooleanToCollapsedConverter}}">
+                    <i:Interaction.Behaviors>
+                        <core:EventTriggerBehavior EventName="Click">
+                            <core:InvokeCommandAction Command="{Binding LockMapCommand}" CommandParameter="{x:Null}" />
+                        </core:EventTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                </Button>
+            </StackPanel>
             <local:SearchPictureUserControl x:Name="searchUserControl" DataContext="{Binding PictureSearch}"
                                      Height="80"
                                      Grid.Column="3"

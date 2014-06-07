@@ -20,7 +20,7 @@
     
     <!-- Page content -->
     <StackPanel>
-        <ScrollViewer Height="800" Width="440" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled">
+        <!--<ScrollViewer Height="800" Width="440" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled">-->
             <GridView
                     x:Name="itemGridView"
                     AutomationProperties.AutomationId="ItemGridView"
@@ -38,7 +38,7 @@
                     <Grid Height="110" Margin="10">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
                             <Image Source="{Binding ProfilePictureUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Creator}" HorizontalAlignment="Left"/>
@@ -57,7 +57,7 @@
             </GridView.ItemTemplate>
         </GridView>
         
-        </ScrollViewer>
+        <!--</ScrollViewer>-->
         <ProgressRing IsActive="{Binding LoadingData}" Height="100" Width="100" />
     </StackPanel>
 </UserControl>

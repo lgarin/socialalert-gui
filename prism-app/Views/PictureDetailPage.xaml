@@ -45,7 +45,9 @@
 
         <StackPanel Grid.Row="1" x:Name="contentRegion" Orientation="Horizontal">
             <Image Source="{Binding Info.ImageUrl}" Stretch="Uniform" AutomationProperties.Name="{Binding Info.Title}" Margin="20,0" HorizontalAlignment="Left"/>
-            <local:PictureCommentUserControl DataContext="{Binding Comments}" x:Name="commentList" MinWidth="300" HorizontalAlignment="Right"/>
+            <ScrollViewer>
+                <local:PictureCommentUserControl DataContext="{Binding Comments}" x:Name="commentList" MinWidth="440" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+            </ScrollViewer>
         </StackPanel>
 
         <!-- Back button and page title -->

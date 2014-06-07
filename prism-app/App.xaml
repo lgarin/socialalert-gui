@@ -16,6 +16,7 @@
         <Visibility x:Key="Debug">Visible</Visibility>
         <conv:ItemClickedConverter x:Name="ItemClickedConverter" />
         <conv:BooleanToVisibilityConverter x:Name="BooleanToVisibilityConverter" />
+        <conv:BooleanToCollapsedConverter x:Name="BooleanToCollapsedConverter" />
         <conv:StringToVisibilityConverter x:Name="StringToVisibilityConverter"/>
         <conv:StringFormatConverter x:Name="StringFormatConverter"/>
         <conv:ViewChangeEndedConverter x:Name="ViewChangeEndedConverter"/>

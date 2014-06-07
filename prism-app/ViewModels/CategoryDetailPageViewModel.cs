@@ -32,10 +32,17 @@ namespace Socialalert.ViewModels
             this.geoLoationService = geoLoationService;
             PictureSelectedCommand = new DelegateCommand<PictureViewModel>(CenterMapOnPicture);
             MapViewChangedCommand = new DelegateCommand<LocationRect>(StartMapSearch);
+            LockMapCommand = new DelegateCommand<object>(LockMap);
+            UnlockMapCommand = new DelegateCommand<object>(UnlockMap);
         }
 
         private void CenterMapOnPicture(PictureViewModel picture)
         {
+            if (SearchBounds == null && MapBounds == null || picture == null)
+            {
+                return;
+            }
+
             if (picture.HasGeoLocation)
             {
                 var bounds = SearchBounds ?? MapBounds;
@@ -43,19 +50,34 @@ namespace Socialalert.ViewModels
             }
         }
 
+        private void LockMap(object arg)
+        {
+            SearchBounds = MapBounds;
+        }
+
+        private void UnlockMap(object arg)
+        {
+            SearchBounds = null;
+            TriggerNewSearch();
+        }
+
         private void StartMapSearch(LocationRect box)
         {
-            if (SearchBounds == null && MapBounds == null || Category == null || Category.Items.Count == 0)
+            if (SearchBounds == null && MapBounds == null || Category == null)
             {
                 return;
             }
 
-            if (!geoLoationService.AreClose(SearchBounds ?? MapBounds, box, 0.25))
+            if (!geoLoationService.AreClose(SearchBounds ?? MapBounds, box, 0.20))
             {
                 SearchBounds = box;
                 TriggerNewSearch();
             }
         }
+
+        public DelegateCommand<object> UnlockMapCommand { get; private set; }
+
+        public DelegateCommand<object> LockMapCommand { get; private set; }
 
         public DelegateCommand<LocationRect> MapViewChangedCommand { get; private set; }
 
@@ -75,10 +97,9 @@ namespace Socialalert.ViewModels
         {
             if (!object.Equals(Keywords, keywords)) { 
                 Keywords = keywords;
-                SearchBounds = null;
+                //SearchBounds = null;
                 TriggerNewSearch();
             }
-            
         }
 
         private async void TriggerNewSearch()
@@ -161,13 +182,21 @@ namespace Socialalert.ViewModels
         public LocationRect SearchBounds
         {
             get { return searchBounds; }
-            private set { SetProperty(ref searchBounds, value); }
+            private set { 
+                SetProperty(ref searchBounds, value);
+                OnPropertyChanged("HasSearchBounds");
+            }
         }
 
         public string Keywords
         {
             get { return keywords;  }
             private set { SetProperty(ref keywords, value);  }
+        }
+
+        public bool HasSearchBounds
+        {
+            get { return SearchBounds != null; }
         }
     }
 }
