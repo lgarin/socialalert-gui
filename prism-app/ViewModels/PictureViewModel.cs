@@ -74,7 +74,6 @@ namespace Socialalert.ViewModels
         public string UserApprovalModifier { get { return Get<string>(); } set { Set(value); } }
         public string Creator { get { return Get<string>(); } set { Set(value); } }
         public bool Online { get { return Get<bool>(); } set { Set(value); } }
-        public bool Offline { get { return !Online; } }
         public bool HasGeoLocation { get { return PictureLatitude.HasValue && PictureLongitude.HasValue; } }
         public Location GeoLocation { get { return HasGeoLocation ? new Location(PictureLatitude.Value, PictureLongitude.Value) : null; } }
         public string FormattedCamera { 

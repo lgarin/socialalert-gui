@@ -18,6 +18,7 @@ namespace Socialalert.ViewModels
 {
     public sealed class CategoryDetailPageViewModel : LoadableViewModel
     {
+        private bool mapLocked;
         private string keywords;
         private LocationRect mapBounds;
         private LocationRect searchBounds;
@@ -52,23 +53,26 @@ namespace Socialalert.ViewModels
 
         private void LockMap(object arg)
         {
+            MapLocked = true;
             SearchBounds = MapBounds;
+            TriggerNewSearch();
         }
 
         private void UnlockMap(object arg)
         {
+            MapLocked = false;
             SearchBounds = null;
             TriggerNewSearch();
         }
 
         private void StartMapSearch(LocationRect box)
         {
-            if (SearchBounds == null && MapBounds == null || Category == null)
+            if (SearchBounds == null || Category == null)
             {
                 return;
             }
 
-            if (!geoLoationService.AreClose(SearchBounds ?? MapBounds, box, 0.20))
+            if (!geoLoationService.AreClose(SearchBounds, box, 0.20))
             {
                 SearchBounds = box;
                 TriggerNewSearch();
@@ -115,6 +119,7 @@ namespace Socialalert.ViewModels
         {
             try
             {
+                MapLocked = false;
                 var category = navigationParameter as string;
                 Category = new PictureCategoryViewModel(category, new DelegateCommand<PictureCategoryViewModel>(GotoCategoryDetail));
                 PictureSearch.SearchAction = new Action<string>(StartKeywordSearch);
@@ -184,7 +189,6 @@ namespace Socialalert.ViewModels
             get { return searchBounds; }
             private set { 
                 SetProperty(ref searchBounds, value);
-                OnPropertyChanged("HasSearchBounds");
             }
         }
 
@@ -194,9 +198,10 @@ namespace Socialalert.ViewModels
             private set { SetProperty(ref keywords, value);  }
         }
 
-        public bool HasSearchBounds
+        public bool MapLocked
         {
-            get { return SearchBounds != null; }
+            get { return mapLocked; }
+            private set { SetProperty(ref mapLocked, value); }
         }
     }
 }

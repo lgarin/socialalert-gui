@@ -123,6 +123,9 @@
   <data name="Comments.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Comments</value>
   </data>
+  <data name="CommentsTitle.Text" xml:space="preserve">
+    <value>Comments</value>
+  </data>
   <data name="Country.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Country</value>
   </data>
@@ -148,6 +151,10 @@
   </data>
   <data name="Locality.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Locality</value>
+  </data>
+  <data name="MapLockLabel.Text" xml:space="preserve">
+    <value>Map
+search</value>
   </data>
   <data name="Offline.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Offline</value>

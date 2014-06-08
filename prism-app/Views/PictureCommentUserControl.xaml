@@ -19,8 +19,13 @@
     </UserControl.Resources>
     
     <!-- Page content -->
-    <StackPanel>
-        <!--<ScrollViewer Height="800" Width="440" VerticalScrollMode="Enabled" HorizontalScrollMode="Disabled">-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" x:Uid="CommentsTitle" Text="COMMENTS" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <ScrollViewer Grid.Row="1" >
             <GridView
                     x:Name="itemGridView"
                     AutomationProperties.AutomationId="ItemGridView"
@@ -31,33 +36,33 @@
                     ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
                     SelectionMode="None"
                     IsTapEnabled="False"
-                    IsSwipeEnabled="False">
-
-            <GridView.ItemTemplate>
-                <DataTemplate>
-                    <Grid Height="110" Margin="10">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
-                            <Image Source="{Binding ProfilePictureUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Creator}" HorizontalAlignment="Left"/>
-                        </Border>
-                        <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,0,0">
-                            <StackPanel Orientation="Horizontal">
-                                <FontIcon x:Uid="Online" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                <FontIcon x:Uid="Offline" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding Offline, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                <TextBlock Text="{Binding Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+                    IsSwipeEnabled="False" IsRightTapEnabled="False" IsHoldingEnabled="False" IsDoubleTapEnabled="False">
+                
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Height="110" Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                                <Image Source="{Binding ProfilePictureUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Creator}" HorizontalAlignment="Left"/>
+                            </Border>
+                            <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,0,0">
+                                <StackPanel Orientation="Horizontal">
+                                    <FontIcon x:Uid="Online" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                    <FontIcon x:Uid="Offline" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToCollapsedConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                    <TextBlock Text="{Binding Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+                                </StackPanel>
+                                <TextBlock Text="{Binding Comment}" Style="{StaticResource BodyTextBlockStyle}" MaxHeight="60"/>
+                                <TextBlock Text="{Binding Creation}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
                             </StackPanel>
-                            <TextBlock Text="{Binding Comment}" Style="{StaticResource BodyTextBlockStyle}" MaxHeight="60"/>
-                            <TextBlock Text="{Binding Creation}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
-                        </StackPanel>
-                    </Grid>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
-        
-        <!--</ScrollViewer>-->
-        <ProgressRing IsActive="{Binding LoadingData}" Height="100" Width="100" />
-    </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+
+        </ScrollViewer>
+        <ProgressRing Grid.Row="1" IsActive="{Binding LoadingData}" Height="100" Width="100" />
+    </Grid>
 </UserControl>

@@ -28,7 +28,6 @@ namespace Socialalert.ViewModels
         public string Comment { get { return Get<string>(); } set { Set(value); } }
         public string Creator { get { return Get<string>(); } set { Set(value); } }
         public bool Online { get { return Get<bool>(); } set { Set(value); } }
-        public bool Offline { get { return !Online; } }
 
         public Uri ProfilePictureUrl { get { return Get<Uri>(); } set { Set(value); } }
     }
