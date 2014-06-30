@@ -31,9 +31,12 @@ namespace Socialalert.Views
 
         public void map_ViewChangeEnded(object sender, Bing.Maps.ViewChangeEndedEventArgs e)
         {
-            CategoryDetailPageViewModel vm = DataContext as CategoryDetailPageViewModel;
-            vm.MapViewChangedCommand.Execute(map.Bounds);
+            var vm = DataContext as CategoryDetailPageViewModel;
+            var bounds = map.Bounds;
+            if (vm.MapViewChangedCommand.CanExecute(bounds))
+            {
+                vm.MapViewChangedCommand.Execute(bounds);
+            }
         }
-
     }
 }

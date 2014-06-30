@@ -156,6 +156,9 @@
     <value>Map
 search</value>
   </data>
+  <data name="MapPageTitle.Text" xml:space="preserve">
+    <value>Map Statistic</value>
+  </data>
   <data name="Offline.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Offline</value>
   </data>

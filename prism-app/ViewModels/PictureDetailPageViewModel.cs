@@ -22,7 +22,7 @@ namespace Socialalert.ViewModels
         {
             try
             {
-                string serverUrl = ResourceDictionary["BaseImageUrl"] as string;
+                string serverUrl = ResourceDictionary["BasePreviewUrl"] as string;
                 var picture = await ExecuteAsync(new ViewPictureDetailRequest(navigationParameter as string));
                 Info = new PictureViewModel(new Uri(serverUrl, UriKind.Absolute), picture);
                 Comments.LoadComments(picture.PictureUri);

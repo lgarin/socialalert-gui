@@ -51,4 +51,19 @@ namespace Socialalert.Models
         public string Creator;
         public bool Online;
     }
+
+    [JsonObject]
+    public class GeoArea
+    {
+        public double Latitude;
+        public double Longitude;
+        public double Radius;
+    }
+
+
+    [JsonObject]
+    public class GeoStatistic : GeoArea
+    {
+        public long Count;
+    }
 }

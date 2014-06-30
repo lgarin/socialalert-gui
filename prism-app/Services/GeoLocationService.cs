@@ -26,7 +26,7 @@ namespace Socialalert.Services
 
         private readonly Geolocator locator = new Geolocator();
 
-        public async Task<Location> GetCurrentLocation(PositionAccuracy accuracy)
+        public async Task<Location> GetCurrentLocation(PositionAccuracy accuracy = PositionAccuracy.Default)
         {
             locator.DesiredAccuracy = accuracy;
             var location = await locator.GetGeopositionAsync();

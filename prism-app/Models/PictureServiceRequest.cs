@@ -83,4 +83,16 @@ namespace Socialalert.Services
 
         public ListCommentsRequest() : base("pictureFacade", "listComments") { }
     }
+
+    public class MapPictureMatchCountRequest : JsonRpcRequest<IList<GeoStatistic>>
+    {
+        public long MaxAge;
+        public string Keywords;
+        public double Longitude;
+        public double Latitude;
+        public double Radius;
+        public Guid[] ProfileId;
+
+        public MapPictureMatchCountRequest() : base("pictureFacade", "mapPictureMatchCount") {}
+    }
 }

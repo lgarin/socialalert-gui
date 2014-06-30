@@ -22,15 +22,16 @@ namespace Socialalert.ViewModels
         private string keywords;
         private LocationRect mapBounds;
         private LocationRect searchBounds;
-        private IGeoLocationService geoLoationService;
         private PictureCategoryViewModel category;
 
         [Dependency]
         public SearchPictureUserControlViewModel PictureSearch { get; set; }
 
-        public CategoryDetailPageViewModel(IGeoLocationService geoLoationService) 
+        [Dependency]
+        public IGeoLocationService LocationService { get; set; }
+
+        public CategoryDetailPageViewModel() 
         {
-            this.geoLoationService = geoLoationService;
             PictureSelectedCommand = new DelegateCommand<PictureViewModel>(CenterMapOnPicture);
             MapViewChangedCommand = new DelegateCommand<LocationRect>(StartMapSearch);
             LockMapCommand = new DelegateCommand<object>(LockMap);
@@ -72,7 +73,7 @@ namespace Socialalert.ViewModels
                 return;
             }
 
-            if (!geoLoationService.AreClose(SearchBounds, box, 0.20))
+            if (!LocationService.AreClose(SearchBounds, box, 0.20))
             {
                 SearchBounds = box;
                 TriggerNewSearch();
@@ -139,7 +140,7 @@ namespace Socialalert.ViewModels
         {
             if (SearchBounds == null)
             {
-                LocationRect tempBound = geoLoationService.ComputeLocationBounds(Category.GeoLocatedItems.Select((i) => i.GeoLocation));
+                LocationRect tempBound = LocationService.ComputeLocationBounds(Category.GeoLocatedItems.Select((i) => i.GeoLocation));
                 MapBounds = new LocationRect(tempBound.Center, tempBound.Width * 1.2, tempBound.Height * 1.2);
             }
         }
@@ -153,7 +154,7 @@ namespace Socialalert.ViewModels
                 double? latitude = null;
                 if (searchBounds != null)
                 {
-                    maxDistance = geoLoationService.ComputeRadiusInKm(searchBounds);
+                    maxDistance = LocationService.ComputeRadiusInKm(searchBounds);
                     longitude = searchBounds.Center.Longitude;
                     latitude = searchBounds.Center.Latitude;
                 }

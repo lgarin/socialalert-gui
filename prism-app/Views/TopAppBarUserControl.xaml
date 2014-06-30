@@ -16,7 +16,7 @@
     <StackPanel Orientation="Horizontal">
         <AppBarButton x:Uid="Home" Name="goHome" Label="Home" FontFamily="Global User Interface" >
             <AppBarButton.Icon>
-                <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf015;"/>
+                <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource HomeGlyph}"/>
             </AppBarButton.Icon>
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Click">
@@ -24,7 +24,18 @@
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
         </AppBarButton>
-        
+
+        <AppBarButton x:Uid="Home" Name="showMap" Label="Map" FontFamily="Global User Interface" >
+            <AppBarButton.Icon>
+                <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource MapMarkerGlyph}"/>
+            </AppBarButton.Icon>
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Click">
+                    <core:NavigateToPageAction TargetPage="{StaticResource MapStatisticPage}"/>
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </AppBarButton>
+
         <AppBarButton Visibility="{StaticResource Debug}" Name="dumpData" FontFamily="Global User Interface" Label="Dump data" Command="{Binding DumpDataCommand}">
             <AppBarButton.Icon>
                 <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf083;"/>
