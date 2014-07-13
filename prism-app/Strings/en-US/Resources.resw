@@ -129,6 +129,18 @@
   <data name="Country.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Country</value>
   </data>
+  <data name="CredentialPickerCaption" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="CredentialPickerMessage" xml:space="preserve">
+    <value>Please enter your credentials</value>
+  </data>
+  <data name="CredentialPickerRetryCaption" xml:space="preserve">
+    <value>Invalid Login</value>
+  </data>
+  <data name="CredentialPickerRetryMessage" xml:space="preserve">
+    <value>Please renter your credentials.</value>
+  </data>
   <data name="Dislikes.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Dislikes</value>
   </data>

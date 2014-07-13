@@ -100,12 +100,7 @@ namespace Socialalert.ViewModels
 
             if (rpcException != null)
             {
-                // TODO use specific error message based on error code
-                var errorMessage = string.Format(CultureInfo.CurrentCulture,
-                                             ResourceLoader.GetString("GeneralServiceErrorMessage"),
-                                             Environment.NewLine, rpcException.Message);
-                await AlertMessageService.ShowAsync(errorMessage, ResourceLoader.GetString("ErrorServiceUnreachable"));
-                throw exception;
+                throw rpcException;
             }
             else if (exception != null)
             {

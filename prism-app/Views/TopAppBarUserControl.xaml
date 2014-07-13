@@ -25,6 +25,12 @@
             </i:Interaction.Behaviors>
         </AppBarButton>
 
+        <AppBarButton Name="login" FontFamily="Global User Interface" Label="Login" Command="{Binding LoginCommand}">
+            <AppBarButton.Icon>
+                <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf007;"/>
+            </AppBarButton.Icon>
+        </AppBarButton>
+
         <AppBarButton x:Uid="Home" Name="showMap" Label="Map" FontFamily="Global User Interface" >
             <AppBarButton.Icon>
                 <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource MapMarkerGlyph}"/>
