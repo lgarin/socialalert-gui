@@ -141,6 +141,9 @@
   <data name="CredentialPickerRetryMessage" xml:space="preserve">
     <value>Please renter your credentials.</value>
   </data>
+  <data name="CredentialResourceKey" xml:space="preserve">
+    <value>Social Alert</value>
+  </data>
   <data name="Dislikes.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Dislikes</value>
   </data>
@@ -179,5 +182,8 @@ search</value>
   </data>
   <data name="Resolution.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Picture resolution</value>
+  </data>
+  <data name="UnexpectedError" xml:space="preserve">
+    <value>An unexpected error occured</value>
   </data>
 </root>

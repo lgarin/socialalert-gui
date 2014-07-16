@@ -20,14 +20,12 @@ namespace Socialalert.ViewModels
 {
     public abstract class LoadableViewModel : ViewModel
     {
-        private Uri serverUrl;
         private int loadDelay;
         private bool loadingData;
 
         [InjectionMethod]
         public void Init(ResourceDictionary resourceDictionary)
         {
-            serverUrl = new Uri(resourceDictionary["BaseServerUrl"] as string, UriKind.Absolute);
             loadDelay = (int) resourceDictionary["LoadDelay"];
         }
 
@@ -77,7 +75,7 @@ namespace Socialalert.ViewModels
                 {
                     await Task.Delay(TimeSpan.FromSeconds(loadDelay));
                 }
-                result = await JsonRpcClient.InvokeAsync<T>(serverUrl, request);
+                result = await JsonRpcClient.InvokeAsync<T>(request);
             }
             catch (AggregateException ex)
             {
@@ -86,7 +84,6 @@ namespace Socialalert.ViewModels
             }
             catch (JsonRpcException ex)
             {
-                
                 rpcException = ex;
             }
             catch (Exception ex)

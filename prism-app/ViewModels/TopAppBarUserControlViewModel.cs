@@ -57,8 +57,6 @@ namespace Socialalert.ViewModels
             {
                 UserInfo userInfo = await ExecuteAsync(new LoginRequest(crendential.UserName, crendential.Password));
                 // TODO store the userInfo
-                var result = await ExecuteAsync(new LogoutRequest());
-                Debug.WriteLine(result);
                 return false;
             }
             catch (JsonRpcException)

@@ -69,7 +69,7 @@ namespace Socialalert.Services
 
     public interface IJsonRpcClient
     {
-        Task<T> InvokeAsync<T>(Uri serverUri, JsonRpcRequest<T> requestObject);
+        Task<T> InvokeAsync<T>(JsonRpcRequest<T> requestObject);
     }
 
     public sealed class JsonRpcClient : IJsonRpcClient, IDisposable
@@ -77,16 +77,18 @@ namespace Socialalert.Services
         private int requestCounter;
         private readonly JsonSerializer serializer;
         private readonly HttpClient client = new HttpClient();
+        private readonly Uri serverUri;
 
-        public JsonRpcClient()
+        public JsonRpcClient(String serverUrl)
         {
+            serverUri = new Uri(serverUrl, UriKind.Absolute);
             client.DefaultRequestHeaders["contentType"] = "application/json-rpc";
             serializer = new JsonSerializer();
             serializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
             serializer.Converters.Add(new EpochDateTimeConverter());
         }
 
-        public async Task<T> InvokeAsync<T>(Uri serverUri, JsonRpcRequest<T> requestObject) 
+        public async Task<T> InvokeAsync<T>(JsonRpcRequest<T> requestObject) 
         {
             using (var request = new HttpRequestMessage(HttpMethod.Post, new Uri(serverUri, requestObject.ServiceName)))
             {
