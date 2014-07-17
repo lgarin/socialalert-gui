@@ -25,7 +25,19 @@
             </i:Interaction.Behaviors>
         </AppBarButton>
 
-        <AppBarButton Name="login" FontFamily="Global User Interface" Label="Login" Command="{Binding LoginCommand}">
+        <AppBarButton Name="login" FontFamily="Global User Interface" Label="Login" Command="{Binding LoginCommand}" Visibility="{Binding CanLogin, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <AppBarButton.Icon>
+                <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf090;"/>
+            </AppBarButton.Icon>
+        </AppBarButton>
+
+        <AppBarButton Name="logout" FontFamily="Global User Interface" Label="Logout" Command="{Binding LogoutCommand}"  Visibility="{Binding CanLogout, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <AppBarButton.Icon>
+                <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf08b;"/>
+            </AppBarButton.Icon>
+        </AppBarButton>
+
+        <AppBarButton Name="currentUser" FontFamily="Global User Interface" Label="{Binding CurrentUsername}" Visibility="{Binding CurrentUsername, Converter={StaticResource StringToVisibilityConverter}}">
             <AppBarButton.Icon>
                 <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf007;"/>
             </AppBarButton.Icon>

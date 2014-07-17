@@ -57,8 +57,7 @@ namespace Socialalert
         {
             await container.Resolve<IApplicationStateService>().RestoreAsync();
 
-            var credentialService = container.Resolve<ILoginCredentialService>();
-            PasswordCredential crendential = credentialService.FindPreviousCredential();
+            PasswordCredential crendential = container.Resolve<ILoginCredentialService>().FindPreviousCredential();
             if (crendential != null)
             {
                 UserInfo userInfo = await container.Resolve<IJsonRpcClient>().InvokeAsync(new LoginRequest(crendential.UserName, crendential.Password));

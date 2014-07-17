@@ -23,6 +23,7 @@ namespace Socialalert.Services
     {
         private readonly string resourceName;
         private readonly IResourceLoader resourceLoader;
+        private readonly PasswordVault passwordVault = new PasswordVault();
 
         public LoginCredentialService(IResourceLoader resourceLoader)
         {
@@ -32,7 +33,6 @@ namespace Socialalert.Services
 
         public PasswordCredential FindPreviousCredential()
         {
-            var passwordVault = new PasswordVault();
             try
             {
                 PasswordCredential previousCredential = passwordVault.FindAllByResource(resourceName).First();
@@ -47,7 +47,11 @@ namespace Socialalert.Services
 
         private void StoreCredential(PasswordCredential credential)
         {
-            var passwordVault = new PasswordVault();
+            passwordVault.Add(credential);
+        }
+
+        private void RemoveOldCredentials()
+        {
             try
             {
                 foreach (var previousCredential in passwordVault.FindAllByResource(resourceName))
@@ -59,7 +63,6 @@ namespace Socialalert.Services
             {
                 // ignore
             }
-            passwordVault.Add(credential);
         }
 
         private async Task<CredentialPickerResults> AskCredential(bool retry)
@@ -91,6 +94,7 @@ namespace Socialalert.Services
             }
 
             PasswordCredential newCredential = new PasswordCredential(resourceName, results.CredentialUserName, results.CredentialPassword);
+            RemoveOldCredentials();
             if (results.CredentialSaveOption == CredentialSaveOption.Selected)
             {
                 StoreCredential(newCredential);

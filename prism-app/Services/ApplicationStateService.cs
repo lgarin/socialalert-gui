@@ -1,8 +1,10 @@
-﻿using Microsoft.Practices.Prism.StoreApps.Interfaces;
+﻿using Microsoft.Practices.Prism.StoreApps;
+using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using Microsoft.Practices.Unity;
 using Socialalert.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Socialalert.Services
 {
-    public interface IApplicationStateService
+    public interface IApplicationStateService : INotifyPropertyChanged
     {
         UserInfo CurrentUser { get; set; }
 
@@ -18,7 +20,7 @@ namespace Socialalert.Services
         Task SaveAsync();
     }
 
-    public class ApplicationStateService : IApplicationStateService
+    public class ApplicationStateService : BindableBase, IApplicationStateService
     {
         private ISessionStateService sessionStateService;
 
@@ -43,15 +45,21 @@ namespace Socialalert.Services
             return default(T);
         }
 
-        protected void Set<T>(T newValue, [CallerMemberName] string propertyName = null)
+        protected bool Set<T>(T newValue, [CallerMemberName] string propertyName = null)
         {
             if (propertyName == null)
             {
                 throw new ArgumentNullException("propertyName");
             }
 
-
+            T oldValue = Get<T>(propertyName);
+            if (EqualityComparer<T>.Default.Equals(newValue, oldValue))
+            {
+                return false;
+            }
             sessionStateService.SessionState[propertyName] = newValue;
+            OnPropertyChanged(propertyName);
+            return true;
         }
 
         public UserInfo CurrentUser {

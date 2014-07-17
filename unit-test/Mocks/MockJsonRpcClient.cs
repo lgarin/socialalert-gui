@@ -11,7 +11,7 @@ namespace Socialalert.Test.Mocks
     {
         public Func<object, object> InvokeDelegate;
 
-        Task<T> IJsonRpcClient.InvokeAsync<T>(Uri serverUri, JsonRpcRequest<T> requestObject)
+        Task<T> IJsonRpcClient.InvokeAsync<T>(JsonRpcRequest<T> requestObject)
         {
             return new Task<T>(() => (T) InvokeDelegate(requestObject));
         }

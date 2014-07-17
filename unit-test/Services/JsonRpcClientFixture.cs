@@ -13,19 +13,17 @@ namespace Socialalert.Test.Services
     public class JsonRpcClientFixture
     {
         private JsonRpcClient client;
-        private Uri serverUrl;
 
         [TestInitialize]
         public void init()
         {
-            client = new JsonRpcClient();
-            serverUrl = new Uri("http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/rest/");
+            client = new JsonRpcClient("http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/rest/");
         }
 
         [TestMethod]
         public void TestBasicSearch()
         {
-            var result = client.InvokeAsync<QueryResult<PictureInfo>>(serverUrl, new SearchPicturesRequest { MaxAge = 4000000000, PageSize = 5, Keywords = "Tag" }).Result;
+            var result = client.InvokeAsync<QueryResult<PictureInfo>>(new SearchPicturesRequest { MaxAge = 4000000000, PageSize = 5, Keywords = "Tag" }).Result;
             Assert.AreEqual(3, result.PageCount);
             Assert.AreEqual(0, result.PageNumber);
             Assert.AreEqual(5, result.Content.Length);
@@ -36,7 +34,7 @@ namespace Socialalert.Test.Services
         {
             try
             {
-                var result = client.InvokeAsync<QueryResult<PictureInfo>>(serverUrl, new SearchPicturesRequest { MaxAge = 400000000 }).Result;
+                var result = client.InvokeAsync<QueryResult<PictureInfo>>(new SearchPicturesRequest { MaxAge = 400000000 }).Result;
                 Assert.Fail();
             } catch (AggregateException e) {
                 Assert.IsInstanceOfType(e.InnerException, typeof(JsonRpcException));

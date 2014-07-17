@@ -5,10 +5,12 @@ using Newtonsoft.Json;
 using Socialalert.Services;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
@@ -43,6 +45,30 @@ namespace Socialalert.ViewModels
 
         [Dependency]
         protected ResourceDictionary ResourceDictionary { get; set; }
+
+        protected void OnPropertyChanged(Expression<Func<object>> expression)
+        {
+            if (expression.NodeType != ExpressionType.Lambda)
+            {
+                throw new ArgumentException("Value must be a lamda expression", "expression");
+            }
+
+            MemberExpression memberExpression = null;
+            if (expression.Body.NodeType == ExpressionType.Convert)
+            {
+                memberExpression = ((UnaryExpression)expression.Body).Operand as MemberExpression;
+            }
+            else if (expression.Body.NodeType == ExpressionType.MemberAccess)
+            {
+                memberExpression = expression.Body as MemberExpression;
+            }
+
+            if (expression == null)
+            {
+                throw new ArgumentException("Value should be a member expression", "expression");
+            }
+            OnPropertyChanged(memberExpression.Member.Name);
+        }
 
         public string SerializeToJson()
         {
