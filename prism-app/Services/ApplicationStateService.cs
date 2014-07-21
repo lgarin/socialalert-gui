@@ -16,6 +16,8 @@ namespace Socialalert.Services
     {
         UserInfo CurrentUser { get; set; }
 
+        bool HasUserRole(UserRole role);
+
         Task RestoreAsync();
         Task SaveAsync();
     }
@@ -73,6 +75,15 @@ namespace Socialalert.Services
             }
         }
 
+        public bool HasUserRole(UserRole role)
+        {
+            UserInfo info = CurrentUser;
+            if (info == null)
+            {
+                return false;
+            }
+            return info.Roles.Contains(role);
+        }
 
         public Task RestoreAsync()
         {

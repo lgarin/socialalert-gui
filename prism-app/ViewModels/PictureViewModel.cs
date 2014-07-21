@@ -15,6 +15,12 @@ namespace Socialalert.ViewModels
         public PictureViewModel(Uri basePicutreUrl, PictureInfo picture)
         {
             PictureUri = picture.PictureUri;
+            ImageUrl = new Uri(basePicutreUrl, picture.PictureUri);
+            UpdateWith(picture);
+        }
+
+        public void UpdateWith(PictureInfo picture)
+        {
             Title = picture.Title;
             Description = picture.Description;
             ProfileId = picture.ProfileId;
@@ -30,6 +36,7 @@ namespace Socialalert.ViewModels
             CameraMaker = picture.CameraMaker;
             CameraModel = picture.CameraModel;
             HitCount = picture.HitCount;
+            LikeCount = picture.LikeCount;
             DislikeCount = picture.DislikeCount;
             CommentCount = picture.CommentCount;
             UserApprovalModifier = picture.UserApprovalModifier;
@@ -46,7 +53,6 @@ namespace Socialalert.ViewModels
 
             Creator = picture.Creator;
             Online = picture.Online;
-            ImageUrl = new Uri(basePicutreUrl, picture.PictureUri);
         }
 
         public Uri ImageUrl { get { return Get<Uri>(); } set { Set(value); } }
@@ -71,7 +77,7 @@ namespace Socialalert.ViewModels
         public int CommentCount { get { return Get<int>(); } set { Set(value); } }
         public ObservableCollection<string> Categories = new ObservableCollection<string>();
         public ObservableCollection<string> Tags = new ObservableCollection<string>();
-        public string UserApprovalModifier { get { return Get<string>(); } set { Set(value); } }
+        public UserApprovalModifier? UserApprovalModifier { get { return Get<UserApprovalModifier?>(); } set { Set(value); } }
         public string Creator { get { return Get<string>(); } set { Set(value); } }
         public bool Online { get { return Get<bool>(); } set { Set(value); } }
         public bool HasGeoLocation { get { return PictureLatitude.HasValue && PictureLongitude.HasValue; } }

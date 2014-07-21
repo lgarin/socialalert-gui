@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Socialalert.Test.Services
 {
     [TestClass]
-    public class JsonRpcClientFixture
+    public class JsonRpcClientFixture : IDisposable
     {
         private JsonRpcClient client;
 
@@ -38,6 +38,15 @@ namespace Socialalert.Test.Services
                 Assert.Fail();
             } catch (AggregateException e) {
                 Assert.IsInstanceOfType(e.InnerException, typeof(JsonRpcException));
+            }
+        }
+
+        [TestCleanup]
+        public void Dispose()
+        {
+            if (client != null)
+            {
+                client.Dispose();
             }
         }
     }

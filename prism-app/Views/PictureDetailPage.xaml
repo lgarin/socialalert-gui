@@ -90,7 +90,7 @@
             <StackPanel Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Left" Orientation="Vertical" Margin="20,0">
                 <TextBlock Text="{Binding Creation}" TextWrapping="NoWrap"/>
             </StackPanel>
-            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="20,0">
+            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" Margin="20,0" >
                 <FontIcon x:Uid="Likes" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xF087;"/>
                 <TextBlock TextWrapping="NoWrap" Text="{Binding LikeCount}" Margin="10,0,0,0" VerticalAlignment="Center" />
             </StackPanel>

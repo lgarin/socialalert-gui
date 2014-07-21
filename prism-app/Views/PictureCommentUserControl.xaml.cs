@@ -8,5 +8,10 @@ namespace Socialalert.Views
         {
             this.InitializeComponent();
         }
+
+        private void AppBarToggleButton_Checked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+
+        }
     }
 }

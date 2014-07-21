@@ -11,21 +11,62 @@
              d:DataContext="{Binding Source={d:DesignData Source=/Data/PictureCommentUserControl.json, Type=vm:PictureCommentUserControlViewModel}}"
 			 d:DesignHeight="600"
 			 d:DesignWidth="400">
-    
+
     <UserControl.Resources>
         <CollectionViewSource
             x:Name="itemsViewSource"
             Source="{Binding Comments}"/>
     </UserControl.Resources>
-    
+
     <!-- Page content -->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" x:Uid="CommentsTitle" Text="COMMENTS" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-        <ScrollViewer Grid.Row="1" >
+        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <AppBarToggleButton Label="Like" IsChecked="{Binding IsLikeChecked, Mode=TwoWay}" Command="{Binding LikeCommand}">
+                <AppBarToggleButton.Icon>
+                    <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xF087;"/>
+                </AppBarToggleButton.Icon>
+            </AppBarToggleButton>
+            <AppBarToggleButton Label="Dislike" IsChecked="{Binding IsDislikeChecked, Mode=TwoWay}" Command="{Binding DislikeCommand}">
+                <AppBarToggleButton.Icon>
+                    <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xF088;"/>
+                </AppBarToggleButton.Icon>
+            </AppBarToggleButton>
+            <AppBarButton Label="New comment" Visibility="{Binding NewComment, Converter={StaticResource ObjectToCollapsedConverter}}" Command="{Binding NewCommentCommand}">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf0e5;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Label="Post comment" Visibility="{Binding NewComment, Converter={StaticResource ObjectToVisibilityConverter}}" Command="{Binding PostCommentCommand}">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf064;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
+        </StackPanel>
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="2" x:Uid="CommentsTitle" Text="COMMENTS" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Grid Grid.Row="2" Name="NewComment" Height="110" Margin="10" Visibility="{Binding NewComment, Converter={StaticResource ObjectToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+                <Image Source="{Binding NewComment.ProfilePictureUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding NewComment.Creator}" HorizontalAlignment="Left"/>
+            </Border>
+            <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <FontIcon x:Uid="Online" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding NewComment.Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <FontIcon x:Uid="Offline" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding NewComment.Online, Converter={StaticResource BooleanToCollapsedConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <TextBlock Text="{Binding NewComment.Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+                </StackPanel>
+                <TextBox Text="{Binding NewComment.Comment, Mode=TwoWay}" Height="80" MaxHeight="80" AcceptsReturn="True" PlaceholderText="Enter your comment here"/>
+            </StackPanel>
+        </Grid>
+        <ScrollViewer Grid.Row="3" >
             <GridView
                     x:Name="itemGridView"
                     AutomationProperties.AutomationId="ItemGridView"
@@ -37,7 +78,7 @@
                     SelectionMode="None"
                     IsTapEnabled="False"
                     IsSwipeEnabled="False" IsRightTapEnabled="False" IsHoldingEnabled="False" IsDoubleTapEnabled="False">
-                
+
                 <GridView.ItemTemplate>
                     <DataTemplate>
                         <Grid Height="110" Margin="10">
@@ -63,6 +104,6 @@
             </GridView>
 
         </ScrollViewer>
-        <ProgressRing Grid.Row="1" IsActive="{Binding LoadingData}" Height="100" Width="100" />
+        <ProgressRing Grid.Row="3" IsActive="{Binding LoadingData}" Height="100" Width="100" />
     </Grid>
 </UserControl>

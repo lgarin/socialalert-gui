@@ -14,15 +14,17 @@
     
     <!-- Page content -->
     <StackPanel Orientation="Horizontal">
-        <AppBarButton x:Uid="Home" Name="goHome" Label="Home" FontFamily="Global User Interface" >
+        <AppBarButton x:Uid="Home" Name="goHome" Label="Home" FontFamily="Global User Interface" Command="{Binding GoHomeCommand}">
             <AppBarButton.Icon>
                 <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource HomeGlyph}"/>
             </AppBarButton.Icon>
+            <!--
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Click">
                     <core:NavigateToPageAction TargetPage="{StaticResource HomePage}"/>
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
+            -->
         </AppBarButton>
 
         <AppBarButton Name="login" FontFamily="Global User Interface" Label="Login" Command="{Binding LoginCommand}" Visibility="{Binding CanLogin, Converter={StaticResource BooleanToVisibilityConverter}}">

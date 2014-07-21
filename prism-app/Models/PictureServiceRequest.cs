@@ -95,4 +95,12 @@ namespace Socialalert.Services
 
         public MapPictureMatchCountRequest() : base("pictureFacade", "mapPictureMatchCount") {}
     }
+
+    public class SetPictureApprovalRequest : JsonRpcRequest<PictureInfo>
+    {
+        public Uri PictureUri;
+        public UserApprovalModifier? Modifier;
+
+        public SetPictureApprovalRequest() : base("pictureFacade", "setPictureApproval") { }
+    }
 }

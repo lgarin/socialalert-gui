@@ -35,6 +35,32 @@ namespace Socialalert.Converters
         }
     }
 
+    public class ObjectToVisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return value == null ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ObjectToCollapsedConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            return value == null ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class StringToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
@@ -44,8 +70,7 @@ namespace Socialalert.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            var visiblity = (Visibility)value;
-            return visiblity == Visibility.Visible;
+            throw new NotImplementedException();
         }
     }
 }

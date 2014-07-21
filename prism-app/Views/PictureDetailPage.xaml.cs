@@ -1,6 +1,7 @@
 ﻿using Microsoft.Practices.Prism.StoreApps;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Windows.Foundation;

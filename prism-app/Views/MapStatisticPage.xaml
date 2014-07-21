@@ -24,6 +24,12 @@
         </DataTemplate>
     </prism:VisualStateAwarePage.Resources>
 
+    <prism:VisualStateAwarePage.TopAppBar>
+        <AppBar x:Uid="TopAppBar">
+            <local:TopAppBarUserControl/>
+        </AppBar>
+    </prism:VisualStateAwarePage.TopAppBar>
+    
     <!--
         This grid acts as a root panel for the page that defines two rows:
         * Row 0 contains the back button and page title

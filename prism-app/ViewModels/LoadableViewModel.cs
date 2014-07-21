@@ -48,6 +48,11 @@ namespace Socialalert.ViewModels
 
         protected void OnPropertyChanged(Expression<Func<object>> expression)
         {
+            OnPropertyChanged(ExtractMemberName(expression));
+        }
+
+        protected static string ExtractMemberName(Expression<Func<object>> expression)
+        {
             if (expression.NodeType != ExpressionType.Lambda)
             {
                 throw new ArgumentException("Value must be a lamda expression", "expression");
@@ -67,7 +72,7 @@ namespace Socialalert.ViewModels
             {
                 throw new ArgumentException("Value should be a member expression", "expression");
             }
-            OnPropertyChanged(memberExpression.Member.Name);
+            return memberExpression.Member.Name;
         }
 
         public string SerializeToJson()

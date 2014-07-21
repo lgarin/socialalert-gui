@@ -3,16 +3,12 @@ using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using Microsoft.Practices.Unity;
 using Socialalert.Models;
 using Socialalert.Services;
-using Socialalert.ViewModels;
 using System;
-using System.Diagnostics;
-using System.Globalization;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Resources;
 using Windows.Security.Credentials;
-using Windows.UI.Xaml;
 
 namespace Socialalert
 {
@@ -85,6 +81,15 @@ namespace Socialalert
         protected override object Resolve(Type type)
         {
             return container.Resolve(type);
+        }
+
+        protected override Type GetPageType(string pageToken)
+        {
+            if (pageToken.EndsWith("Page"))
+            {
+                return Type.GetType(pageToken, true);
+            }
+            return base.GetPageType(pageToken);
         }
 
         public void Dispose()

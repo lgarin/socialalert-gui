@@ -2,6 +2,7 @@
 using Microsoft.Practices.Unity;
 using Socialalert.Models;
 using Socialalert.Services;
+using Socialalert.Views;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,8 @@ using System.Threading.Tasks;
 using Windows.Security.Credentials;
 using Windows.Security.Credentials.UI;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace Socialalert.ViewModels
 {
@@ -22,7 +25,7 @@ namespace Socialalert.ViewModels
         public IUnityContainer Container {get; set;}
         
         public DelegateCommand DumpDataCommand { get; private set; }
-
+        public DelegateCommand GoHomeCommand { get; private set; }
         public DelegateCommand LoginCommand { get; private set; }
         public DelegateCommand LogoutCommand { get; private set; }
 
@@ -37,23 +40,43 @@ namespace Socialalert.ViewModels
             DumpDataCommand = new DelegateCommand(DumpData);
             LoginCommand = new DelegateCommand(Login, () => CanLogin);
             LogoutCommand = new DelegateCommand(Logout, () => CanLogout);
-            
+            GoHomeCommand = new DelegateCommand(GoHome, () => CanGoHome);
         }
 
         [InjectionMethod]
         public void Init()
         {
             ApplicationStateService.PropertyChanged += ApplicationStateService_PropertyChanged;
-            ApplicationStateService_PropertyChanged(null, null);
+            ApplicationStateService_PropertyChanged(this, new PropertyChangedEventArgs(ExtractMemberName(() => ApplicationStateService.CurrentUser)));
         }
 
         private void ApplicationStateService_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            OnPropertyChanged(() => this.CurrentUsername);
-            OnPropertyChanged(() => this.CanLogin);
-            OnPropertyChanged(() => this.CanLogout);
-            LoginCommand.RaiseCanExecuteChanged();
-            LogoutCommand.RaiseCanExecuteChanged();
+            if (ExtractMemberName(() => ApplicationStateService.CurrentUser) == e.PropertyName) {
+                OnPropertyChanged(() => CurrentUsername);
+                OnPropertyChanged(() => CanLogin);
+                OnPropertyChanged(() => CanLogout);
+                LoginCommand.RaiseCanExecuteChanged();
+                LogoutCommand.RaiseCanExecuteChanged();
+            }
+        }
+
+        public void GoHome()
+        {
+            NavigationService.Navigate(ResourceDictionary["HomePage"] as string, null);
+        }
+
+        public bool CanGoHome
+        {
+            get
+            {
+                var frame = Window.Current.Content as Frame;
+                if (frame != null)
+                {
+                    return frame.SourcePageType.FullName != ResourceDictionary["HomePage"] as string;
+                }
+                return true;
+            }
         }
 
         public string CurrentUsername
@@ -118,8 +141,12 @@ namespace Socialalert.ViewModels
                 await ExecuteAsync(new LogoutRequest());
                 ApplicationStateService.CurrentUser = null;
             }
-            catch (JsonRpcException)
+            catch (JsonRpcException e)
             {
+                if (e.HResult == -4)
+                {
+                    ApplicationStateService.CurrentUser = null;
+                }
             }
         }
 

@@ -11,6 +11,12 @@ namespace Socialalert.Models
         public int PageCount;
     }
 
+    public enum UserApprovalModifier
+    {
+        LIKE,
+        DISLIKE
+    }
+
     [JsonObject]
     public class PictureInfo
     {
@@ -35,7 +41,7 @@ namespace Socialalert.Models
         public int CommentCount;
         public string[] Categories;
         public string[] Tags;
-        public string UserApprovalModifier;
+        public UserApprovalModifier? UserApprovalModifier;
         public string Creator;
         public bool Online;
     }
