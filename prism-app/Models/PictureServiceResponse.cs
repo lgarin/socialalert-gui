@@ -72,4 +72,33 @@ namespace Socialalert.Models
     {
         public long Count;
     }
+
+    public enum ActivityType {
+	    NEW_PICTURE,
+	    REPOST_PICTURE,
+	    NEW_COMMENT,
+	    REPOST_COMMENT,
+	    LIKE_MEDIA,
+	    UNLIKE_MEDIA
+    }
+
+    [JsonObject]
+    public class ActivityInfo
+    {
+        public Uri mediaUri;
+
+        public Guid profileId;
+
+        public ActivityType activityType;
+
+        public DateTime timestamp;
+
+        public Guid? commentId;
+
+        public String message;
+
+        public String creator;
+
+        public Boolean online;
+    }
 }

@@ -103,4 +103,19 @@ namespace Socialalert.Services
 
         public SetPictureApprovalRequest() : base("pictureFacade", "setPictureApproval") { }
     }
+
+    public class AddCommentRequest : JsonRpcRequest<CommentInfo>
+    {
+        public Uri PictureUri;
+        public string Comment;
+
+        public AddCommentRequest() : base("pictureFacade", "addComment") { }
+    }
+
+    public class RepostPictureRequest : JsonRpcRequest<ActivityInfo>
+    {
+        public Uri PictureId;
+
+        public RepostPictureRequest() : base("pictureFacade", "repostPicture") { }
+    }
 }

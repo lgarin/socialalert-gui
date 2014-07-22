@@ -31,6 +31,9 @@ namespace Socialalert.ViewModels
             DislikeCommand = new DelegateCommand(() => SetPictureApproval(UserApprovalModifier.DISLIKE), () => CanSetPictureApproval(UserApprovalModifier.DISLIKE));
             NewCommentCommand = new DelegateCommand(CreateComment, CanCreateComment);
             PostCommentCommand = new DelegateCommand(PostComment, CanPostComment);
+            CancelCommentCommand = new DelegateCommand(CancelComment, CanCancelComment);
+            RepostCommentCommand = new DelegateCommand(RepostComment, CanRepostComment);
+            RepostPictureCommand = new DelegateCommand(RepostPicture, CanRepostPicture);
         }
 
         public PictureCommentViewModel NewComment
@@ -66,6 +69,7 @@ namespace Socialalert.ViewModels
 
             NewCommentCommand.RaiseCanExecuteChanged();
             PostCommentCommand.RaiseCanExecuteChanged();
+            CancelCommentCommand.RaiseCanExecuteChanged();
         }
 
         public DelegateCommand PostCommentCommand { get; private set; }
@@ -75,14 +79,54 @@ namespace Socialalert.ViewModels
             return NewComment != null && ApplicationStateService.HasUserRole(UserRole.USER);
         }
 
-        private void PostComment()
+        private async void PostComment()
         {
             if (!String.IsNullOrWhiteSpace(NewComment.Comment))
             {
-                NewComment = null;
-                NewCommentCommand.RaiseCanExecuteChanged();
-                PostCommentCommand.RaiseCanExecuteChanged();
+                var comment = await ExecuteAsync(new AddCommentRequest() { Comment = NewComment.Comment, PictureUri = NewComment.MediaUri });
+                Comments.Insert(0, new PictureCommentViewModel(ProfileUriPattern, comment));
+                CancelComment();
             }
+        }
+
+        public DelegateCommand CancelCommentCommand { get; private set; }
+
+        private bool CanCancelComment()
+        {
+            return NewComment != null;
+        }
+
+        private void CancelComment()
+        {
+            NewComment = null;
+            NewCommentCommand.RaiseCanExecuteChanged();
+            PostCommentCommand.RaiseCanExecuteChanged();
+            CancelCommentCommand.RaiseCanExecuteChanged();
+        }
+
+        public DelegateCommand RepostCommentCommand { get; private set; }
+
+        private bool CanRepostComment()
+        {
+            // TODO
+            return false;
+        }
+
+        private async void RepostComment()
+        {
+            // TODO
+        }
+
+        public DelegateCommand RepostPictureCommand { get; private set; }
+
+        private bool CanRepostPicture()
+        {
+            return picture != null && ApplicationStateService.HasUserRole(UserRole.USER);
+        }
+
+        private async void RepostPicture()
+        {
+            await ExecuteAsync(new RepostPictureRequest() { PictureId = picture.PictureUri });
         }
 
         public bool IsLikeChecked
@@ -127,15 +171,15 @@ namespace Socialalert.ViewModels
 
         private void RefreshState()
         {
-            NewComment = null;
-            NewCommentCommand.RaiseCanExecuteChanged();
-            PostCommentCommand.RaiseCanExecuteChanged();
+            CancelComment();
 
             IsLikeChecked = picture.UserApprovalModifier == UserApprovalModifier.LIKE;
             IsDislikeChecked = picture.UserApprovalModifier == UserApprovalModifier.DISLIKE;
             
             LikeCommand.RaiseCanExecuteChanged();
             DislikeCommand.RaiseCanExecuteChanged();
+
+            RepostPictureCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanSetPictureApproval(UserApprovalModifier modifier)

@@ -86,6 +86,7 @@ namespace Socialalert.Services
             serializer = new JsonSerializer();
             serializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
             serializer.Converters.Add(new EpochDateTimeConverter());
+            serializer.Converters.Add(new StringEnumConverter());
         }
 
         public async Task<T> InvokeAsync<T>(JsonRpcRequest<T> requestObject) 

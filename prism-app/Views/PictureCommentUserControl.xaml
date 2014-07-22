@@ -6,6 +6,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
+             xmlns:i="using:Microsoft.Xaml.Interactivity"
+             xmlns:core="using:Microsoft.Xaml.Interactions.Core"
              mc:Ignorable="d"
 			 prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{Binding Source={d:DesignData Source=/Data/PictureCommentUserControl.json, Type=vm:PictureCommentUserControlViewModel}}"
@@ -47,6 +49,11 @@
                     <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf064;"/>
                 </AppBarButton.Icon>
             </AppBarButton>
+            <AppBarButton Label="Repost" Command="{Binding RepostPictureCommand}" >
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf09e;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>
         </StackPanel>
         <TextBlock Grid.Row="1" Grid.ColumnSpan="2" x:Uid="CommentsTitle" Text="COMMENTS" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
         <Grid Grid.Row="2" Name="NewComment" Height="110" Margin="10" Visibility="{Binding NewComment, Converter={StaticResource ObjectToVisibilityConverter}}">
@@ -58,11 +65,31 @@
                 <Image Source="{Binding NewComment.ProfilePictureUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding NewComment.Creator}" HorizontalAlignment="Left"/>
             </Border>
             <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,0,0">
-                <StackPanel Orientation="Horizontal">
-                    <FontIcon x:Uid="Online" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding NewComment.Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                    <FontIcon x:Uid="Offline" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding NewComment.Online, Converter={StaticResource BooleanToCollapsedConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                    <TextBlock Text="{Binding NewComment.Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <FontIcon x:Uid="Online" Grid.Column="0" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding NewComment.Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <FontIcon x:Uid="Offline" Grid.Column="0" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding NewComment.Online, Converter={StaticResource BooleanToCollapsedConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="1" Text="{Binding NewComment.Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+                    <FontIcon x:Uid="Cancel" Grid.Column="2" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf014;" Visibility="{Binding NewComment, Converter={StaticResource ObjectToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" >
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="Tapped">
+                                <core:InvokeCommandAction Command="{Binding CancelCommentCommand}"/>
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </FontIcon>
+                    <FontIcon x:Uid="Post" Grid.Column="3" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf064;" Visibility="{Binding NewComment, Converter={StaticResource ObjectToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" >
+                        <i:Interaction.Behaviors>
+                            <core:EventTriggerBehavior EventName="Tapped">
+                                <core:InvokeCommandAction Command="{Binding PostCommentCommand}"/>
+                            </core:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </FontIcon>
+                </Grid>
                 <TextBox Text="{Binding NewComment.Comment, Mode=TwoWay}" Height="80" MaxHeight="80" AcceptsReturn="True" PlaceholderText="Enter your comment here"/>
             </StackPanel>
         </Grid>
@@ -90,11 +117,23 @@
                                 <Image Source="{Binding ProfilePictureUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Creator}" HorizontalAlignment="Left"/>
                             </Border>
                             <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,0,0">
-                                <StackPanel Orientation="Horizontal">
-                                    <FontIcon x:Uid="Online" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                    <FontIcon x:Uid="Offline" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToCollapsedConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                    <TextBlock Text="{Binding Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
-                                </StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <FontIcon x:Uid="Online" Grid.Column="0" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                    <FontIcon x:Uid="Offline" Grid.Column="0" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToCollapsedConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+                                    <FontIcon x:Uid="Repost" Grid.Column="2" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf09e;" Margin="0,0,10,0" VerticalAlignment="Center" >
+                                        <i:Interaction.Behaviors>
+                                            <core:EventTriggerBehavior EventName="Tapped">
+                                                <core:InvokeCommandAction Command="{Binding RepostCommentCommand}"/>
+                                            </core:EventTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+                                    </FontIcon>
+                                </Grid>
                                 <TextBlock Text="{Binding Comment}" Style="{StaticResource BodyTextBlockStyle}" MaxHeight="60"/>
                                 <TextBlock Text="{Binding Creation}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
                             </StackPanel>
