@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Navigation;
 
@@ -32,7 +33,7 @@ namespace Socialalert.ViewModels
             NewCommentCommand = new DelegateCommand(CreateComment, CanCreateComment);
             PostCommentCommand = new DelegateCommand(PostComment, CanPostComment);
             CancelCommentCommand = new DelegateCommand(CancelComment, CanCancelComment);
-            RepostCommentCommand = new DelegateCommand(RepostComment, CanRepostComment);
+            RepostCommentCommand = new DelegateCommand<Guid?>(RepostComment, CanRepostComment);
             RepostPictureCommand = new DelegateCommand(RepostPicture, CanRepostPicture);
         }
 
@@ -65,7 +66,7 @@ namespace Socialalert.ViewModels
                 MediaUri = picture.PictureUri,
                 Creation = DateTime.Now
             };
-            NewComment = new PictureCommentViewModel(ProfileUriPattern, info);
+            NewComment = new PictureCommentViewModel(ProfileUriPattern, info, RepostCommentCommand);
 
             NewCommentCommand.RaiseCanExecuteChanged();
             PostCommentCommand.RaiseCanExecuteChanged();
@@ -84,7 +85,7 @@ namespace Socialalert.ViewModels
             if (!String.IsNullOrWhiteSpace(NewComment.Comment))
             {
                 var comment = await ExecuteAsync(new AddCommentRequest() { Comment = NewComment.Comment, PictureUri = NewComment.MediaUri });
-                Comments.Insert(0, new PictureCommentViewModel(ProfileUriPattern, comment));
+                Comments.Insert(0, new PictureCommentViewModel(ProfileUriPattern, comment, RepostCommentCommand));
                 CancelComment();
             }
         }
@@ -104,17 +105,16 @@ namespace Socialalert.ViewModels
             CancelCommentCommand.RaiseCanExecuteChanged();
         }
 
-        public DelegateCommand RepostCommentCommand { get; private set; }
+        public DelegateCommand<Guid?> RepostCommentCommand { get; private set; }
 
-        private bool CanRepostComment()
+        private bool CanRepostComment(Guid? commentId)
         {
-            // TODO
-            return false;
+            return commentId != null && ApplicationStateService.HasUserRole(UserRole.USER);
         }
 
-        private async void RepostComment()
+        private async void RepostComment(Guid? commentId)
         {
-            // TODO
+            await ExecuteAsync(new RepostCommentRequest() { CommentId = commentId.Value });
         }
 
         public DelegateCommand RepostPictureCommand { get; private set; }
@@ -180,6 +180,7 @@ namespace Socialalert.ViewModels
             DislikeCommand.RaiseCanExecuteChanged();
 
             RepostPictureCommand.RaiseCanExecuteChanged();
+            RepostCommentCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanSetPictureApproval(UserApprovalModifier modifier)
@@ -224,7 +225,7 @@ namespace Socialalert.ViewModels
                 var result = new List<PictureCommentViewModel>(items.Content.Count());
                 foreach (var item in items.Content)
                 {
-                    result.Add(new PictureCommentViewModel(ProfileUriPattern, item));
+                    result.Add(new PictureCommentViewModel(ProfileUriPattern, item, RepostCommentCommand));
                 }
                 return result;
             }

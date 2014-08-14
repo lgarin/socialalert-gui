@@ -118,4 +118,11 @@ namespace Socialalert.Services
 
         public RepostPictureRequest() : base("pictureFacade", "repostPicture") { }
     }
+
+    public class RepostCommentRequest : JsonRpcRequest<ActivityInfo>
+    {
+        public Guid CommentId;
+
+        public RepostCommentRequest() : base("pictureFacade", "repostComment") { }
+    }
 }

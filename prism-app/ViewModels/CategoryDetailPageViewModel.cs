@@ -158,7 +158,7 @@ namespace Socialalert.ViewModels
                     longitude = searchBounds.Center.Longitude;
                     latitude = searchBounds.Center.Latitude;
                 }
-                var items = await ExecuteAsync(new SearchPicturesInCategoryRequest { Keywords = keywords, MaxDistance = maxDistance, Latitude = latitude, Longitude = longitude, MaxAge = 180 * Constants.MillisPerDay, PageNumber = 0, PageSize = Constants.ItemsPerPage, Category = Category.Id });
+                var items = await ExecuteAsync(new SearchPicturesInCategoryRequest { Keywords = keywords, MaxDistance = maxDistance, Latitude = latitude, Longitude = longitude, MaxAge = 360 * Constants.MillisPerDay, PageNumber = 0, PageSize = Constants.ItemsPerPage, Category = Category.Id });
                 var basePictureUri = new Uri(ResourceDictionary["BaseThumbnailUrl"] as string, UriKind.Absolute);
                 var result = new List<PictureViewModel>(items.Content.Count());
                 foreach (var item in items.Content)

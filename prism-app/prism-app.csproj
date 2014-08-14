@@ -112,6 +112,8 @@
     <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\PictureServiceResponse.cs" />
+    <Compile Include="Models\ProfileServiceRequest.cs" />
+    <Compile Include="Models\ProfileServiceResponse.cs" />
     <Compile Include="Models\UserServiceRequest.cs" />
     <Compile Include="Models\UserServiceResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -132,6 +134,7 @@
     <Compile Include="ViewModels\CategoryDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureCommentUserControlViewModel.cs" />
     <Compile Include="ViewModels\PictureCommentViewModel.cs" />
+    <Compile Include="ViewModels\ProfileDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\SearchPictureUserControlViewModel.cs" />
@@ -146,6 +149,9 @@
     </Compile>
     <Compile Include="Views\PictureCommentUserControl.xaml.cs">
       <DependentUpon>PictureCommentUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProfileDetailPage.xaml.cs">
+      <DependentUpon>ProfileDetailPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PictureDetailPage.xaml.cs">
       <DependentUpon>PictureDetailPage.xaml</DependentUpon>
@@ -201,6 +207,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PictureCommentUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProfileDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

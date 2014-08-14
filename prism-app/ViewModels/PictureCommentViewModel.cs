@@ -1,4 +1,5 @@
-﻿using Socialalert.Models;
+﻿using Microsoft.Practices.Prism.StoreApps;
+using Socialalert.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Socialalert.ViewModels
 {
     public class PictureCommentViewModel : SimpleViewModel
     {
-        public PictureCommentViewModel(string profileUriPattern, CommentInfo item)
+        public PictureCommentViewModel(string profileUriPattern, CommentInfo item, DelegateCommand<Guid?> repostCommentCommand)
         {
             CommentId = item.CommentId;
             MediaUri = item.MediaUri;
@@ -19,6 +20,7 @@ namespace Socialalert.ViewModels
             Creator = item.Creator;
             Online = item.Online;
             ProfilePictureUrl = new Uri(string.Format(profileUriPattern, ProfileId), UriKind.Absolute);
+            RepostCommentCommand = repostCommentCommand;
 
         }
         public Guid CommentId { get { return Get<Guid>(); } set { Set(value); } }
@@ -30,5 +32,7 @@ namespace Socialalert.ViewModels
         public bool Online { get { return Get<bool>(); } set { Set(value); } }
 
         public Uri ProfilePictureUrl { get { return Get<Uri>(); } set { Set(value); } }
+
+        public DelegateCommand<Guid?> RepostCommentCommand { get; private set; }
     }
 }
