@@ -1,0 +1,21 @@
+﻿<UserControl x:Class="Socialalert.Views.ProfileStatusUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Socialalert.Views"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
+             mc:Ignorable="d"
+			 prism:ViewModelLocator.AutoWireViewModel="True"
+			 d:DesignHeight="30"
+			 d:DesignWidth="100">
+    
+    <!-- Page content -->
+    <Button BorderThickness="0" Padding="2">
+        <StackPanel x:Name="Content" Orientation="Horizontal">
+            <FontIcon x:Uid="Online" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+            <FontIcon x:Uid="Offline" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToCollapsedConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
+            <TextBlock Text="{Binding Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
+        </StackPanel>
+    </Button>
+</UserControl>

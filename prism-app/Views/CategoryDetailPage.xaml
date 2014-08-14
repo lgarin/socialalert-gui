@@ -101,8 +101,8 @@
                         </Border>
                         <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,0,0" >
                             <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap"/>
-                            <TextBlock Text="{Binding Creator}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap"/>
-                            <TextBlock Text="{Binding Description}" Style="{StaticResource BodyTextBlockStyle}" MaxHeight="60"/>
+                            <local:ProfileStatusUserControl Margin="0,10,0,0"/>
+                            <TextBlock Text="{Binding Description}" Style="{StaticResource BodyTextBlockStyle}" Margin="0,10,0,0" MaxHeight="60"/>
                         </StackPanel>
                     </Grid>
                 </DataTemplate>

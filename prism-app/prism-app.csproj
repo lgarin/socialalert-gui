@@ -160,6 +160,9 @@
       <DependentUpon>HubPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ItemClickedConverter.cs" />
+    <Compile Include="Views\ProfileStatusUserControl.xaml.cs">
+      <DependentUpon>ProfileStatusUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SearchPictureUserControl.xaml.cs">
       <DependentUpon>SearchPictureUserControl.xaml</DependentUpon>
     </Compile>
@@ -219,6 +222,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProfileStatusUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

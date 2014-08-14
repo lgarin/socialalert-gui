@@ -67,28 +67,17 @@
             <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,0,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <FontIcon x:Uid="Online" Grid.Column="0" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding NewComment.Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                    <FontIcon x:Uid="Offline" Grid.Column="0" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding NewComment.Online, Converter={StaticResource BooleanToCollapsedConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                    <TextBlock Grid.Column="1" Text="{Binding NewComment.Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
-                    <FontIcon x:Uid="Cancel" Grid.Column="2" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf014;" Visibility="{Binding NewComment, Converter={StaticResource ObjectToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" >
-                        <i:Interaction.Behaviors>
-                            <core:EventTriggerBehavior EventName="Tapped">
-                                <core:InvokeCommandAction Command="{Binding CancelCommentCommand}"/>
-                            </core:EventTriggerBehavior>
-                        </i:Interaction.Behaviors>
-                    </FontIcon>
-                    <FontIcon x:Uid="Post" Grid.Column="3" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf064;" Visibility="{Binding NewComment, Converter={StaticResource ObjectToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" >
-                        <i:Interaction.Behaviors>
-                            <core:EventTriggerBehavior EventName="Tapped">
-                                <core:InvokeCommandAction Command="{Binding PostCommentCommand}"/>
-                            </core:EventTriggerBehavior>
-                        </i:Interaction.Behaviors>
-                    </FontIcon>
+                    <local:ProfileStatusUserControl Grid.Column="0" DataContext="{Binding NewComment}"/>
+                    <Button x:Uid="Cancel" Grid.Column="1" BorderThickness="0" Padding="0" Command="{Binding CancelCommentCommand}" Visibility="{Binding NewComment, Converter={StaticResource ObjectToVisibilityConverter}}" >
+                        <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf014;" VerticalAlignment="Center" />
+                    </Button>
+                    <Button x:Uid="Post" Grid.Column="2" BorderThickness="0" Padding="0" Command="{Binding PostCommentCommand}" Visibility="{Binding NewComment, Converter={StaticResource ObjectToVisibilityConverter}}" Margin="10,0,0,0" >
+                        <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf064;" VerticalAlignment="Center" />
+                    </Button>
                 </Grid>
                 <TextBox Text="{Binding NewComment.Comment, Mode=TwoWay}" Height="80" MaxHeight="80" AcceptsReturn="True" PlaceholderText="Enter your comment here"/>
             </StackPanel>
@@ -123,14 +112,11 @@
                             <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,0,0" >
                                 <Grid>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <FontIcon x:Uid="Online" Grid.Column="0" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                    <FontIcon x:Uid="Offline" Grid.Column="0" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToCollapsedConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
-                                    <TextBlock Grid.Column="1" Text="{Binding Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>
-                                    <Button Grid.Column="2" BorderThickness="0" Command="{Binding RepostCommentCommand}" CommandParameter="{Binding CommentId}">
+                                    <local:ProfileStatusUserControl/>
+                                    <Button Grid.Column="1" BorderThickness="0" Padding="0" Command="{Binding RepostCommentCommand}" CommandParameter="{Binding CommentId}">
                                         <FontIcon x:Uid="Repost" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf09e;" Margin="0,0,10,0" VerticalAlignment="Center" />
                                     </Button>
                                 </Grid>
