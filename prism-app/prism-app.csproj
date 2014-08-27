@@ -137,6 +137,7 @@
     <Compile Include="ViewModels\ProfileDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
+    <Compile Include="ViewModels\ProfileStatisticViewModel.cs" />
     <Compile Include="ViewModels\SearchPictureUserControlViewModel.cs" />
     <Compile Include="ViewModels\SimpleViewModel.cs" />
     <Compile Include="ViewModels\TopAppBarUserControlViewModel.cs" />
@@ -160,6 +161,9 @@
       <DependentUpon>HubPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\ItemClickedConverter.cs" />
+    <Compile Include="Views\ProfileStatisticUserControl.xaml.cs">
+      <DependentUpon>ProfileStatisticUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProfileStatusUserControl.xaml.cs">
       <DependentUpon>ProfileStatusUserControl.xaml</DependentUpon>
     </Compile>
@@ -181,6 +185,7 @@
     <Content Include="Data\PictureDetailPage.json" />
     <Content Include="Data\CategoryDetailPage.json" />
     <Content Include="Data\PictureCommentUserControl.json" />
+    <Content Include="Data\ProfileDetailPage.json" />
     <None Include="packages.config" />
     <None Include="prism-app_TemporaryKey.pfx" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
@@ -222,6 +227,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HubPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProfileStatisticUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

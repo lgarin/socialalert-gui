@@ -4,6 +4,8 @@
              xmlns:local="using:Socialalert.Views"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i="using:Microsoft.Xaml.Interactivity"
+             xmlns:core="using:Microsoft.Xaml.Interactions.Core"
 			 xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
              mc:Ignorable="d"
 			 prism:ViewModelLocator.AutoWireViewModel="True"
@@ -12,6 +14,11 @@
     
     <!-- Page content -->
     <Button BorderThickness="0" Padding="2">
+        <i:Interaction.Behaviors>
+            <core:EventTriggerBehavior EventName="Click">
+                <core:NavigateToPageAction TargetPage="{StaticResource ProfileDetailPage}" Parameter="{Binding ProfileId}"/>
+            </core:EventTriggerBehavior>
+        </i:Interaction.Behaviors>
         <StackPanel x:Name="Content" Orientation="Horizontal">
             <FontIcon x:Uid="Online" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
             <FontIcon x:Uid="Offline" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToCollapsedConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />

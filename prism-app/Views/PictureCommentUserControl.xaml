@@ -97,7 +97,7 @@
 
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Height="110" Margin="10" MinWidth="400">
+                        <Grid Height="110" Margin="10" Width="400">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="200"/>
                                 <ColumnDefinition Width="*"/>

@@ -12,15 +12,18 @@ namespace Socialalert.ViewModels
 {
     public sealed class PictureViewModel : SimpleViewModel
     {
-        public PictureViewModel(Uri basePicutreUrl, PictureInfo picture)
+        private Uri basePictureUrl;
+
+        public PictureViewModel(Uri basePictureUrl, PictureInfo picture)
         {
             PictureUri = picture.PictureUri;
-            ImageUrl = new Uri(basePicutreUrl, picture.PictureUri);
+            this.basePictureUrl = basePictureUrl;
             UpdateWith(picture);
         }
 
         public void UpdateWith(PictureInfo picture)
         {
+            ImageUrl = new Uri(basePictureUrl, picture.PictureUri);
             Title = picture.Title;
             Description = picture.Description;
             ProfileId = picture.ProfileId;

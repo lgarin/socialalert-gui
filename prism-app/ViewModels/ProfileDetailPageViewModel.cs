@@ -14,13 +14,13 @@ namespace Socialalert.ViewModels
 {
     public sealed class ProfileDetailPageViewModel : LoadableViewModel
     {
-        ProfileStatisticInfo Info;
+        private ProfileStatisticViewModel info;
 
         public async override void OnNavigatedTo(object navigationParameter, NavigationMode navigationMode, Dictionary<string, object> viewModelState)
         {
             try
             {
-                await LoadData(new Guid(navigationParameter as string));
+                await LoadData(navigationParameter as Guid?);
             }
             catch (Exception)
             {
@@ -30,9 +30,26 @@ namespace Socialalert.ViewModels
             
         }
 
-        private async Task LoadData(Guid profileId)
+        private string ProfileUriPattern
         {
-            Info = await ExecuteAsync(new GetUserProfileRequest(profileId));
+            get
+            {
+                var baseProfileUri = ResourceDictionary["BaseThumbnailUrl"] as string;
+                var profileUriPattern = ResourceDictionary["ProfilePictureUriPattern"] as string;
+                return baseProfileUri + profileUriPattern;
+            }
+        }
+
+        private async Task LoadData(Guid? profileId)
+        {
+            var profile = await ExecuteAsync(new GetUserProfileRequest(profileId.Value));
+            Info = new ProfileStatisticViewModel(ProfileUriPattern, profile);
+        }
+
+        public ProfileStatisticViewModel Info
+        {
+            get { return info; }
+            private set { SetProperty(ref info, value); }
         }
     }
 }

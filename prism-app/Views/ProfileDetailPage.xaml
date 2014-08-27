@@ -43,7 +43,8 @@
         </Grid.RowDefinitions>
 
         <StackPanel Grid.Row="1" x:Name="contentRegion" Orientation="Horizontal">
-          
+            <local:ProfileStatisticUserControl DataContext="{Binding Info}" Width="400" Height="400" VerticalAlignment="Top"/>
+             
         </StackPanel>
 
         <!-- Back button and page title -->
@@ -60,9 +61,11 @@
                           Command="{Binding GoBackCommand, ElementName=pageRoot}"
                           Style="{StaticResource NavigationBackButtonNormalStyle}" />
 
-            <TextBlock x:Name="pageTitle" Text="{Binding Info.Title}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="2" 
+            <TextBlock x:Name="pageTitle" Text="{Binding Info.Nickname}" Style="{StaticResource HeaderTextBlockStyle}" Grid.Column="2" 
                         IsHitTestVisible="false" TextWrapping="NoWrap" VerticalAlignment="Bottom" Margin="0,0,0,40" Height="40"/>
-            <TextBlock TextWrapping="Wrap" Text="&#xf083;" Margin="10,30,0,10" Grid.Column="1" HorizontalAlignment="Left" FontFamily="{StaticResource AwesomeIcons}" FontSize="72" Height="80" VerticalAlignment="Center" Width="80"/>
+
+            <FontIcon x:Uid="Online" Margin="10,30,0,10" Grid.Column="1" HorizontalAlignment="Left" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding Info.Online, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center" FontSize="72" Height="80" Width="80"/>
+            <FontIcon x:Uid="Offline" Margin="10,30,0,10" Grid.Column="1" HorizontalAlignment="Left" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding Info.Online, Converter={StaticResource BooleanToCollapsedConverter}}" VerticalAlignment="Center" FontSize="72" Height="80" Width="80"/>
         </Grid>
 
         <ProgressRing Grid.RowSpan="2" IsActive="{Binding LoadingData}" Height="100" Width="100" />
