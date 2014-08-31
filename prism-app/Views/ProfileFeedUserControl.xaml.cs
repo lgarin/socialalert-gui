@@ -2,9 +2,9 @@
 
 namespace Socialalert.Views
 {
-    public sealed partial class PictureCommentUserControl : UserControl
+    public sealed partial class ProfileFeedUserControl : UserControl
     {
-        public PictureCommentUserControl()
+        public ProfileFeedUserControl()
         {
             this.InitializeComponent();
         }

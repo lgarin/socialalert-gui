@@ -162,7 +162,7 @@ namespace Socialalert.ViewModels
             private set { SetProperty(ref comments, value); }
         }
 
-        public void LoadComments(PictureViewModel picture)
+        public void Load(PictureViewModel picture)
         {
             this.picture = picture;
             Comments = new IncrementalLoadingCollection<PictureCommentViewModel>((i, s) => LoadMoreComments(picture.PictureUri, i, s));

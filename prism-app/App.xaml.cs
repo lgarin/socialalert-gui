@@ -80,7 +80,9 @@ namespace Socialalert
 
         protected override object Resolve(Type type)
         {
-            return container.Resolve(type);
+            var result = container.Resolve(type);
+            container.RegisterInstance(type, result);
+            return result;
         }
 
         protected override Type GetPageType(string pageToken)

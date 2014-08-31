@@ -123,6 +123,7 @@
     <Compile Include="Services\JsonRpcClient.cs" />
     <Compile Include="Models\PictureServiceRequest.cs" />
     <Compile Include="Services\LoginCredentialService.cs" />
+    <Compile Include="ViewModels\ActivityViewModel.cs" />
     <Compile Include="ViewModels\EventAggregator.cs" />
     <Compile Include="ViewModels\GeoStatisticViewModel.cs" />
     <Compile Include="ViewModels\HubPageViewModel.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="ViewModels\CategoryDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureCommentUserControlViewModel.cs" />
     <Compile Include="ViewModels\PictureCommentViewModel.cs" />
+    <Compile Include="ViewModels\ProfileFeedUserControlViewModel.cs" />
     <Compile Include="ViewModels\ProfileDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
@@ -147,6 +149,9 @@
     </Compile>
     <Compile Include="Views\MapStatisticPage.xaml.cs">
       <DependentUpon>MapStatisticPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProfileFeedUserControl.xaml.cs">
+      <DependentUpon>ProfileFeedUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PictureCommentUserControl.xaml.cs">
       <DependentUpon>PictureCommentUserControl.xaml</DependentUpon>
@@ -186,6 +191,7 @@
     <Content Include="Data\CategoryDetailPage.json" />
     <Content Include="Data\PictureCommentUserControl.json" />
     <Content Include="Data\ProfileDetailPage.json" />
+    <Content Include="Data\ProfileFeedUserControl.json" />
     <None Include="packages.config" />
     <None Include="prism-app_TemporaryKey.pfx" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
@@ -211,6 +217,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MapStatisticPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProfileFeedUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

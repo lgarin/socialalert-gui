@@ -19,7 +19,7 @@
                 <core:NavigateToPageAction TargetPage="{StaticResource ProfileDetailPage}" Parameter="{Binding ProfileId}"/>
             </core:EventTriggerBehavior>
         </i:Interaction.Behaviors>
-        <StackPanel x:Name="Content" Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal">
             <FontIcon x:Uid="Online" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OnlineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
             <FontIcon x:Uid="Offline" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding Online, Converter={StaticResource BooleanToCollapsedConverter}}" Margin="0,0,10,0" VerticalAlignment="Center" />
             <TextBlock Text="{Binding Creator}" TextWrapping="NoWrap" VerticalAlignment="Center" FontSize="14" FontWeight="Bold"/>

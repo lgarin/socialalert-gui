@@ -31,7 +31,7 @@
         * Row 1 contains the rest of the page layout
     -->
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+       
         <Grid.ChildrenTransitions>
             <TransitionCollection>
                 <EntranceThemeTransition/>
@@ -42,9 +42,9 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" x:Name="contentRegion" Orientation="Horizontal">
+        <StackPanel Grid.Row="1" x:Name="contentRegion" Orientation="Horizontal" Grid.ColumnSpan="2">
             <local:ProfileStatisticUserControl DataContext="{Binding Info}" Width="400" Height="400" VerticalAlignment="Top"/>
-             
+            <local:ProfileFeedUserControl DataContext="{Binding Activities}" MinWidth="440" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
         </StackPanel>
 
         <!-- Back button and page title -->
@@ -68,6 +68,6 @@
             <FontIcon x:Uid="Offline" Margin="10,30,0,10" Grid.Column="1" HorizontalAlignment="Left" FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource ResourceKey=OfflineGlyph}" Visibility="{Binding Info.Online, Converter={StaticResource BooleanToCollapsedConverter}}" VerticalAlignment="Center" FontSize="72" Height="80" Width="80"/>
         </Grid>
 
-        <ProgressRing Grid.RowSpan="2" IsActive="{Binding LoadingData}" Height="100" Width="100" />
+        <ProgressRing IsActive="{Binding LoadingData}" Height="100" Width="100" Grid.Column="1" Margin="247,194,633,334" Grid.Row="1" />
     </Grid>
 </prism:VisualStateAwarePage>

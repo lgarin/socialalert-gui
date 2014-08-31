@@ -56,4 +56,13 @@ namespace Socialalert.Models
             ProfileId = profileId;
         }
     }
+
+    public class GetProfileActivity : JsonRpcRequest<QueryResult<ActivityInfo>>
+    {
+        public Guid ProfileId;
+        public Int32 PageNumber;
+        public Int32 PageSize;
+
+        public GetProfileActivity() : base("profileFacade", "getProfileActivity") { }
+    }
 }

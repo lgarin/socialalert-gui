@@ -85,20 +85,20 @@ namespace Socialalert.Models
     [JsonObject]
     public class ActivityInfo
     {
-        public Uri mediaUri;
+        public Uri MediaUri;
 
-        public Guid profileId;
+        public Guid ProfileId;
 
-        public ActivityType activityType;
+        public ActivityType ActivityType;
 
-        public DateTime timestamp;
+        public DateTime Timestamp;
 
-        public Guid? commentId;
+        public Guid? CommentId;
 
-        public String message;
+        public String Message;
 
-        public String creator;
+        public String Creator;
 
-        public Boolean online;
+        public Boolean Online;
     }
 }

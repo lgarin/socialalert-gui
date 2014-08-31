@@ -19,6 +19,9 @@ namespace Socialalert.ViewModels
         private ProfileStatisticViewModel info;
 
         [Dependency]
+        public ProfileFeedUserControlViewModel Activites { get; set; }
+
+        [Dependency]
         public IApplicationStateService ApplicationStateService { get; set; }
 
         [InjectionMethod]
@@ -48,7 +51,8 @@ namespace Socialalert.ViewModels
         {
             if (Info.IsFollowed)
             {
-                Info.IsFollowed = !await ExecuteAsync(new UnfollowProfileRequest(Info.ProfileId));
+                await ExecuteAsync(new UnfollowProfileRequest(Info.ProfileId));
+                Info.IsFollowed = false;
             }
             else
             {
@@ -103,6 +107,7 @@ namespace Socialalert.ViewModels
                 Info.IsFollowed = false;
             }
             Info.ToggleFollowCommand = new DelegateCommand(ToggleFollow, CanToggleFollow);
+            Activites.Load(Info);
         }
 
         public ProfileStatisticViewModel Info

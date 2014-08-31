@@ -23,7 +23,7 @@ namespace Socialalert.ViewModels
     {
         [Dependency]
         public IUnityContainer Container {get; set;}
-        
+
         public DelegateCommand DumpDataCommand { get; private set; }
         public DelegateCommand GoHomeCommand { get; private set; }
         public DelegateCommand LoginCommand { get; private set; }
@@ -152,11 +152,18 @@ namespace Socialalert.ViewModels
 
         private void DumpData()
         {
-            var viewModel = Container.Resolve<PictureCommentUserControlViewModel>();
-            string json = viewModel.SerializeToJson();
-            Debug.WriteLine(viewModel.GetType().Name);
-            Debug.WriteLine(json);
-            Debug.WriteLine("----------------------------------");
+            
+            foreach (ContainerRegistration registration in Container.Registrations) {
+                LoadableViewModel viewModel = Container.Resolve(registration.RegisteredType) as LoadableViewModel;
+                if (viewModel != null)
+                {
+                    string json = viewModel.SerializeToJson();
+                    Debug.WriteLine(viewModel.GetType().Name);
+                    Debug.WriteLine(json);
+                    Debug.WriteLine("----------------------------------");
+                }
+            }
+            
         }
 
     }

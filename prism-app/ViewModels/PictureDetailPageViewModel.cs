@@ -26,23 +26,20 @@ namespace Socialalert.ViewModels
         public void Init()
         {
             ApplicationStateService.PropertyChanged += ApplicationStateService_PropertyChanged;
-            ApplicationStateService_PropertyChanged(this, new PropertyChangedEventArgs(ExtractMemberName(() => ApplicationStateService.CurrentUser)));
+            //ApplicationStateService_PropertyChanged(this, new PropertyChangedEventArgs(ExtractMemberName(() => ApplicationStateService.CurrentUser)));
         }
 
         private async void ApplicationStateService_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (ExtractMemberName(() => ApplicationStateService.CurrentUser) == e.PropertyName)
+            if (Info != null && ExtractMemberName(() => ApplicationStateService.CurrentUser) == e.PropertyName)
             {
-                if (Info != null)
+                try
                 {
-                    try
-                    {
-                        await LoadData(Info.PictureUri);
-                    }
-                    catch (Exception)
-                    {
+                    await LoadData(Info.PictureUri);
+                }
+                catch (Exception)
+                {
 
-                    }
                 }
             }
         }
@@ -66,7 +63,7 @@ namespace Socialalert.ViewModels
             var picture = await ExecuteAsync(new ViewPictureDetailRequest() { PictureUri = pictureUri });
             string serverUrl = ResourceDictionary["BasePreviewUrl"] as string;
             Info = new PictureViewModel(new Uri(serverUrl, UriKind.Absolute), picture);
-            Comments.LoadComments(Info);
+            Comments.Load(Info);
         }
 
         public PictureViewModel Info

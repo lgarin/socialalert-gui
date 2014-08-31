@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Socialalert.Models
 {
+    [JsonObject]
     public class PublicProfileInfo
     {
         public Guid ProfileId;
@@ -15,6 +17,7 @@ namespace Socialalert.Models
         public Boolean Online;
     }
 
+    [JsonObject]
     public class ProfileStatisticInfo : PublicProfileInfo
     {
         public int PictureCount;
