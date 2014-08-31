@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Unity;
+﻿using Microsoft.Practices.Prism.StoreApps;
+using Microsoft.Practices.Unity;
 using Socialalert.Models;
 using Socialalert.Services;
 using System;
@@ -8,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Windows.UI.Xaml.Navigation;
 
 namespace Socialalert.ViewModels
@@ -16,11 +18,54 @@ namespace Socialalert.ViewModels
     {
         private ProfileStatisticViewModel info;
 
+        [Dependency]
+        public IApplicationStateService ApplicationStateService { get; set; }
+
+        [InjectionMethod]
+        public void Init()
+        {
+            ApplicationStateService.PropertyChanged += ApplicationStateService_PropertyChanged;
+        }
+
+        private async void ApplicationStateService_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (Info != null && ExtractMemberName(() => ApplicationStateService.CurrentUser) == e.PropertyName)
+            {
+
+                try
+                {
+                    await RefreshState();
+                }
+                catch (Exception)
+                {
+                    Info.IsFollowed = false;
+                    Info.ToggleFollowCommand = new DelegateCommand(ToggleFollow, CanToggleFollow);
+                }
+            }
+        }
+
+        private async void ToggleFollow()
+        {
+            if (Info.IsFollowed)
+            {
+                Info.IsFollowed = !await ExecuteAsync(new UnfollowProfileRequest(Info.ProfileId));
+            }
+            else
+            {
+                Info.IsFollowed = await ExecuteAsync(new FollowProfileRequest(Info.ProfileId));
+            }
+        }
+
+        private bool CanToggleFollow()
+        {
+            return Info != null && ApplicationStateService.CurrentUser != null && Info.ProfileId != ApplicationStateService.CurrentUser.ProfileId;
+        }
+
         public async override void OnNavigatedTo(object navigationParameter, NavigationMode navigationMode, Dictionary<string, object> viewModelState)
         {
             try
             {
-                await LoadData(navigationParameter as Guid?);
+                await LoadData((Guid) navigationParameter);
             }
             catch (Exception)
             {
@@ -40,10 +85,24 @@ namespace Socialalert.ViewModels
             }
         }
 
-        private async Task LoadData(Guid? profileId)
+        private async Task LoadData(Guid profileId)
         {
-            var profile = await ExecuteAsync(new GetUserProfileRequest(profileId.Value));
+            var profile = await ExecuteAsync(new GetUserProfileRequest(profileId));
             Info = new ProfileStatisticViewModel(ProfileUriPattern, profile);
+            await RefreshState();
+        }
+
+        private async Task RefreshState()
+        {
+            if (ApplicationStateService.CurrentUser != null)
+            {
+                Info.IsFollowed = await ExecuteAsync(new IsFollowingProfileRequest(Info.ProfileId));
+            }
+            else
+            {
+                Info.IsFollowed = false;
+            }
+            Info.ToggleFollowCommand = new DelegateCommand(ToggleFollow, CanToggleFollow);
         }
 
         public ProfileStatisticViewModel Info

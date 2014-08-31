@@ -10,18 +10,18 @@ namespace Socialalert.ViewModels
 {
     public sealed class ProfileStatisticViewModel : SimpleViewModel
     {
-        private string profileUriPattern;
-
         public ProfileStatisticViewModel(string profileUriPattern, ProfileStatisticInfo info)
         {
             ProfileId = info.ProfileId;
-            this.profileUriPattern = profileUriPattern;
+            ProfileUriPattern = profileUriPattern;
             UpdateWith(info);
         }
 
+        public String ProfileUriPattern { get; private set; }
+
         private void UpdateWith(ProfileStatisticInfo info)
         {
-            ImageUrl = new Uri(string.Format(profileUriPattern, ProfileId), UriKind.Absolute);
+            ImageUrl = new Uri(string.Format(ProfileUriPattern, ProfileId), UriKind.Absolute);
             Nickname = info.Nickname;
             Creator = info.Nickname;
             Biography = info.Biography;
@@ -47,5 +47,8 @@ namespace Socialalert.ViewModels
         public int LikeCount { get { return Get<int>(); } set { Set(value); } }
         public int DislikeCount { get { return Get<int>(); } set { Set(value); } }
         public int FollowerCount { get { return Get<int>(); } set { Set(value); } }
+
+        public bool IsFollowed { get { return Get<bool>(); } set { Set(value); } }
+        public DelegateCommand ToggleFollowCommand { get { return Get<DelegateCommand>(); } set { Set(value); } }
     }
 }

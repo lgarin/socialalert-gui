@@ -36,14 +36,9 @@
                 <local:ProfileStatusUserControl/>
             </StackPanel>
             <StackPanel Grid.Column="0" Grid.Row="1"  Grid.RowSpan="2" Orientation="Horizontal" Height="90">
-                <AppBarToggleButton Label="Follow" IsChecked="{Binding IsLikeChecked, Mode=TwoWay}" Command="{Binding FollowCommand}">
+                <AppBarToggleButton Label="Follow" IsChecked="{Binding IsFollowed}" Command="{Binding ToggleFollowCommand}" Visibility="{Binding ToggleFollowCommand, Converter={StaticResource CommandToVisibilityConverter}}">
                     <AppBarToggleButton.Icon>
                         <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf08a;"/>
-                    </AppBarToggleButton.Icon>
-                </AppBarToggleButton>
-                <AppBarToggleButton Label="Unfollow" IsChecked="{Binding IsLikeChecked, Mode=TwoWay}" Command="{Binding UnfollowCommand}">
-                    <AppBarToggleButton.Icon>
-                        <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf004;"/>
                     </AppBarToggleButton.Icon>
                 </AppBarToggleButton>
             </StackPanel>

@@ -18,4 +18,42 @@ namespace Socialalert.Models
             ProfileId = profileId;
         }
     }
+
+    public class IsFollowingProfileRequest : JsonRpcRequest<Boolean>
+    {
+        public Guid ProfileId;
+
+        public IsFollowingProfileRequest() : base("profileFacade", "isFollowing") { }
+
+        public IsFollowingProfileRequest(Guid profileId) : this()
+        {
+            ProfileId = profileId;
+        }
+    }
+
+    public class FollowProfileRequest : JsonRpcRequest<Boolean>
+    {
+        public Guid ProfileId;
+
+        public FollowProfileRequest() : base("profileFacade", "follow") { }
+
+        public FollowProfileRequest(Guid profileId)
+            : this()
+        {
+            ProfileId = profileId;
+        }
+    }
+
+    public class UnfollowProfileRequest : JsonRpcRequest<Boolean>
+    {
+        public Guid ProfileId;
+
+        public UnfollowProfileRequest() : base("profileFacade", "unfollow") { }
+
+        public UnfollowProfileRequest(Guid profileId)
+            : this()
+        {
+            ProfileId = profileId;
+        }
+    }
 }

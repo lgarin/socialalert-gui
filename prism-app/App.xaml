@@ -22,6 +22,7 @@
         <conv:ViewChangeEndedConverter x:Name="ViewChangeEndedConverter"/>
         <conv:ObjectToVisibilityConverter x:Name="ObjectToVisibilityConverter"/>
         <conv:ObjectToCollapsedConverter x:Name="ObjectToCollapsedConverter"/>
+        <conv:CommandToVisibilityConverter x:Name="CommandToVisibilityConverter"/>
         <x:String x:Key="ChevronGlyph">&#xE26B;</x:String>
         <x:String x:Key="OnlineGlyph">&#xf007;</x:String>
         <x:String x:Key="OfflineGlyph">&#xf056;</x:String>
