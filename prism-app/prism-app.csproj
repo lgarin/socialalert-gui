@@ -150,6 +150,12 @@
     <Compile Include="Views\MapStatisticPage.xaml.cs">
       <DependentUpon>MapStatisticPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\PicturePreviewUserControl.xaml.cs">
+      <DependentUpon>PicturePreviewUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\PictureThumbnailUserControl.xaml.cs">
+      <DependentUpon>PictureThumbnailUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProfileFeedUserControl.xaml.cs">
       <DependentUpon>ProfileFeedUserControl.xaml</DependentUpon>
     </Compile>
@@ -192,6 +198,7 @@
     <Content Include="Data\PictureCommentUserControl.json" />
     <Content Include="Data\ProfileDetailPage.json" />
     <Content Include="Data\ProfileFeedUserControl.json" />
+    <Content Include="Data\PictureViewModel.json" />
     <None Include="packages.config" />
     <None Include="prism-app_TemporaryKey.pfx" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
@@ -217,6 +224,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MapStatisticPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PicturePreviewUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\PictureThumbnailUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

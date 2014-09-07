@@ -118,22 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActivityMessage_LIKE_MEDIA" xml:space="preserve">
-    <value>Liked this picture at {0}</value>
+    <value>Liked this picture.</value>
   </data>
   <data name="ActivityMessage_NEW_COMMENT" xml:space="preserve">
-    <value>Commented this picture at {0}</value>
+    <value>Commented this picture:
+{0}</value>
   </data>
   <data name="ActivityMessage_NEW_PICTURE" xml:space="preserve">
-    <value>Posted this picture at {0}</value>
+    <value>Posted this picture.</value>
   </data>
   <data name="ActivityMessage_REPOST_COMMENT" xml:space="preserve">
-    <value>Reposted this comment at {0}</value>
+    <value>Reposted this comment :
+{0}</value>
   </data>
   <data name="ActivityMessage_REPOST_PICTURE" xml:space="preserve">
-    <value>Reposted this picture at {0}</value>
+    <value>Reposted this picture.</value>
   </data>
   <data name="ActivityMessage_UNLIKE_MEDIA" xml:space="preserve">
-    <value>Did not like this picture at {0}</value>
+    <value>Did not like this picture.</value>
   </data>
   <data name="Camera.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Camera</value>

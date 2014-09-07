@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="Socialalert.Views.PicturePreviewUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:Socialalert.Views"
+             xmlns:vm="using:Socialalert.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
+             mc:Ignorable="d"
+			 prism:ViewModelLocator.AutoWireViewModel="True"
+			 d:DesignHeight="130"
+			 d:DesignWidth="420"
+             d:DataContext="{d:DesignData Source=/Data/PictureViewModel.json, Type=vm:PictureViewModel}">
+    
+    <!-- Page content -->
+    <Grid Height="110" Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+        <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
+            <Image Source="{Binding ImageUrl}" Stretch="UniformToFill" AutomationProperties.Name="{Binding Title}" HorizontalAlignment="Left"/>
+        </Border>
+        <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,0,0" >
+            <TextBlock Text="{Binding Title}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap"/>
+            <local:ProfileStatusUserControl Margin="0,10,0,0"/>
+            <TextBlock Text="{Binding Description}" Style="{StaticResource BodyTextBlockStyle}" Margin="0,10,0,0" MaxHeight="60"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

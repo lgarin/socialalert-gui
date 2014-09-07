@@ -23,11 +23,11 @@ namespace Socialalert.ViewModels
             Activities = new IncrementalLoadingCollection<ActivityViewModel>((i, s) => LoadMoreActivities(profile.ProfileId, i, s));
         }
 
-        private String FormatMessage(ActivityType activityType, DateTime timestamp)
+        private String FormatMessage(ActivityType activityType, String message)
         {
             return string.Format(CultureInfo.CurrentCulture,
                                              ResourceLoader.GetString("ActivityMessage_" + activityType),
-                                             timestamp);
+                                             message);
         }
 
         private async Task<IEnumerable<ActivityViewModel>> LoadMoreActivities(Guid profileId, int pageIndex, int pageSize)
@@ -39,7 +39,7 @@ namespace Socialalert.ViewModels
                 var result = new List<ActivityViewModel>(items.Content.Count());
                 foreach (var item in items.Content)
                 {
-                    result.Add(new ActivityViewModel(basePictureUri, item, FormatMessage(item.ActivityType, item.Timestamp)));
+                    result.Add(new ActivityViewModel(basePictureUri, item, FormatMessage(item.ActivityType, item.Message)));
                 }
                 return result;
             }

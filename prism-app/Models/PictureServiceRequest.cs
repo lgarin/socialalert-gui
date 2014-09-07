@@ -125,4 +125,13 @@ namespace Socialalert.Services
 
         public RepostCommentRequest() : base("pictureFacade", "repostComment") { }
     }
+
+    public class ListPicturesByProfile : JsonRpcRequest<QueryResult<PictureInfo>>
+    {
+        public Guid ProfileId;
+        public int PageSize;
+        public int PageNumber;
+
+        public ListPicturesByProfile() : base("pictureFacade", "listPicturesByProfile") { }
+    }
 }

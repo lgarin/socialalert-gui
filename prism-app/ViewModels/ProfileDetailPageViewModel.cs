@@ -17,9 +17,10 @@ namespace Socialalert.ViewModels
     public sealed class ProfileDetailPageViewModel : LoadableViewModel
     {
         private ProfileStatisticViewModel info;
+        private IncrementalLoadingCollection<PictureViewModel> pictures;
 
         [Dependency]
-        public ProfileFeedUserControlViewModel Activites { get; set; }
+        public ProfileFeedUserControlViewModel Activities { get; set; }
 
         [Dependency]
         public IApplicationStateService ApplicationStateService { get; set; }
@@ -93,7 +94,27 @@ namespace Socialalert.ViewModels
         {
             var profile = await ExecuteAsync(new GetUserProfileRequest(profileId));
             Info = new ProfileStatisticViewModel(ProfileUriPattern, profile);
+            Pictures = new IncrementalLoadingCollection<PictureViewModel>((i, s) => LoadPictures(Info.ProfileId, i, s));
             await RefreshState();
+        }
+
+        private async Task<IEnumerable<PictureViewModel>> LoadPictures(Guid profileId, int pageIndex, int pageSize)
+        {
+            try
+            {
+                var basePictureUri = new Uri(ResourceDictionary["BaseThumbnailUrl"] as string, UriKind.Absolute);
+                var items = await ExecuteAsync(new ListPicturesByProfile() { ProfileId = profileId, PageNumber = pageIndex, PageSize = pageSize });
+                var result = new List<PictureViewModel>(items.Content.Count());
+                foreach (var item in items.Content)
+                {
+                    result.Add(new PictureViewModel(basePictureUri, item));
+                }
+                return result;
+            }
+            catch (Exception)
+            {
+                return Enumerable.Empty<PictureViewModel>();
+            }
         }
 
         private async Task RefreshState()
@@ -107,13 +128,19 @@ namespace Socialalert.ViewModels
                 Info.IsFollowed = false;
             }
             Info.ToggleFollowCommand = new DelegateCommand(ToggleFollow, CanToggleFollow);
-            Activites.Load(Info);
+            Activities.Load(Info);
         }
 
         public ProfileStatisticViewModel Info
         {
             get { return info; }
             private set { SetProperty(ref info, value); }
+        }
+
+        public IncrementalLoadingCollection<PictureViewModel> Pictures
+        { 
+            get { return pictures; }
+            private set { SetProperty(ref pictures, value);  }
         }
     }
 }

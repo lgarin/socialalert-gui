@@ -17,6 +17,9 @@
     d:DataContext="{Binding Source={d:DesignData Source=/Data/ProfileDetailPage.json, Type=vm:ProfileDetailPageViewModel}}">
 
     <prism:VisualStateAwarePage.Resources>
+        <CollectionViewSource
+            x:Name="itemsViewSource"
+            Source="{Binding Pictures}"/>
     </prism:VisualStateAwarePage.Resources>
 
     <prism:VisualStateAwarePage.TopAppBar>
@@ -42,10 +45,30 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1" x:Name="contentRegion" Orientation="Horizontal" Grid.ColumnSpan="2">
-            <local:ProfileStatisticUserControl DataContext="{Binding Info}" Width="400" Height="400" VerticalAlignment="Top"/>
-            <local:ProfileFeedUserControl DataContext="{Binding Activities}" MinWidth="440" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
-        </StackPanel>
+        <Grid Grid.Row="1" x:Name="contentRegion" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="*" MinWidth="430"/>
+                <ColumnDefinition Width="440"/>
+            </Grid.ColumnDefinitions>
+            <local:ProfileStatisticUserControl Grid.Column="0" DataContext="{Binding Info}" VerticalAlignment="Top"/>
+            <GridView Grid.Column="1"
+            x:Name="itemGridView"
+            AutomationProperties.AutomationId="ItemGridView"
+            AutomationProperties.Name="Items"
+            TabIndex="1"
+            ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
+            SelectionMode="None"
+            IsSwipeEnabled="False"
+            IsItemClickEnabled="True">
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <local:PicturePreviewUserControl/>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+            <local:ProfileFeedUserControl Grid.Column="2" DataContext="{Binding Activities}" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+        </Grid>
 
         <!-- Back button and page title -->
         <Grid x:Name="titleGrid" Grid.ColumnSpan="2">
