@@ -137,11 +137,17 @@
   <data name="ActivityMessage_UNLIKE_MEDIA" xml:space="preserve">
     <value>Did not like this picture.</value>
   </data>
+  <data name="BAD_LANGUAGE" xml:space="preserve">
+    <value>Bad language</value>
+  </data>
   <data name="Camera.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Camera</value>
   </data>
   <data name="Cancel.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Cancel</value>
+  </data>
+  <data name="CH" xml:space="preserve">
+    <value>Switzerland</value>
   </data>
   <data name="Comments.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Comments</value>
@@ -167,15 +173,30 @@
   <data name="CredentialResourceKey" xml:space="preserve">
     <value>Social Alert</value>
   </data>
+  <data name="DE" xml:space="preserve">
+    <value>Germany</value>
+  </data>
+  <data name="DISCRIMINATION" xml:space="preserve">
+    <value>Discrimination</value>
+  </data>
   <data name="Dislikes.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Dislikes</value>
+  </data>
+  <data name="DRUGS" xml:space="preserve">
+    <value>Drugs</value>
   </data>
   <data name="ErrorServiceUnreachable" xml:space="preserve">
     <value>Service is unreachable.</value>
     <comment>Error message for when the service is unreachable</comment>
   </data>
+  <data name="ES" xml:space="preserve">
+    <value>Spain</value>
+  </data>
   <data name="Followers.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Followers</value>
+  </data>
+  <data name="FR" xml:space="preserve">
+    <value>France</value>
   </data>
   <data name="GeneralServiceErrorMessage" xml:space="preserve">
     <value>The following error messages were received from the service: {0} {1}</value>
@@ -186,6 +207,9 @@
   </data>
   <data name="HubPageTitle.Text" xml:space="preserve">
     <value>Popular pictures</value>
+  </data>
+  <data name="IT" xml:space="preserve">
+    <value>Italy</value>
   </data>
   <data name="Likes.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Likes</value>
@@ -215,7 +239,19 @@ search</value>
   <data name="Resolution.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Picture resolution</value>
   </data>
+  <data name="SEX" xml:space="preserve">
+    <value>Sex</value>
+  </data>
+  <data name="UK" xml:space="preserve">
+    <value>United Kingdom</value>
+  </data>
   <data name="UnexpectedError" xml:space="preserve">
     <value>An unexpected error occured</value>
+  </data>
+  <data name="US" xml:space="preserve">
+    <value>United States of America</value>
+  </data>
+  <data name="VIOLENCE" xml:space="preserve">
+    <value>Violence</value>
   </data>
 </root>

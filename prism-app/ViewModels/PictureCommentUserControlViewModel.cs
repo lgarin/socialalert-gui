@@ -21,10 +21,14 @@ namespace Socialalert.ViewModels
         private bool dislikeChecked;
         private PictureViewModel picture;
         private PictureCommentViewModel newComment;
+        
         private IncrementalLoadingCollection<PictureCommentViewModel> comments;
 
         [Dependency]
         public IApplicationStateService ApplicationStateService { get; set; }
+
+        [Dependency]
+        public ReportContentUserControlViewModel ReportContent { get; set; }
 
         public PictureCommentUserControlViewModel()
         {
@@ -66,7 +70,7 @@ namespace Socialalert.ViewModels
                 MediaUri = picture.PictureUri,
                 Creation = DateTime.Now
             };
-            NewComment = new PictureCommentViewModel(ProfileUriPattern, info, RepostCommentCommand);
+            NewComment = new PictureCommentViewModel(ProfileUriPattern, info, RepostCommentCommand, ReportContent);
 
             NewCommentCommand.RaiseCanExecuteChanged();
             PostCommentCommand.RaiseCanExecuteChanged();
@@ -85,7 +89,7 @@ namespace Socialalert.ViewModels
             if (!String.IsNullOrWhiteSpace(NewComment.Comment))
             {
                 var comment = await ExecuteAsync(new AddCommentRequest() { Comment = NewComment.Comment, PictureUri = NewComment.MediaUri });
-                Comments.Insert(0, new PictureCommentViewModel(ProfileUriPattern, comment, RepostCommentCommand));
+                Comments.Insert(0, new PictureCommentViewModel(ProfileUriPattern, comment, RepostCommentCommand, ReportContent));
                 CancelComment();
             }
         }
@@ -225,7 +229,7 @@ namespace Socialalert.ViewModels
                 var result = new List<PictureCommentViewModel>(items.Content.Count());
                 foreach (var item in items.Content)
                 {
-                    result.Add(new PictureCommentViewModel(ProfileUriPattern, item, RepostCommentCommand));
+                    result.Add(new PictureCommentViewModel(ProfileUriPattern, item, RepostCommentCommand, ReportContent));
                 }
                 return result;
             }

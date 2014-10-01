@@ -103,6 +103,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Actions\CloseFlyoutAction.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -140,8 +141,10 @@
     <Compile Include="ViewModels\PictureDetailPageViewModel.cs" />
     <Compile Include="ViewModels\PictureViewModel.cs" />
     <Compile Include="ViewModels\ProfileStatisticViewModel.cs" />
+    <Compile Include="ViewModels\ReportContentUserControlViewModel.cs" />
     <Compile Include="ViewModels\SearchPictureUserControlViewModel.cs" />
     <Compile Include="ViewModels\SimpleViewModel.cs" />
+    <Compile Include="ViewModels\TextItem.cs" />
     <Compile Include="ViewModels\TopAppBarUserControlViewModel.cs" />
     <Compile Include="ViewModels\ViewModelContractResolver.cs" />
     <Compile Include="Views\CategoryDetailPage.xaml.cs">
@@ -177,6 +180,9 @@
     </Compile>
     <Compile Include="Views\ProfileStatusUserControl.xaml.cs">
       <DependentUpon>ProfileStatusUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReportContentUserControl.xaml.cs">
+      <DependentUpon>ReportContentUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchPictureUserControl.xaml.cs">
       <DependentUpon>SearchPictureUserControl.xaml</DependentUpon>
@@ -260,6 +266,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProfileStatusUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReportContentUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

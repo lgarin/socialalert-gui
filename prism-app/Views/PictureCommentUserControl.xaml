@@ -1,8 +1,10 @@
-﻿<UserControl x:Class="Socialalert.Views.PictureCommentUserControl"
+﻿<UserControl Name="root"
+             x:Class="Socialalert.Views.PictureCommentUserControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="using:Socialalert.Views"
              xmlns:vm="using:Socialalert.ViewModels"
+             xmlns:a="using:Socialalert.Actions"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
@@ -114,9 +116,23 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
+										<ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <local:ProfileStatusUserControl/>
-                                    <Button Grid.Column="1" BorderThickness="0" Padding="0" Command="{Binding RepostCommentCommand}" CommandParameter="{Binding CommentId}">
+									<Button Grid.Column="1" BorderThickness="0" Padding="0">
+                                        <FontIcon x:Uid="Report" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf188;" Margin="0,0,10,0" VerticalAlignment="Center" />
+										<Button.Flyout>
+											<Flyout>
+                                                <local:ReportContentUserControl DataContext="{Binding ReportContentViewModel}"/>
+                                                <i:Interaction.Behaviors>
+                                                    <core:DataTriggerBehavior Binding="{Binding ReportContentViewModel.IsFlyoutClosed}" ComparisonCondition="Equal" Value="True">
+                                                        <a:CloseFlyoutAction />
+                                                    </core:DataTriggerBehavior>
+                                                </i:Interaction.Behaviors>
+                                            </Flyout>
+										</Button.Flyout>
+                                    </Button>
+                                    <Button Grid.Column="2" BorderThickness="0" Padding="0" Command="{Binding RepostCommentCommand}" CommandParameter="{Binding CommentId}">
                                         <FontIcon x:Uid="Repost" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf09e;" Margin="0,0,10,0" VerticalAlignment="Center" />
                                     </Button>
                                 </Grid>
@@ -130,5 +146,6 @@
 
         </ScrollViewer>
         <ProgressRing Grid.Row="3" IsActive="{Binding LoadingData}" Height="100" Width="100" />
+        
     </Grid>
 </UserControl>
