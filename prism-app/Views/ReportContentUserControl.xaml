@@ -8,7 +8,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
              mc:Ignorable="d"
-			 prism:ViewModelLocator.AutoWireViewModel="True"
+			 prism:ViewModelLocator.AutoWireViewModel="False"
+             d:DataContext="{Binding Source={d:DesignData Type=vm:ReportContentUserControlViewModel}}"
 			 d:DesignHeight="200"
 			 d:DesignWidth="300">
     <Grid Name="contentGrid">
@@ -24,11 +25,11 @@
         </Grid.RowDefinitions>
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Report content" HorizontalAlignment="Center" FontSize="20" Margin="5"/>
         <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" FontSize="14">Reason</TextBlock>
-        <ComboBox  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5" ItemsSource="{Binding ReasonList}" DisplayMemberPath="Value" SelectedItem="{Binding SelectedReason}"/>
+        <ComboBox  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" Margin="5" ItemsSource="{Binding ReasonList}" DisplayMemberPath="Value" SelectedItem="{Binding SelectedReason, Mode=TwoWay}"/>
         <TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="5" FontSize="14">Country</TextBlock>
-        <ComboBox  Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="5" ItemsSource="{Binding CountryList}" DisplayMemberPath="Value" SelectedItem="{Binding SelectedCountry}" />
+        <ComboBox  Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Margin="5" ItemsSource="{Binding CountryList}" DisplayMemberPath="Value" SelectedItem="{Binding SelectedCountry, Mode=TwoWay}" />
         <StackPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="10">
-            <Button Content="OK"/>
+            <Button Content="OK" Command="{Binding ReportCommand}"/>
             <Button Content="Cancel" Command="{Binding CancelCommand}"/>
         </StackPanel>
     </Grid>

@@ -65,4 +65,13 @@ namespace Socialalert.Models
 
         public GetProfileActivity() : base("profileFacade", "getProfileActivity") { }
     }
+
+    public class ReportAbusiveComment : JsonRpcRequest<QueryResult<AbuseInfo>>
+    {
+        public Guid CommentId;
+        public String Country;
+        public String Reason;
+
+        public ReportAbusiveComment() : base("profileFacade", "reportAbusiveComment") { }
+    }
 }

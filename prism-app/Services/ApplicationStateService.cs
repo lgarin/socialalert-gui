@@ -15,6 +15,7 @@ namespace Socialalert.Services
     public interface IApplicationStateService : INotifyPropertyChanged
     {
         UserInfo CurrentUser { get; set; }
+        string LastCountry { get; set; }
 
         bool HasUserRole(UserRole role);
 
@@ -72,6 +73,18 @@ namespace Socialalert.Services
             set
             {
                 Set<UserInfo>(value);
+            }
+        }
+
+        public string LastCountry
+        {
+            get
+            {
+                return Get<string>();
+            }
+            set
+            {
+                Set<string>(value);
             }
         }
 

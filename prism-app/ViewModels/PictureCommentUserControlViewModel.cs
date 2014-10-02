@@ -28,7 +28,7 @@ namespace Socialalert.ViewModels
         public IApplicationStateService ApplicationStateService { get; set; }
 
         [Dependency]
-        public ReportContentUserControlViewModel ReportContent { get; set; }
+        public IMasterDataService MasterDataService { get; set; }
 
         public PictureCommentUserControlViewModel()
         {
@@ -60,6 +60,16 @@ namespace Socialalert.ViewModels
             return picture != null && ApplicationStateService.HasUserRole(UserRole.USER);
         }
 
+        private ReportContentUserControlViewModel CreateReportContentViewMode(CommentInfo info)
+        {
+            return new ReportContentUserControlViewModel(MasterDataService, (reason, country) => ReportComment(info.CommentId, reason, country));
+        }
+
+        private async void ReportComment(Guid guid, string reason, string country)
+        {
+            await ExecuteAsync(new ReportAbusiveComment() { CommentId = guid, Country = country, Reason = reason});
+        }
+
         private void CreateComment()
         {
             CommentInfo info = new CommentInfo()
@@ -70,7 +80,7 @@ namespace Socialalert.ViewModels
                 MediaUri = picture.PictureUri,
                 Creation = DateTime.Now
             };
-            NewComment = new PictureCommentViewModel(ProfileUriPattern, info, RepostCommentCommand, ReportContent);
+            NewComment = new PictureCommentViewModel(ProfileUriPattern, info, RepostCommentCommand, CreateReportContentViewMode(info));
 
             NewCommentCommand.RaiseCanExecuteChanged();
             PostCommentCommand.RaiseCanExecuteChanged();
@@ -89,7 +99,7 @@ namespace Socialalert.ViewModels
             if (!String.IsNullOrWhiteSpace(NewComment.Comment))
             {
                 var comment = await ExecuteAsync(new AddCommentRequest() { Comment = NewComment.Comment, PictureUri = NewComment.MediaUri });
-                Comments.Insert(0, new PictureCommentViewModel(ProfileUriPattern, comment, RepostCommentCommand, ReportContent));
+                Comments.Insert(0, new PictureCommentViewModel(ProfileUriPattern, comment, RepostCommentCommand, CreateReportContentViewMode(comment)));
                 CancelComment();
             }
         }
@@ -229,7 +239,7 @@ namespace Socialalert.ViewModels
                 var result = new List<PictureCommentViewModel>(items.Content.Count());
                 foreach (var item in items.Content)
                 {
-                    result.Add(new PictureCommentViewModel(ProfileUriPattern, item, RepostCommentCommand, ReportContent));
+                    result.Add(new PictureCommentViewModel(ProfileUriPattern, item, RepostCommentCommand, CreateReportContentViewMode(item)));
                 }
                 return result;
             }

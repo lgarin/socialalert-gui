@@ -27,4 +27,43 @@ namespace Socialalert.Models
         public int DislikeCount;
         public int FollowerCount;
     }
+
+    public enum AbuseReason
+    {
+        VIOLENCE,
+        SEX,
+        BAD_LANGUAGE,
+        DRUGS,
+        DISCRIMINATION
+    }
+
+    public enum AbuseStatus {
+	    NEW,
+	    PROCESSING,
+	    CLOSED
+    }
+
+    [JsonObject]
+    public class AbuseInfo
+    {
+        public Uri mediaUri;
+
+        public Guid profileId;
+
+        public AbuseReason reason;
+
+        public AbuseStatus status;
+
+        public String country;
+
+        public DateTime timestamp;
+
+        public Guid commentId;
+
+        public String message;
+
+        public String creator;
+
+        public Boolean online;
+    }
 }

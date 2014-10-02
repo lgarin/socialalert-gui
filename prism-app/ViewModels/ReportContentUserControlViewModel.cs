@@ -1,5 +1,7 @@
 ﻿using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
+using Microsoft.Practices.Unity;
+using Socialalert.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,33 +13,39 @@ using Windows.Globalization;
 
 namespace Socialalert.ViewModels
 {
-    public class ReportContentUserControlViewModel : LoadableViewModel
+    public class ReportContentUserControlViewModel : SimpleViewModel
     {
         private bool isFlyoutClosed;
 
-        private readonly List<TextItem> countryList = new List<TextItem>();
-        private readonly List<TextItem> reasonList = new List<TextItem>();
+        private IMasterDataService masterData;
+        private ReportDelegate reportDelegate;
 
-        private TextItem selectedCountry;
+        public delegate void ReportDelegate(string reason, string country);
 
-        private TextItem selectedReason;
-
-        public ReportContentUserControlViewModel(IResourceLoader resourceLoader)
+        public ReportContentUserControlViewModel(IMasterDataService masterData, ReportDelegate reportDelegate)
         {
-            CancelCommand = new DelegateCommand(() => IsFlyoutClosed = true);
-            countryList.Add(new TextItem("CH", resourceLoader));
-            countryList.Add(new TextItem("DE", resourceLoader));
-            countryList.Add(new TextItem("FR", resourceLoader));
-            countryList.Add(new TextItem("IT", resourceLoader));
-            countryList.Add(new TextItem("ES", resourceLoader));
-            countryList.Add(new TextItem("UK", resourceLoader));
-            countryList.Add(new TextItem("US", resourceLoader));
+            this.masterData = masterData;
+            this.reportDelegate = reportDelegate;
+            PropertyChanged += (s, e) => ReportCommand.RaiseCanExecuteChanged();
+            CancelCommand = new DelegateCommand(DoCancel);
+            ReportCommand = new DelegateCommand(DoReport, CanReport);
+        }
 
-            reasonList.Add(new TextItem("VIOLENCE", resourceLoader));
-            reasonList.Add(new TextItem("SEX", resourceLoader));
-            reasonList.Add(new TextItem("BAD_LANGUAGE", resourceLoader));
-            reasonList.Add(new TextItem("DRUGS", resourceLoader));
-            reasonList.Add(new TextItem("DISCRIMINATION", resourceLoader));
+        private void DoCancel()
+        {
+            IsFlyoutClosed = true;
+            Reset();
+        }
+
+        private bool CanReport()
+        {
+            return SelectedCountry != null && SelectedReason != null;
+        }
+
+        private void DoReport()
+        {
+            reportDelegate(SelectedReason.Key, SelectedCountry.Key);
+            DoCancel();
         }
 
         public bool IsFlyoutClosed
@@ -49,27 +57,28 @@ namespace Socialalert.ViewModels
             set
             {
                 SetProperty(ref isFlyoutClosed, value);
-                if (value)
-                {
-                    Reset();
-                }
             }
         }
 
         private void Reset()
         {
             IsFlyoutClosed = false;
+            SelectedReason = null;
+            ReportCommand.RaiseCanExecuteChanged();
         }
 
         public DelegateCommand CancelCommand { get; private set; }
 
         public DelegateCommand ReportCommand { get; private set; }
 
-        public List<TextItem> CountryList { get { return countryList; } }
-        public List<TextItem> ReasonList { get { return reasonList; } }
+        public List<TextItem> CountryList { get { return masterData.CountryList; } }
+        public List<TextItem> ReasonList { get { return masterData.AbuseReasonList; } }
 
-        public TextItem SelectedCountry { get { return selectedCountry; } set { SetProperty(ref selectedCountry, value); } }
-        public TextItem SelectedReason { get { return selectedReason; } set { SetProperty(ref selectedReason, value); } }
+        [Required]
+        public TextItem SelectedCountry { get { return Get<TextItem>(); } set { Set<TextItem>(value); } }
+
+        [Required]
+        public TextItem SelectedReason { get { return Get<TextItem>(); } set { Set<TextItem>(value); } }
     }
 }
 

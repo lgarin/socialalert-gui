@@ -124,6 +124,7 @@
     <Compile Include="Services\JsonRpcClient.cs" />
     <Compile Include="Models\PictureServiceRequest.cs" />
     <Compile Include="Services\LoginCredentialService.cs" />
+    <Compile Include="Services\MasterDataService.cs" />
     <Compile Include="ViewModels\ActivityViewModel.cs" />
     <Compile Include="ViewModels\EventAggregator.cs" />
     <Compile Include="ViewModels\GeoStatisticViewModel.cs" />
@@ -144,7 +145,6 @@
     <Compile Include="ViewModels\ReportContentUserControlViewModel.cs" />
     <Compile Include="ViewModels\SearchPictureUserControlViewModel.cs" />
     <Compile Include="ViewModels\SimpleViewModel.cs" />
-    <Compile Include="ViewModels\TextItem.cs" />
     <Compile Include="ViewModels\TopAppBarUserControlViewModel.cs" />
     <Compile Include="ViewModels\ViewModelContractResolver.cs" />
     <Compile Include="Views\CategoryDetailPage.xaml.cs">
