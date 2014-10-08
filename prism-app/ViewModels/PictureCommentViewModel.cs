@@ -10,7 +10,7 @@ namespace Socialalert.ViewModels
 {
     public class PictureCommentViewModel : SimpleViewModel
     {
-        public PictureCommentViewModel(string profileUriPattern, CommentInfo item, DelegateCommand<Guid?> repostCommentCommand, ReportContentUserControlViewModel reportContent)
+        public PictureCommentViewModel(string profileUriPattern, CommentInfo item, ConfirmActionUserControlViewModel repostComment, ReportContentUserControlViewModel reportContent)
         {
             CommentId = item.CommentId;
             MediaUri = item.MediaUri;
@@ -20,8 +20,9 @@ namespace Socialalert.ViewModels
             Creator = item.Creator;
             Online = item.Online;
             ProfilePictureUrl = new Uri(string.Format(profileUriPattern, ProfileId), UriKind.Absolute);
-            RepostCommentCommand = repostCommentCommand;
+           
             ReportContentViewModel = reportContent;
+            RepostConfirmationViewModel = repostComment;
 
         }
         public Guid CommentId { get { return Get<Guid>(); } set { Set(value); } }
@@ -34,8 +35,7 @@ namespace Socialalert.ViewModels
 
         public Uri ProfilePictureUrl { get { return Get<Uri>(); } set { Set(value); } }
 
-        public DelegateCommand<Guid?> RepostCommentCommand { get; private set; }
-
         public ReportContentUserControlViewModel ReportContentViewModel { get; private set; }
+        public ConfirmActionUserControlViewModel RepostConfirmationViewModel { get; private set; }
     }
 }

@@ -74,4 +74,13 @@ namespace Socialalert.Models
 
         public ReportAbusiveComment() : base("profileFacade", "reportAbusiveComment") { }
     }
+
+    public class ReportAbusiveMedia : JsonRpcRequest<QueryResult<AbuseInfo>>
+    {
+        public Uri MediaId;
+        public String Country;
+        public String Reason;
+
+        public ReportAbusiveMedia() : base("profileFacade", "reportAbusiveMedia") { }
+    }
 }

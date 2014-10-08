@@ -14,7 +14,7 @@
 			 prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{Binding Source={d:DesignData Source=/Data/PictureCommentUserControl.json, Type=vm:PictureCommentUserControlViewModel}}"
 			 d:DesignHeight="600"
-			 d:DesignWidth="430">
+			 d:DesignWidth="500">
 
     <UserControl.Resources>
         <CollectionViewSource
@@ -51,10 +51,35 @@
                     <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf064;"/>
                 </AppBarButton.Icon>
             </AppBarButton>
-            <AppBarButton Label="Repost" Command="{Binding RepostPictureCommand}" >
+            <AppBarButton Label="Repost" Command="{Binding ConfirmRepost.ShowCommand}">
                 <AppBarButton.Icon>
                     <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf09e;"/>
                 </AppBarButton.Icon>
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <local:ConfirmActionUserControl DataContext="{Binding ConfirmRepost}"/>
+                        <i:Interaction.Behaviors>
+                            <core:DataTriggerBehavior Binding="{Binding ConfirmRepost.IsFlyoutClosed}" ComparisonCondition="Equal" Value="True">
+                                <a:CloseFlyoutAction />
+                            </core:DataTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton Label="Report" Command="{Binding ReportContent.ShowCommand}" >
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf188;"/>
+                </AppBarButton.Icon>
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <local:ReportContentUserControl DataContext="{Binding ReportContent}"/>
+                        <i:Interaction.Behaviors>
+                            <core:DataTriggerBehavior Binding="{Binding ReportContent.IsFlyoutClosed}" ComparisonCondition="Equal" Value="True">
+                                <a:CloseFlyoutAction />
+                            </core:DataTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    </Flyout>
+                </AppBarButton.Flyout>
             </AppBarButton>
         </StackPanel>
         <TextBlock Grid.Row="1" Grid.ColumnSpan="2" x:Uid="CommentsTitle" Text="COMMENTS" Style="{ThemeResource SubheaderTextBlockStyle}" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Center"/>
@@ -119,7 +144,7 @@
 										<ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     <local:ProfileStatusUserControl/>
-									<Button Grid.Column="1" BorderThickness="0" Padding="0">
+                                    <Button Grid.Column="1" BorderThickness="0" Padding="0" Command="{Binding ReportContentViewModel.ReportCommand}">
                                         <FontIcon x:Uid="Report" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf188;" Margin="0,0,10,0" VerticalAlignment="Center" />
 										<Button.Flyout>
 											<Flyout>
@@ -132,8 +157,18 @@
                                             </Flyout>
 										</Button.Flyout>
                                     </Button>
-                                    <Button Grid.Column="2" BorderThickness="0" Padding="0" Command="{Binding RepostCommentCommand}" CommandParameter="{Binding CommentId}">
+                                    <Button Grid.Column="2" BorderThickness="0" Padding="0" Command="{Binding RepostConfirmationViewModel.ShowCommand}">
                                         <FontIcon x:Uid="Repost" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf09e;" Margin="0,0,10,0" VerticalAlignment="Center" />
+                                        <Button.Flyout>
+                                            <Flyout>
+                                                <local:ConfirmActionUserControl DataContext="{Binding RepostConfirmationViewModel}"/>
+                                                <i:Interaction.Behaviors>
+                                                    <core:DataTriggerBehavior Binding="{Binding ConfirmRepost.IsFlyoutClosed}" ComparisonCondition="Equal" Value="True">
+                                                        <a:CloseFlyoutAction />
+                                                    </core:DataTriggerBehavior>
+                                                </i:Interaction.Behaviors>
+                                            </Flyout>
+                                        </Button.Flyout>
                                     </Button>
                                 </Grid>
                                 <TextBlock Text="{Binding Comment}" Style="{StaticResource BodyTextBlockStyle}" MaxHeight="60"/>

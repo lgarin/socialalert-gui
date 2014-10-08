@@ -254,4 +254,10 @@ search</value>
   <data name="VIOLENCE" xml:space="preserve">
     <value>Violence</value>
   </data>
+  <data name="confirmRepostComment" xml:space="preserve">
+    <value>Repost the selected comment.</value>
+  </data>
+  <data name="confirmRepostPicture" xml:space="preserve">
+    <value>Repost the current picture.</value>
+  </data>
 </root>

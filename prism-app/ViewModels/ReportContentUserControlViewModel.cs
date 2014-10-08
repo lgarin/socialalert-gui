@@ -13,28 +13,32 @@ using Windows.Globalization;
 
 namespace Socialalert.ViewModels
 {
-    public class ReportContentUserControlViewModel : SimpleViewModel
+    public class ReportContentData
     {
-        private bool isFlyoutClosed;
+        public string Reason;
+        public string Country;
 
-        private IMasterDataService masterData;
-        private ReportDelegate reportDelegate;
+        public ReportContentData(string reason, string country)
+        {
+            Reason = reason;
+            Country = country;
+        }
+    }
 
-        public delegate void ReportDelegate(string reason, string country);
+    public class ReportContentUserControlViewModel : FlyoutViewModel
+    {
+        private readonly IMasterDataService masterData;
+        private readonly DelegateCommand<ReportContentData> command;
 
-        public ReportContentUserControlViewModel(IMasterDataService masterData, ReportDelegate reportDelegate)
+
+        public ReportContentUserControlViewModel(IMasterDataService masterData, DelegateCommand<ReportContentData> command)
         {
             this.masterData = masterData;
-            this.reportDelegate = reportDelegate;
-            PropertyChanged += (s, e) => ReportCommand.RaiseCanExecuteChanged();
-            CancelCommand = new DelegateCommand(DoCancel);
+            this.command = command;
             ReportCommand = new DelegateCommand(DoReport, CanReport);
-        }
-
-        private void DoCancel()
-        {
-            IsFlyoutClosed = true;
-            Reset();
+            ShowCommand = new DelegateCommand(Reset, CanShow);
+            command.CanExecuteChanged += (s, e) => ShowCommand.RaiseCanExecuteChanged();
+            PropertyChanged += (s, e) => ReportCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanReport()
@@ -42,32 +46,29 @@ namespace Socialalert.ViewModels
             return SelectedCountry != null && SelectedReason != null;
         }
 
+        private ReportContentData CreateReportContentData()
+        {
+            return new ReportContentData(SelectedReason != null ? SelectedReason.Key : null, SelectedCountry != null ? SelectedCountry.Key : null);
+        }
+
+        private bool CanShow()
+        {
+            return command.CanExecute(CreateReportContentData());
+        }
+
         private void DoReport()
         {
-            reportDelegate(SelectedReason.Key, SelectedCountry.Key);
-            DoCancel();
+            Hide();
+            command.Execute(CreateReportContentData());
         }
 
-        public bool IsFlyoutClosed
+        public override void Reset()
         {
-            get
-            {
-                return isFlyoutClosed;
-            }
-            set
-            {
-                SetProperty(ref isFlyoutClosed, value);
-            }
-        }
-
-        private void Reset()
-        {
-            IsFlyoutClosed = false;
             SelectedReason = null;
-            ReportCommand.RaiseCanExecuteChanged();
+            SelectedCountry = masterData.LastCountry;
         }
 
-        public DelegateCommand CancelCommand { get; private set; }
+        public DelegateCommand ShowCommand { get; private set; }
 
         public DelegateCommand ReportCommand { get; private set; }
 

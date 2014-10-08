@@ -42,7 +42,7 @@ namespace Socialalert
             container.RegisterInstance<IGeoLocationService>(new GeoLocationService());
             container.RegisterInstance<ILoginCredentialService>(new LoginCredentialService(container.Resolve<IResourceLoader>()));
             container.RegisterInstance<IApplicationStateService>(new ApplicationStateService(new SessionStateService()));
-            container.RegisterInstance<IMasterDataService>(new MasterDataService(container.Resolve<IResourceLoader>()));
+            container.RegisterInstance<IMasterDataService>(new MasterDataService(container.Resolve<IResourceLoader>(), container.Resolve<IApplicationStateService>()));
         }
 
         private async void AppResuming(object sender, object e)

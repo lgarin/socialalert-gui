@@ -21,6 +21,8 @@ namespace Socialalert.ViewModels
         private bool dislikeChecked;
         private PictureViewModel picture;
         private PictureCommentViewModel newComment;
+        private ReportContentUserControlViewModel reportContent;
+        private ConfirmActionUserControlViewModel confirmRepost;
         
         private IncrementalLoadingCollection<PictureCommentViewModel> comments;
 
@@ -37,8 +39,44 @@ namespace Socialalert.ViewModels
             NewCommentCommand = new DelegateCommand(CreateComment, CanCreateComment);
             PostCommentCommand = new DelegateCommand(PostComment, CanPostComment);
             CancelCommentCommand = new DelegateCommand(CancelComment, CanCancelComment);
-            RepostCommentCommand = new DelegateCommand<Guid?>(RepostComment, CanRepostComment);
             RepostPictureCommand = new DelegateCommand(RepostPicture, CanRepostPicture);
+            ReportPictureCommand = new DelegateCommand<ReportContentData>(DoReportPicture, CanReportPicture);
+        }
+
+        public DelegateCommand<ReportContentData> ReportPictureCommand { get; private set; }
+
+        private bool CanReportPicture(ReportContentData data)
+        {
+            return picture != null && ApplicationStateService.HasUserRole(UserRole.USER);
+        }
+
+        private bool CanReportComment(Guid? commentId, ReportContentData data)
+        {
+            return commentId != null && ApplicationStateService.HasUserRole(UserRole.USER);
+        }
+
+        private async void DoReportPicture(ReportContentData data)
+        {
+            ApplicationStateService.LastCountry = data.Country;
+            await ExecuteAsync(new ReportAbusiveMedia() { MediaId = picture.PictureUri, Country = data.Country, Reason = data.Reason });
+        }
+
+        private async void DoReportComment(Guid? commentId, ReportContentData data)
+        {
+            ApplicationStateService.LastCountry = data.Country;
+            await ExecuteAsync(new ReportAbusiveComment() { CommentId = commentId.Value, Country = data.Country, Reason = data.Reason });
+        }
+
+        public ReportContentUserControlViewModel ReportContent
+        {
+            get
+            {
+                return reportContent;
+            }
+            set
+            {
+                SetProperty(ref reportContent, value);
+            }
         }
 
         public PictureCommentViewModel NewComment
@@ -60,14 +98,16 @@ namespace Socialalert.ViewModels
             return picture != null && ApplicationStateService.HasUserRole(UserRole.USER);
         }
 
-        private ReportContentUserControlViewModel CreateReportContentViewMode(CommentInfo info)
+        private ReportContentUserControlViewModel CreateReportContentViewModel(CommentInfo info)
         {
-            return new ReportContentUserControlViewModel(MasterDataService, (reason, country) => ReportComment(info.CommentId, reason, country));
+            Guid? commentId = info == null ? null : (Guid?)info.CommentId;
+            return new ReportContentUserControlViewModel(MasterDataService, new DelegateCommand<ReportContentData>((d) => DoReportComment(commentId, d), (d) => CanReportComment(commentId, d)));
         }
 
-        private async void ReportComment(Guid guid, string reason, string country)
+        private ConfirmActionUserControlViewModel CreateRepostCommentViewModel(CommentInfo info)
         {
-            await ExecuteAsync(new ReportAbusiveComment() { CommentId = guid, Country = country, Reason = reason});
+            Guid? commentId = info == null ? null : (Guid?) info.CommentId;
+            return new ConfirmActionUserControlViewModel(ResourceLoader.GetString("confirmRepostComment"), new DelegateCommand(() => RepostComment(commentId), () => CanRepostComment(commentId)));
         }
 
         private void CreateComment()
@@ -80,7 +120,7 @@ namespace Socialalert.ViewModels
                 MediaUri = picture.PictureUri,
                 Creation = DateTime.Now
             };
-            NewComment = new PictureCommentViewModel(ProfileUriPattern, info, RepostCommentCommand, CreateReportContentViewMode(info));
+            NewComment = new PictureCommentViewModel(ProfileUriPattern, info, CreateRepostCommentViewModel(info), CreateReportContentViewModel(info));
 
             NewCommentCommand.RaiseCanExecuteChanged();
             PostCommentCommand.RaiseCanExecuteChanged();
@@ -99,7 +139,7 @@ namespace Socialalert.ViewModels
             if (!String.IsNullOrWhiteSpace(NewComment.Comment))
             {
                 var comment = await ExecuteAsync(new AddCommentRequest() { Comment = NewComment.Comment, PictureUri = NewComment.MediaUri });
-                Comments.Insert(0, new PictureCommentViewModel(ProfileUriPattern, comment, RepostCommentCommand, CreateReportContentViewMode(comment)));
+                Comments.Insert(0, new PictureCommentViewModel(ProfileUriPattern, comment, CreateRepostCommentViewModel(comment), CreateReportContentViewModel(comment)));
                 CancelComment();
             }
         }
@@ -119,7 +159,14 @@ namespace Socialalert.ViewModels
             CancelCommentCommand.RaiseCanExecuteChanged();
         }
 
-        public DelegateCommand<Guid?> RepostCommentCommand { get; private set; }
+        public ConfirmActionUserControlViewModel ConfirmRepost
+        {
+            get { return confirmRepost; }
+            set
+            {
+                SetProperty(ref confirmRepost, value);
+            }
+        }
 
         private bool CanRepostComment(Guid? commentId)
         {
@@ -179,13 +226,17 @@ namespace Socialalert.ViewModels
         public void Load(PictureViewModel picture)
         {
             this.picture = picture;
+
             Comments = new IncrementalLoadingCollection<PictureCommentViewModel>((i, s) => LoadMoreComments(picture.PictureUri, i, s));
             RefreshState();
+            ApplicationStateService.PropertyChanged += (s, e) => RefreshState();
         }
 
         private void RefreshState()
         {
             CancelComment();
+            ReportContent = new ReportContentUserControlViewModel(MasterDataService, ReportPictureCommand);
+            ConfirmRepost = new ConfirmActionUserControlViewModel(ResourceLoader.GetString("confirmRepostPicture"), RepostPictureCommand);
 
             IsLikeChecked = picture.UserApprovalModifier == UserApprovalModifier.LIKE;
             IsDislikeChecked = picture.UserApprovalModifier == UserApprovalModifier.DISLIKE;
@@ -194,7 +245,12 @@ namespace Socialalert.ViewModels
             DislikeCommand.RaiseCanExecuteChanged();
 
             RepostPictureCommand.RaiseCanExecuteChanged();
-            RepostCommentCommand.RaiseCanExecuteChanged();
+            ReportPictureCommand.RaiseCanExecuteChanged();
+
+            foreach (var comment in Comments) {
+                comment.ReportContentViewModel.ShowCommand.RaiseCanExecuteChanged();
+                comment.RepostConfirmationViewModel.ShowCommand.RaiseCanExecuteChanged();
+            }
         }
 
         private bool CanSetPictureApproval(UserApprovalModifier modifier)
@@ -239,7 +295,7 @@ namespace Socialalert.ViewModels
                 var result = new List<PictureCommentViewModel>(items.Content.Count());
                 foreach (var item in items.Content)
                 {
-                    result.Add(new PictureCommentViewModel(ProfileUriPattern, item, RepostCommentCommand, CreateReportContentViewMode(item)));
+                    result.Add(new PictureCommentViewModel(ProfileUriPattern, item, CreateRepostCommentViewModel(item), CreateReportContentViewModel(item)));
                 }
                 return result;
             }
