@@ -12,8 +12,9 @@
     xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
     xmlns:bm="using:Bing.Maps"
     xmlns:conv="using:Socialalert.Converters"
-    mc:Ignorable="d"
-    prism:ViewModelLocator.AutoWireViewModel="True">
+    xmlns:mvvm="using:Microsoft.Practices.Prism.Mvvm"
+    mvvm:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
 
     <prism:VisualStateAwarePage.Resources>
         <DataTemplate x:Key="locationTemplate">

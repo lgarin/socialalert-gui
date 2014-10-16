@@ -6,9 +6,7 @@
              xmlns:core="using:Microsoft.Xaml.Interactions.Core"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
              mc:Ignorable="d"
-			 prism:ViewModelLocator.AutoWireViewModel="False"
              d:DataContext="{Binding Source={d:DesignData Type=vm:ConfirmActionUserControlViewModel}}"
 			 d:DesignHeight="150"
 			 d:DesignWidth="300">

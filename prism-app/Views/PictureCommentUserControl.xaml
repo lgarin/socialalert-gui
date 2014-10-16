@@ -7,11 +7,10 @@
              xmlns:a="using:Socialalert.Actions"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
+			 xmlns:prism="using:Microsoft.Practices.Prism.Mvvm"
              xmlns:i="using:Microsoft.Xaml.Interactivity"
              xmlns:core="using:Microsoft.Xaml.Interactions.Core"
              mc:Ignorable="d"
-			 prism:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{Binding Source={d:DesignData Source=/Data/PictureCommentUserControl.json, Type=vm:PictureCommentUserControlViewModel}}"
 			 d:DesignHeight="600"
 			 d:DesignWidth="500">

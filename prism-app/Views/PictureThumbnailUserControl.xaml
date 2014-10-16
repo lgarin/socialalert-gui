@@ -7,7 +7,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
              mc:Ignorable="d"
-			 prism:ViewModelLocator.AutoWireViewModel="True"
 			 d:DesignHeight="250"
 			 d:DesignWidth="400"
              d:DataContext="{d:DesignData Source=/Data/PictureViewModel.json, Type=vm:PictureViewModel}">

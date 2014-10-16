@@ -1,4 +1,5 @@
-﻿using Microsoft.Practices.Prism.StoreApps;
+﻿using Microsoft.Practices.Prism.Mvvm;
+using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using Microsoft.Practices.Unity;
 using Socialalert.Models;
@@ -21,13 +22,13 @@ namespace Socialalert
             this.InitializeComponent();
         }
 
-        protected override Task OnLaunchApplication(LaunchActivatedEventArgs args)
+        protected override Task OnLaunchApplicationAsync(LaunchActivatedEventArgs args)
         {
             NavigationService.Navigate("Hub", null);
             return OpenAsync();
         }
 
-        protected override void OnInitialize(IActivatedEventArgs args)
+        protected override Task OnInitializeAsync(IActivatedEventArgs args)
         {
 
             Suspending += AppSuspending;
@@ -43,6 +44,8 @@ namespace Socialalert
             container.RegisterInstance<ILoginCredentialService>(new LoginCredentialService(container.Resolve<IResourceLoader>()));
             container.RegisterInstance<IApplicationStateService>(new ApplicationStateService(new SessionStateService()));
             container.RegisterInstance<IMasterDataService>(new MasterDataService(container.Resolve<IResourceLoader>(), container.Resolve<IApplicationStateService>()));
+
+            return Task.FromResult<object>(null);
         }
 
         private async void AppResuming(object sender, object e)
