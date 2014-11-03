@@ -10,7 +10,7 @@
              xmlns:core="using:Microsoft.Xaml.Interactions.Core"
              mc:Ignorable="d"
 			 d:DesignHeight="100"
-			 d:DesignWidth="600">
+			 d:DesignWidth="800">
     
     <!-- Page content -->
     <StackPanel Orientation="Horizontal">
@@ -45,13 +45,24 @@
             </AppBarButton.Icon>
         </AppBarButton>
 
-        <AppBarButton x:Uid="Home" Name="showMap" Label="Map" FontFamily="Global User Interface" >
+        <AppBarButton x:Uid="Map" Name="showMap" Label="Map" FontFamily="Global User Interface" >
             <AppBarButton.Icon>
                 <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource MapMarkerGlyph}"/>
             </AppBarButton.Icon>
             <i:Interaction.Behaviors>
                 <core:EventTriggerBehavior EventName="Click">
                     <core:NavigateToPageAction TargetPage="{StaticResource MapStatisticPage}"/>
+                </core:EventTriggerBehavior>
+            </i:Interaction.Behaviors>
+        </AppBarButton>
+
+        <AppBarButton x:Uid="Upload" Name="uploadPicture" Label="Upload" FontFamily="Global User Interface" >
+            <AppBarButton.Icon>
+                <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource UploadGlyph}"/>
+            </AppBarButton.Icon>
+            <i:Interaction.Behaviors>
+                <core:EventTriggerBehavior EventName="Click">
+                    <core:NavigateToPageAction TargetPage="{StaticResource UploadImagePage}"/>
                 </core:EventTriggerBehavior>
             </i:Interaction.Behaviors>
         </AppBarButton>

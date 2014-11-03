@@ -93,7 +93,7 @@ namespace Socialalert.ViewModels
         public bool LoadingData
         {
             get { return loadingData; }
-            private set { SetProperty(ref loadingData, value); }
+            protected set { SetProperty(ref loadingData, value); }
         }
 
         protected async Task<T> ExecuteAsync<T>(JsonRpcRequest<T> request)

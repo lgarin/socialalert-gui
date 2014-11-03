@@ -121,6 +121,8 @@
     <Compile Include="Services\AlertMessageService.cs" />
     <Compile Include="Services\ApplicationStateService.cs" />
     <Compile Include="Services\GeoLocationService.cs" />
+    <Compile Include="Services\ImageChooserService.cs" />
+    <Compile Include="Services\ImageUploadService.cs" />
     <Compile Include="Services\JsonRpcClient.cs" />
     <Compile Include="Models\PictureServiceRequest.cs" />
     <Compile Include="Services\LoginCredentialService.cs" />
@@ -148,6 +150,7 @@
     <Compile Include="ViewModels\SearchPictureUserControlViewModel.cs" />
     <Compile Include="ViewModels\SimpleViewModel.cs" />
     <Compile Include="ViewModels\TopAppBarUserControlViewModel.cs" />
+    <Compile Include="ViewModels\UploadImagePageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelContractResolver.cs" />
     <Compile Include="Views\CategoryDetailPage.xaml.cs">
       <DependentUpon>CategoryDetailPage.xaml</DependentUpon>
@@ -195,6 +198,9 @@
     <Compile Include="Views\TopAppBarUserControl.xaml.cs">
       <DependentUpon>TopAppBarUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UploadImagePage.xaml.cs">
+      <DependentUpon>UploadImagePage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -210,6 +216,7 @@
     <Content Include="Data\ProfileDetailPage.json" />
     <Content Include="Data\ProfileFeedUserControl.json" />
     <Content Include="Data\PictureViewModel.json" />
+    <Content Include="Data\UploadImagePage.json" />
     <None Include="Data\ProfileStatisticUserControl.json" />
     <None Include="packages.config" />
     <None Include="prism-app_TemporaryKey.pfx" />
@@ -288,6 +295,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\TopAppBarUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UploadImagePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

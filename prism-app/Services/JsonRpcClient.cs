@@ -82,7 +82,6 @@ namespace Socialalert.Services
         public JsonRpcClient(String serverUrl)
         {
             serverUri = new Uri(serverUrl, UriKind.Absolute);
-            client.DefaultRequestHeaders["contentType"] = "application/json-rpc";
             serializer = new JsonSerializer();
             serializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
             serializer.Converters.Add(new EpochDateTimeConverter());
@@ -99,7 +98,7 @@ namespace Socialalert.Services
                 input["method"] = requestObject.MethodName;
                 input["params"] = JObject.FromObject(requestObject, serializer);
                 String inputString = input.ToString(Formatting.None);
-                request.Content = new HttpStringContent(inputString, Windows.Storage.Streams.UnicodeEncoding.Utf8);
+                request.Content = new HttpStringContent(inputString, Windows.Storage.Streams.UnicodeEncoding.Utf8, "application/json-rpc");
                 using (var response = await client.SendRequestAsync(request, HttpCompletionOption.ResponseContentRead))
                 {
                     var resultString = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();

@@ -32,7 +32,9 @@
         <x:String x:Key="ResolutionGlyph">&#xf047;</x:String>
         <x:String x:Key="HomeGlyph">&#xf015;</x:String>
         <x:String x:Key="MapMarkerGlyph">&#xf041;</x:String>
+        <x:String x:Key="UploadGlyph">&#xf093;</x:String>
         <x:String x:Key="HomePage">Socialalert.Views.HubPage</x:String>
+        <x:String x:Key="UploadImagePage">Socialalert.Views.UploadImagePage</x:String>
         <x:String x:Key="MapStatisticPage">Socialalert.Views.MapStatisticPage</x:String>
         <x:String x:Key="ProfileDetailPage">Socialalert.Views.ProfileDetailPage</x:String>
         <x:String x:Key="BingMapKey">AuXHB715SopOp7_UWBAwr0OzWS7-VZuepw59IdjV6E4DmYYGb0JVGuq5FUOF4TFT</x:String>
