@@ -12,7 +12,7 @@ namespace Socialalert.Services
 {
     public class ImageChooserService
     {
-        public async Task<BitmapImage> LoadImage()
+        public async Task<IRandomAccessStream> LoadImage()
         {
             FileOpenPicker openPicker = new FileOpenPicker();
             openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
@@ -30,10 +30,7 @@ namespace Socialalert.Services
             if (file != null)
             {
                 // Open a stream for the selected file.
-                var stream = await file.OpenAsync(FileAccessMode.Read);
-                var result = new BitmapImage();
-                result.SetSource(stream);
-                return result;
+                return await file.OpenAsync(FileAccessMode.Read);
             }
 
             return null;

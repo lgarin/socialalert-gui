@@ -8,6 +8,8 @@
 			 xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
              xmlns:i="using:Microsoft.Xaml.Interactivity"
              xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+             xmlns:mvvm="using:Microsoft.Practices.Prism.Mvvm"
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
 			 d:DesignHeight="100"
 			 d:DesignWidth="800">
@@ -56,15 +58,10 @@
             </i:Interaction.Behaviors>
         </AppBarButton>
 
-        <AppBarButton x:Uid="Upload" Name="uploadPicture" Label="Upload" FontFamily="Global User Interface" >
+        <AppBarButton x:Uid="Upload" Name="uploadPicture" Label="Upload" FontFamily="Global User Interface" Command="{Binding UploadCommand}"  Visibility="{Binding CanUpload, Converter={StaticResource BooleanToVisibilityConverter}}">
             <AppBarButton.Icon>
                 <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="{StaticResource UploadGlyph}"/>
             </AppBarButton.Icon>
-            <i:Interaction.Behaviors>
-                <core:EventTriggerBehavior EventName="Click">
-                    <core:NavigateToPageAction TargetPage="{StaticResource UploadImagePage}"/>
-                </core:EventTriggerBehavior>
-            </i:Interaction.Behaviors>
         </AppBarButton>
 
         <AppBarButton Visibility="{StaticResource Debug}" Name="dumpData" FontFamily="Global User Interface" Label="Dump data" Command="{Binding DumpDataCommand}">

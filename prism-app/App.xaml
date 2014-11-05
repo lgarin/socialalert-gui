@@ -6,6 +6,7 @@
 	<prism:MvvmAppBase.Resources>
         <!-- Application-specific resources -->
         <x:String x:Key="AppName">Social Alert</x:String>
+        <x:String x:Key="UploadServerUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/upload</x:String>
         <x:String x:Key="BaseServerUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/rest/</x:String>
         <x:String x:Key="BaseThumbnailUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/thumbnail/</x:String>
         <x:String x:Key="BaseImageUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/media/</x:String>

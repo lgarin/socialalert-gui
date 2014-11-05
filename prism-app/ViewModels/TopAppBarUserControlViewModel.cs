@@ -29,6 +29,7 @@ namespace Socialalert.ViewModels
         public DelegateCommand GoHomeCommand { get; private set; }
         public DelegateCommand LoginCommand { get; private set; }
         public DelegateCommand LogoutCommand { get; private set; }
+        public DelegateCommand UploadCommand { get; private set; }
 
         [Dependency]
         public ILoginCredentialService LoginCredentialService { get; set; }
@@ -42,6 +43,7 @@ namespace Socialalert.ViewModels
             LoginCommand = new DelegateCommand(Login, () => CanLogin);
             LogoutCommand = new DelegateCommand(Logout, () => CanLogout);
             GoHomeCommand = new DelegateCommand(GoHome, () => CanGoHome);
+            UploadCommand = new DelegateCommand(Upload, () => CanUpload);
         }
 
         [InjectionMethod]
@@ -59,6 +61,7 @@ namespace Socialalert.ViewModels
                 OnPropertyChanged(() => CanLogout);
                 LoginCommand.RaiseCanExecuteChanged();
                 LogoutCommand.RaiseCanExecuteChanged();
+                UploadCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -149,6 +152,19 @@ namespace Socialalert.ViewModels
                     ApplicationStateService.CurrentUser = null;
                 }
             }
+        }
+
+        public bool CanUpload
+        {
+            get
+            {
+                return ApplicationStateService.CurrentUser != null;
+            }
+        }
+
+        private void Upload()
+        {
+            NavigationService.Navigate(ResourceDictionary["UploadImagePage"] as string, null);
         }
 
         private void DumpData()

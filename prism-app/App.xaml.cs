@@ -44,6 +44,7 @@ namespace Socialalert
             container.RegisterInstance<ILoginCredentialService>(new LoginCredentialService(container.Resolve<IResourceLoader>()));
             container.RegisterInstance<IApplicationStateService>(new ApplicationStateService(new SessionStateService()));
             container.RegisterInstance<IMasterDataService>(new MasterDataService(container.Resolve<IResourceLoader>(), container.Resolve<IApplicationStateService>()));
+            container.RegisterInstance<IImageUploadService>(new ImageUploadService(Resources["UploadServerUrl"] as string));
 
             return Task.FromResult<object>(null);
         }

@@ -20,7 +20,7 @@ namespace Socialalert.Test.Services
         [TestInitialize]
         public void init()
         {
-            service = new ImageUploadService("http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/");
+            service = new ImageUploadService("http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/upload");
         }
 
         private async Task<Uri> UploadTempFileAsync()

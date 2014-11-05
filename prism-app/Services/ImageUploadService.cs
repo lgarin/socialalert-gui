@@ -26,11 +26,11 @@ namespace Socialalert.Services
 
         public async Task<Uri> PostPictureAsync(IInputStream picture)
         {
-            using (var request = new HttpRequestMessage(HttpMethod.Post, new Uri(serverUri, "upload")))
+            using (var request = new HttpRequestMessage(HttpMethod.Post, serverUri))
             {
                 request.Content = new HttpStreamContent(picture);
                 request.Content.Headers.Add("Content-Type", "image/jpeg");
-                using (var response = await httpClient.SendRequestAsync(request, HttpCompletionOption.ResponseContentRead))
+                using (var response = await httpClient.SendRequestAsync(request, HttpCompletionOption.ResponseHeadersRead))
                 {
                     var resultString = response.EnsureSuccessStatusCode().Headers["location"];
                     return new Uri(resultString, UriKind.Relative);
