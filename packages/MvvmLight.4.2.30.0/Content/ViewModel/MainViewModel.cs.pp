@@ -1,6 +1,6 @@
-using GalaSoft.MvvmLight;
+﻿using GalaSoft.MvvmLight;
 
-namespace Socialalert.UI.ViewModel
+namespace $rootnamespace$.ViewModel
 {
     /// <summary>
     /// This class contains properties that the main View can data bind to.
@@ -30,6 +30,5 @@ namespace Socialalert.UI.ViewModel
             ////    // Code runs "for real"
             ////}
         }
-
     }
 }

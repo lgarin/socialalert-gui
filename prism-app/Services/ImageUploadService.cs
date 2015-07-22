@@ -14,7 +14,7 @@ namespace Socialalert.Services
         Task<Uri> PostPictureAsync(IInputStream picture);
     }
 
-    public class ImageUploadService : IImageUploadService, IDisposable
+    public sealed class ImageUploadService : IImageUploadService, IDisposable
     {
         private readonly HttpClient httpClient = new HttpClient();
         private readonly Uri serverUri;
@@ -41,6 +41,7 @@ namespace Socialalert.Services
         public void Dispose()
         {
             httpClient.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }
