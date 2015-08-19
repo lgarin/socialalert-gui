@@ -1,5 +1,4 @@
-﻿using Microsoft.Practices.Prism.Commands;
-using Microsoft.Practices.Prism.StoreApps;
+﻿using Microsoft.Practices.Prism.StoreApps;
 using Socialalert.Services;
 using System;
 using System.Collections.Generic;

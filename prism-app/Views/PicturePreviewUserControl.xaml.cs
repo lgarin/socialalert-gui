@@ -1,9 +1,8 @@
-﻿using Microsoft.Practices.Prism.Mvvm;
-using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml.Controls;
 
 namespace Socialalert.Views
 {
-    public sealed partial class PicturePreviewUserControl : UserControl, IView
+    public sealed partial class PicturePreviewUserControl : UserControl
     {
         public PicturePreviewUserControl()
         {

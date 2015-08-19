@@ -8,7 +8,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Socialalert.Actions
 {
-    public class CloseFlyoutAction : DependencyObject
+    public class CloseFlyoutAction : DependencyObject, Microsoft.Xaml.Interactivity.IAction
     {
         public object Execute(object sender, object parameter)
         {

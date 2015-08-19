@@ -1,6 +1,4 @@
-﻿using Microsoft.Practices.Prism.Mvvm;
-using Microsoft.Practices.Prism.Mvvm.Interfaces;
-using Microsoft.Practices.Prism.StoreApps;
+﻿using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using Microsoft.Practices.Unity;
 using Socialalert.Models;

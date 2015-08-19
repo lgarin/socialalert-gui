@@ -9,7 +9,6 @@
              xmlns:core="using:Microsoft.Xaml.Interactions.Core"
              xmlns:vm="using:Socialalert.ViewModels"
              mc:Ignorable="d"
-             d:DataContext="{Binding Source={d:DesignData Source=/Data/ProfileStatisticUserControl.json, Type=vm:ProfileStatisticViewModel}}"
 			 d:DesignHeight="500"
 			 d:DesignWidth="400">
     
