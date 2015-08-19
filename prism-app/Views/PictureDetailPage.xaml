@@ -12,8 +12,7 @@
     xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
     xmlns:bm="using:Bing.Maps"
     xmlns:conv="using:Socialalert.Converters"
-    xmlns:mvvm="using:Microsoft.Practices.Prism.Mvvm"
-    mvvm:ViewModelLocator.AutoWireViewModel="True"
+    prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d"
     d:DataContext="{Binding Source={d:DesignData Source=/Data/PictureDetailPage.json, Type=vm:PictureDetailPageViewModel}}">
 

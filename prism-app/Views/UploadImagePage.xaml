@@ -10,8 +10,7 @@
     xmlns:vm="using:Socialalert.ViewModels"
     mc:Ignorable="d"
     d:DataContext="{Binding Source={d:DesignData Source=/Data/UploadImagePage.json, Type=vm:UploadImagePageViewModel}}"
-    xmlns:mvvm="using:Microsoft.Practices.Prism.Mvvm"
-    mvvm:ViewModelLocator.AutoWireViewModel="True">
+    prism:ViewModelLocator.AutoWireViewModel="True">
 
     <prism:VisualStateAwarePage.Resources>
         

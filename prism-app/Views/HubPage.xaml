@@ -10,8 +10,7 @@
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
-    xmlns:mvvm="using:Microsoft.Practices.Prism.Mvvm"
-    mvvm:ViewModelLocator.AutoWireViewModel="True"
+    prism:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d"
     d:DataContext="{d:DesignData Source=/Data/HubPage.json, Type=vm:HubPageViewModel}">
 

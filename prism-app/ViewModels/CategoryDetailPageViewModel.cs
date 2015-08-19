@@ -1,5 +1,4 @@
 ﻿using Bing.Maps;
-using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Unity;
 using Socialalert.Models;
@@ -159,7 +158,7 @@ namespace Socialalert.ViewModels
                     longitude = searchBounds.Center.Longitude;
                     latitude = searchBounds.Center.Latitude;
                 }
-                var items = await ExecuteAsync(new SearchPicturesInCategoryRequest { Keywords = keywords, MaxDistance = maxDistance, Latitude = latitude, Longitude = longitude, MaxAge = 360 * Constants.MillisPerDay, PageNumber = 0, PageSize = Constants.ItemsPerPage, Category = Category.Id });
+                var items = await ExecuteAsync(new SearchPicturesInCategoryRequest { Keywords = keywords, MaxDistance = maxDistance, Latitude = latitude, Longitude = longitude, MaxAge = 1000 * Constants.MillisPerDay, PageNumber = 0, PageSize = Constants.ItemsPerPage, Category = Category.Id });
                 var basePictureUri = new Uri(ResourceDictionary["BaseThumbnailUrl"] as string, UriKind.Absolute);
                 var result = new List<PictureViewModel>(items.Content.Count());
                 foreach (var item in items.Content)
