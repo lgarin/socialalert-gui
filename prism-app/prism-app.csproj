@@ -18,6 +18,8 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <PackageCertificateThumbprint>678270AA944CAECF1703B39975DF1BAE62798252</PackageCertificateThumbprint>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxBundlePlatforms>x86</AppxBundlePlatforms>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -112,12 +114,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BooleanConverter.cs" />
     <Compile Include="Converters\ViewChangeEndedConverter.cs" />
     <Compile Include="Converters\MapBindings.cs" />
     <Compile Include="Converters\VisibilityConverter.cs" />
     <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Models\Constants.cs" />
-    <Compile Include="Models\PictureServiceResponse.cs" />
+    <Compile Include="Models\MediaServiceRequest.cs" />
+    <Compile Include="Models\MediaServiceResponse.cs" />
     <Compile Include="Models\ProfileServiceRequest.cs" />
     <Compile Include="Models\ProfileServiceResponse.cs" />
     <Compile Include="Models\UserServiceRequest.cs" />
@@ -129,7 +133,6 @@
     <Compile Include="Services\ImageChooserService.cs" />
     <Compile Include="Services\ImageUploadService.cs" />
     <Compile Include="Services\JsonRpcClient.cs" />
-    <Compile Include="Models\PictureServiceRequest.cs" />
     <Compile Include="Services\LoginCredentialService.cs" />
     <Compile Include="Services\MasterDataService.cs" />
     <Compile Include="ViewModels\ActivityViewModel.cs" />

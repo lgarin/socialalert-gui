@@ -11,6 +11,12 @@ namespace Socialalert.Models
         public int PageCount;
     }
 
+    public enum MediaType
+    {
+        PICTURE,
+        VIDEO
+    }
+
     public enum UserApprovalModifier
     {
         LIKE,
@@ -18,19 +24,20 @@ namespace Socialalert.Models
     }
 
     [JsonObject]
-    public class PictureInfo
+    public class MediaInfo
     {
-        public Uri PictureUri;
+        public Uri MediaUri;
+        public MediaType MediaType;
         public string Title;
         public string Description;
         public Guid ProfileId;
         public DateTime Creation;
         public DateTime LastUpdate;
-        public DateTime? PictureTimestamp;
-        public int PictureWidth;
-        public int PictureHeight;
-        public double? PictureLongitude;
-        public double? PictureLatitude;
+        public DateTime? Timestamp;
+        public int Width;
+        public int Height;
+        public double? Longitude;
+        public double? Latitude;
         public string Locality;
         public string Country;
         public string CameraMaker;

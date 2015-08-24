@@ -75,12 +75,12 @@ namespace Socialalert.ViewModels
             try
             {
                 var basePictureUri = new Uri(ResourceDictionary["BaseThumbnailUrl"] as string, UriKind.Absolute);
-                var result = await ExecuteAsync(new SearchTopPicturesByCategoriesRequest { Keywords = keywords, MaxAge = 1000 * Constants.MillisPerDay, GroupSize = 10, Categories = Constants.AllCategories });
+                var result = await ExecuteAsync(new SearchTopMediaByCategoriesRequest { Keywords = keywords, MaxAge = 1000 * Constants.MillisPerDay, GroupSize = 10, Categories = Constants.AllCategories });
                 var groupSelectionCommand = new DelegateCommand<PictureCategoryViewModel>(GotoCategroyDetail, CanGotoCategoryDetail);
                 foreach (var category in result.Keys.Where((key) => result[key].Count > 0).OrderBy((key) => key))
                 {
                     var items = new ObservableCollection<PictureViewModel>();
-                    foreach (PictureInfo picture in result[category])
+                    foreach (var picture in result[category])
                     {
                         items.Add(new PictureViewModel(basePictureUri, picture));
                     }

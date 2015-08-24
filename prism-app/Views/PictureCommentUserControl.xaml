@@ -22,12 +22,12 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <StackPanel Name="toolbar" Grid.Row="0" Orientation="Horizontal">
-            <AppBarToggleButton Label="Like" IsChecked="{Binding IsLikeChecked, Mode=TwoWay}" Command="{Binding LikeCommand}">
+            <AppBarToggleButton Label="Like" IsChecked="{Binding IsLikeChecked, Mode=TwoWay}" Command="{Binding LikeCommand}" IsEnabled="{Binding LoadingData, Converter={StaticResource InverseBooleanConverter}}">
                 <AppBarToggleButton.Icon>
                     <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xF087;"/>
                 </AppBarToggleButton.Icon>
             </AppBarToggleButton>
-            <AppBarToggleButton Label="Dislike" IsChecked="{Binding IsDislikeChecked, Mode=TwoWay}" Command="{Binding DislikeCommand}">
+            <AppBarToggleButton Label="Dislike" IsChecked="{Binding IsDislikeChecked, Mode=TwoWay}" Command="{Binding DislikeCommand}" IsEnabled="{Binding LoadingData, Converter={StaticResource InverseBooleanConverter}}">
                 <AppBarToggleButton.Icon>
                     <FontIcon FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xF088;"/>
                 </AppBarToggleButton.Icon>

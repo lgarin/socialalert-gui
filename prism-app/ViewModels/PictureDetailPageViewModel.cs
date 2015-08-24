@@ -60,7 +60,7 @@ namespace Socialalert.ViewModels
 
         private async Task LoadData(Uri pictureUri)
         {
-            var picture = await ExecuteAsync(new ViewPictureDetailRequest() { PictureUri = pictureUri });
+            var picture = await ExecuteAsync(new ViewMediaDetailRequest() { MediaUri = pictureUri });
             string serverUrl = ResourceDictionary["BasePreviewUrl"] as string;
             Info = new PictureViewModel(new Uri(serverUrl, UriKind.Absolute), picture);
             Comments.Load(Info);

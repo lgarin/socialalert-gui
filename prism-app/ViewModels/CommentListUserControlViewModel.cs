@@ -127,7 +127,7 @@ namespace Socialalert.ViewModels
         {
             if (!String.IsNullOrWhiteSpace(NewComment.Comment))
             {
-                var comment = await ExecuteAsync(new AddCommentRequest() { Comment = NewComment.Comment, PictureUri = NewComment.MediaUri });
+                var comment = await ExecuteAsync(new AddCommentRequest() { Comment = NewComment.Comment, MediaUri = NewComment.MediaUri });
                 Comments.Insert(0, new PictureCommentViewModel(ProfileUriPattern, comment));
                 CancelComment();
             }
@@ -205,7 +205,7 @@ namespace Socialalert.ViewModels
         {
             try
             {
-                var items = await ExecuteAsync(new ListCommentsRequest { PictureUri = pictureUri, PageNumber = pageIndex, PageSize = pageSize });
+                var items = await ExecuteAsync(new ListCommentsRequest { MediaUri = pictureUri, PageNumber = pageIndex, PageSize = pageSize });
                 var result = new List<PictureCommentViewModel>(items.Content.Count());
                 foreach (var item in items.Content)
                 {

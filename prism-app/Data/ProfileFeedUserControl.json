@@ -1,17 +1,17 @@
 ﻿{
-  "Activities": [
-    {
-      "CommentId": "7c6ecf27-cfb4-4134-974f-af6cd0aa0c2d",
-      "MediaUri": "20140130/f2913633198d11ba8e012aa9d7e8705c.jpg",
-      "ProfileId": "e7d166ae-9b3f-4405-be0d-fa1567728593",
-      "Creation": "\/Date(1391098195219+0100)\/",
-      "Comment": "I like it.",
-	  "Text": "Test it",
-      "Creator": "test",
-      "Online": false,
-      "PictureUrl": "http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/thumbnail/profiles/e7d166ae-9b3f-4405-be0d-fa1567728593.jpg",
-      "IsValidationEnabled": true
-    }
-  ],
-  "LoadingData": true
+    "Activities": [
+        {
+            "CommentId": "7c6ecf27-cfb4-4134-974f-af6cd0aa0c2d",
+            "MediaUri": "20140130/f2913633198d11ba8e012aa9d7e8705c.jpg",
+            "ProfileId": "e7d166ae-9b3f-4405-be0d-fa1567728593",
+            "Creation": "\/Date(1391098195219+0100)\/",
+            "Comment": "I like it.",
+            "Text": "Test it",
+            "Creator": "test",
+            "Online": false,
+            "PictureUrl": "http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/thumbnail/profiles/e7d166ae-9b3f-4405-be0d-fa1567728593.jpg",
+            "IsValidationEnabled": true
+        }
+    ],
+    "LoadingData": true
 }

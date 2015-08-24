@@ -88,7 +88,7 @@ namespace Socialalert.ViewModels
 
         private async void RepostPicture()
         {
-            await ExecuteAsync(new RepostPictureRequest() { PictureId = picture.PictureUri });
+            await ExecuteAsync(new RepostMediaRequest() { MediaUri = picture.PictureUri });
         }
 
         public bool IsLikeChecked
@@ -155,7 +155,7 @@ namespace Socialalert.ViewModels
             }
             try
             {
-                var info = await ExecuteAsync(new SetPictureApprovalRequest() { PictureUri = picture.PictureUri, Modifier = modifier });
+                var info = await ExecuteAsync(new SetMediaApprovalRequest() { MediaUri = picture.PictureUri, Modifier = modifier });
                 picture.UpdateWith(info);
                 RefreshState();
             }

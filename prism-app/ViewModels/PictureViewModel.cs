@@ -14,26 +14,26 @@ namespace Socialalert.ViewModels
     {
         private Uri basePictureUrl;
 
-        public PictureViewModel(Uri basePictureUrl, PictureInfo picture)
+        public PictureViewModel(Uri basePictureUrl, MediaInfo picture)
         {
-            PictureUri = picture.PictureUri;
+            PictureUri = picture.MediaUri;
             this.basePictureUrl = basePictureUrl;
             UpdateWith(picture);
         }
 
-        public void UpdateWith(PictureInfo picture)
+        public void UpdateWith(MediaInfo picture)
         {
-            ImageUrl = new Uri(basePictureUrl, picture.PictureUri);
+            ImageUrl = new Uri(basePictureUrl, picture.MediaUri);
             Title = picture.Title;
             Description = picture.Description;
             ProfileId = picture.ProfileId;
             Creation = picture.Creation;
             LastUpdate = picture.LastUpdate;
-            PictureTimestamp = picture.PictureTimestamp;
-            PictureWidth = picture.PictureWidth;
-            PictureHeight = picture.PictureHeight;
-            PictureLongitude = picture.PictureLongitude;
-            PictureLatitude = picture.PictureLatitude;
+            PictureTimestamp = picture.Timestamp;
+            PictureWidth = picture.Width;
+            PictureHeight = picture.Height;
+            PictureLongitude = picture.Longitude;
+            PictureLatitude = picture.Latitude;
             Locality = picture.Locality;
             Country = picture.Country;
             CameraMaker = picture.CameraMaker;

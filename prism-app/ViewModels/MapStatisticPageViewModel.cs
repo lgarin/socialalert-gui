@@ -38,7 +38,7 @@ namespace Socialalert.ViewModels
             var radius = LocationService.ComputeRadiusInKm(searchBounds);
             var longitude = searchBounds.Center.Longitude;
             var latitude = searchBounds.Center.Latitude;
-            var result = await ExecuteAsync(new MapPictureMatchCountRequest { Keywords = Keywords, MaxAge = Constants.MillisPerDay * 1000, Radius = radius, Latitude = latitude, Longitude = longitude });
+            var result = await ExecuteAsync(new MapMediaMatchCountRequest { Keywords = Keywords, MaxAge = Constants.MillisPerDay * 1000, Radius = radius, Latitude = latitude, Longitude = longitude });
             Items.Clear();
             foreach (var item in result)
             {
