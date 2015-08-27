@@ -61,14 +61,19 @@
 					   TextWrapping="NoWrap" 
 					   VerticalAlignment="Bottom" />
         </Grid>
-        <StackPanel Grid.Row="1" Margin="10">
-            <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="640" Height="480" HorizontalAlignment="Left" >
-                <Image Source="{Binding UploadedPicture}" Stretch="Uniform" />
-            </Border>
-            <Button Command="{Binding UploadPictureCommand}" >
-                <TextBlock Text="Upload"/>
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="140"/>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0" Command="{Binding UploadPictureCommand}" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="640" Height="480" HorizontalAlignment="Left" >
+                <StackPanel>
+                    <Image Source="{Binding UploadedPicture}" Stretch="Uniform" Visibility="{Binding UploadedPicture, Converter={StaticResource ObjectToVisibilityConverter}}"/>
+                    <TextBlock Text="Upload" Visibility="{Binding UploadedPicture, Converter={StaticResource ObjectToCollapsedConverter}}"/>
+                </StackPanel>
             </Button>
-        </StackPanel>
+        </Grid>
         <ProgressRing Grid.Row="1" IsActive="{Binding LoadingData}" Height="100" Width="100" />
     </Grid>
 </prism:VisualStateAwarePage>

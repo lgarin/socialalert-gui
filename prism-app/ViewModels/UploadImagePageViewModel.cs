@@ -46,31 +46,40 @@ namespace Socialalert.ViewModels
         private async void UploadPicture()
         {
             var stream = await ImageChooser.LoadImage();
-            Exception exception = null;
-            var baseUri = new Uri(ResourceDictionary["BasePreviewUrl"] as string, UriKind.Absolute);
+            if (stream == null)
+            {
+                return;
+            }
+            
             try
             {
                 LoadingData = true;
                 var relativeUri = await ImageUploadService.PostPictureAsync(stream);
+                var baseUri = new Uri(ResourceDictionary["BasePreviewUrl"] as string, UriKind.Absolute);
                 UploadedPicture = new BitmapImage(new Uri(baseUri, relativeUri));
+                UploadedPicture.ImageFailed += (s, e) => ShowError(e.ErrorMessage);
+                UploadedPicture.ImageOpened += (s, e) => CompleteLoad();
             }
             catch (Exception e)
             {
-                exception = e;
-                
+                ShowError(e.Message);
             }
-            finally
-            {
-                LoadingData = false;
-            }
+        }
 
-            if (exception != null)
-            {
-                var errorMessage = string.Format(CultureInfo.CurrentCulture,
+        private void CompleteLoad()
+        {
+            LoadingData = false;
+        }
+
+        private async void ShowError(String technicalMessage)
+        {
+            LoadingData = false;
+            UploadedPicture = null;
+
+            var errorMessage = string.Format(CultureInfo.CurrentCulture,
                                                  ResourceLoader.GetString("GeneralServiceErrorMessage"),
-                                                 Environment.NewLine, exception.Message);
-                await AlertMessageService.ShowAsync(errorMessage, ResourceLoader.GetString("ErrorServiceUnreachable"));
-            }
+                                                 Environment.NewLine, technicalMessage);
+            await AlertMessageService.ShowAsync(errorMessage, ResourceLoader.GetString("ErrorServiceUnreachable"));
         }
     }
 }
