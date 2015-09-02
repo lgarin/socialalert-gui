@@ -12,14 +12,18 @@
              d:DataContext="{d:DesignData Source=/Data/PictureViewModel.json, Type=vm:PictureViewModel}">
     
     <!-- Page content -->
-    <Grid HorizontalAlignment="Left" Width="400" Height="250">
+    <Grid HorizontalAlignment="Left" Width="330" Height="250">
         <Border Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}">
             <Image Source="{Binding ImageUrl}" Stretch="Uniform" AutomationProperties.Name="{Binding Title}"/>
         </Border>
         <StackPanel VerticalAlignment="Bottom" Background="{ThemeResource ListViewItemOverlayBackgroundThemeBrush}">
             <Grid>
-                <TextBlock Grid.Column="0" Text="{Binding Title}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="30" Margin="15,0,15,0" HorizontalAlignment="Left"/>
-                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Margin="15,0,15,0">
+                <TextBlock Grid.Column="0" Text="{Binding Title}" Foreground="{ThemeResource ListViewItemOverlayForegroundThemeBrush}" Style="{StaticResource TitleTextBlockStyle}" Height="30" Margin="5,0,15,0" HorizontalAlignment="Left"/>
+                <TextBlock Grid.Column="1" Text="{Binding Creation}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,5,10" HorizontalAlignment="Right"/>
+            </Grid>
+            <Grid>
+                <local:ProfileStatusUserControl />
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Orientation="Horizontal" Margin="15,0,5,0">
                     <FontIcon x:Uid="Likes" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf087;"/>
                     <TextBlock TextWrapping="Wrap" Text="{Binding LikeCount}" MinWidth="40" Margin="10,0,0,0" VerticalAlignment="Center" />
                     <FontIcon x:Uid="Dislikes" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xF088;"/>
@@ -27,10 +31,6 @@
                     <FontIcon x:Uid="Hits" FontFamily="{StaticResource AwesomeIcons}" Glyph="&#xf06e;" VerticalAlignment="Center"/>
                     <TextBlock TextWrapping="Wrap" Text="{Binding HitCount}" MinWidth="40" Margin="10,0,0,0" VerticalAlignment="Center"/>
                 </StackPanel>
-            </Grid>
-            <Grid>
-                <local:ProfileStatusUserControl Margin="10,0,0,0"/>
-                <TextBlock Grid.Column="1" Text="{Binding Creation}" Foreground="{ThemeResource ListViewItemOverlaySecondaryForegroundThemeBrush}" Style="{StaticResource CaptionTextBlockStyle}" TextWrapping="NoWrap" Margin="15,0,15,10" HorizontalAlignment="Right"/>
             </Grid>
 
         </StackPanel>

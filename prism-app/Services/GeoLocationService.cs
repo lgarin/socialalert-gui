@@ -1,4 +1,5 @@
 ﻿using Bing.Maps;
+using Socialalert.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace Socialalert.Services
 {
     public interface IGeoLocationService
     {
-        Task<Location> GetCurrentLocation(PositionAccuracy accuracy = PositionAccuracy.Default);
+        Task<GeoAddress> GetCurrentLocation(PositionAccuracy accuracy = PositionAccuracy.Default);
 
         LocationRect ComputeLocationBounds(IEnumerable<Location> locations);
 
@@ -26,11 +27,22 @@ namespace Socialalert.Services
 
         private readonly Geolocator locator = new Geolocator();
 
-        public async Task<Location> GetCurrentLocation(PositionAccuracy accuracy = PositionAccuracy.Default)
+        public async Task<GeoAddress> GetCurrentLocation(PositionAccuracy accuracy = PositionAccuracy.Default)
         {
+            if (locator.LocationStatus == PositionStatus.Disabled || locator.LocationStatus == PositionStatus.NotAvailable)
+            {
+                return null;
+            }
+
             locator.DesiredAccuracy = accuracy;
             var location = await locator.GetGeopositionAsync();
-            return new Location(location.Coordinate.Point.Position.Latitude, location.Coordinate.Point.Position.Longitude);
+            return new GeoAddress()
+            {
+                Latitude = location?.Coordinate?.Point?.Position.Latitude,
+                Longitude = location?.Coordinate?.Point?.Position.Longitude,
+                Country = location?.CivicAddress?.Country,
+                Locality = location?.CivicAddress?.City
+            };
         }
 
         public LocationRect ComputeLocationBounds(IEnumerable<Location> locations)

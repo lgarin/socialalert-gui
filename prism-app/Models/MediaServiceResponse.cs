@@ -23,6 +23,19 @@ namespace Socialalert.Models
         DISLIKE
     }
 
+    public enum MediaCategory
+    {
+
+        ART,
+        PLACES,
+        NEWS,
+        PARTY,
+        AWESOME,
+        BUZZ,
+        NATURE,
+        SELFIES
+    }
+
     [JsonObject]
     public class MediaInfo
     {
@@ -73,11 +86,20 @@ namespace Socialalert.Models
         public double Radius;
     }
 
-
     [JsonObject]
     public class GeoStatistic : GeoArea
     {
         public long Count;
+    }
+
+    [JsonObject]
+    public class GeoAddress
+    {
+        public double? Latitude;
+        public double? Longitude;
+        public string FormattedAddress;
+        public string Locality;
+        public string Country;
     }
 
     public enum ActivityType {

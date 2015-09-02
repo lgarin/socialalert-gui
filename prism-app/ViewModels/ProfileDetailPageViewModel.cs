@@ -103,7 +103,7 @@ namespace Socialalert.ViewModels
             try
             {
                 var basePictureUri = new Uri(ResourceDictionary["BaseThumbnailUrl"] as string, UriKind.Absolute);
-                var items = await ExecuteAsync(new ListMediaByProfile() { ProfileId = profileId, PageNumber = pageIndex, PageSize = pageSize });
+                var items = await ExecuteAsync(new ListMediaByProfileRequest() { ProfileId = profileId, PageNumber = pageIndex, PageSize = pageSize });
                 var result = new List<PictureViewModel>(items.Content.Count());
                 foreach (var item in items.Content)
                 {

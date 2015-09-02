@@ -260,4 +260,7 @@ search</value>
   <data name="confirmRepostPicture" xml:space="preserve">
     <value>Repost the current picture.</value>
   </data>
+  <data name="ErrorCannotPost" xml:space="preserve">
+    <value>Posting failed.</value>
+  </data>
 </root>

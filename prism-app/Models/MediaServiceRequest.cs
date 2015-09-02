@@ -131,13 +131,24 @@ namespace Socialalert.Services
         public RepostCommentRequest() : base("mediaFacade", "repostComment") { }
     }
 
-    public class ListMediaByProfile : JsonRpcRequest<QueryResult<MediaInfo>>
+    public class ListMediaByProfileRequest : JsonRpcRequest<QueryResult<MediaInfo>>
     {
         public MediaType MediaType;
         public Guid ProfileId;
         public int PageSize;
         public int PageNumber;
 
-        public ListMediaByProfile() : base("mediaFacade", "listMediaByProfile") { }
+        public ListMediaByProfileRequest() : base("mediaFacade", "listMediaByProfile") { }
+    }
+
+    public class ClaimPictureRequest : JsonRpcRequest<MediaInfo>
+    {
+        public Uri PictureUri;
+        public string Title;
+        public GeoAddress Location;
+        public MediaCategory[] Categories;
+        public string[] Tags;
+
+        public ClaimPictureRequest() : base("mediaFacade", "claimPicture") { }
     }
 }
