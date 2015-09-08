@@ -14,14 +14,32 @@ namespace Socialalert.Services
     {
         public async Task<IRandomAccessStream> LoadImage()
         {
+            return await LoadFile(PickerLocationId.PicturesLibrary);
+        }
+
+        public async Task<IRandomAccessStream> LoadVideo()
+        {
+            return await LoadFile(PickerLocationId.VideosLibrary);
+        }
+
+        private async Task<IRandomAccessStream> LoadFile(PickerLocationId locationId)
+        {
             FileOpenPicker openPicker = new FileOpenPicker();
             openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
             openPicker.ViewMode = PickerViewMode.Thumbnail;
 
             // Filter to include a sample subset of file types.
             openPicker.FileTypeFilter.Clear();
-            openPicker.FileTypeFilter.Add(".jpeg");
-            openPicker.FileTypeFilter.Add(".jpg");
+            if (locationId == PickerLocationId.PicturesLibrary)
+            {
+                openPicker.FileTypeFilter.Add(".jpeg");
+                openPicker.FileTypeFilter.Add(".jpg");
+            }
+            else if (locationId == PickerLocationId.VideosLibrary)
+            {
+                openPicker.FileTypeFilter.Add(".mov");
+                openPicker.FileTypeFilter.Add(".mp4");
+            }
 
             // Open the file picker.
             StorageFile file = await openPicker.PickSingleFileAsync();

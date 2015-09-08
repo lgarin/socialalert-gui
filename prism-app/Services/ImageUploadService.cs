@@ -26,10 +26,27 @@ namespace Socialalert.Services
 
         public async Task<Uri> PostPictureAsync(IInputStream picture)
         {
+            return await PostFileAsync(picture, "image/jpeg");
+        }
+
+        public async Task<Uri> PostVideoAsync(IInputStream video, string filename)
+        {
+            if (filename.EndsWith("mov"))
+            {
+                return await PostFileAsync(video, "video/quicktime");
+            }
+            else
+            {
+                return await PostFileAsync(video, "video/mp4");
+            }
+        }
+
+        private async Task<Uri> PostFileAsync(IInputStream stream, string contentType)
+        {
             using (var request = new HttpRequestMessage(HttpMethod.Post, serverUri))
             {
-                request.Content = new HttpStreamContent(picture);
-                request.Content.Headers.Add("Content-Type", "image/jpeg");
+                request.Content = new HttpStreamContent(stream);
+                request.Content.Headers.Add("Content-Type", contentType);
                 using (var response = await httpClient.SendRequestAsync(request, HttpCompletionOption.ResponseHeadersRead))
                 {
                     var resultString = response.EnsureSuccessStatusCode().Headers["location"];

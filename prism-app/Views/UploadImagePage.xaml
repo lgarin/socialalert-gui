@@ -6,15 +6,25 @@
     xmlns:local="using:Socialalert.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity" 
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"  
     xmlns:prism="using:Microsoft.Practices.Prism.StoreApps"
+    xmlns:bm="using:Bing.Maps"
     xmlns:vm="using:Socialalert.ViewModels"
+    xmlns:conv="using:Socialalert.Converters"
     mc:Ignorable="d"
     d:DataContext="{Binding Source={d:DesignData Source=/Data/UploadImagePage.json, Type=vm:UploadImagePageViewModel}}"
     prism:ViewModelLocator.AutoWireViewModel="True">
 
     <prism:VisualStateAwarePage.Resources>
-
+        <DataTemplate x:Key="locationTemplate">
+            <Grid bm:MapLayer.Position="{Binding GeoLocation}" bm:MapLayer.PositionAnchor="30, 30">
+                <Ellipse Width="30" Height="30" Fill="Red" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.3" />
+                <TextBlock Text="{Binding Count}" Style="{StaticResource TitleTextBlockStyle}" TextWrapping="NoWrap" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+            </Grid>
+        </DataTemplate>
     </prism:VisualStateAwarePage.Resources>
+
 
     <prism:VisualStateAwarePage.TopAppBar>
         <AppBar x:Uid="TopAppBar">
@@ -79,6 +89,7 @@
             <Grid Grid.Row="0" Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="40"/>
                 </Grid.RowDefinitions>
@@ -88,11 +99,17 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Title" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="{ThemeResource ControlContentThemeFontSize}" Margin="5,5,5,5"/>
                 <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" Width="200" PlaceholderText="Title" FontFamily="{ThemeResource ContentControlThemeFontFamily}" Text="{Binding Title, Mode=TwoWay}" Margin="5,5,5,5"/>
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Categories" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="{ThemeResource ControlContentThemeFontSize}"  Margin="5,5,5,5"/>
-                <ListView Grid.Row="1" Grid.Column="1" SelectionMode="Extended" HorizontalAlignment="Left" Width="200" ItemsSource="{Binding Categories}" Margin="5,5,5,5" />
-
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Tags" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="{ThemeResource ControlContentThemeFontSize}"  Margin="5,5,5,5"/>
-                <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Width="400" PlaceholderText="Tags" Text="{Binding Tags, Mode=TwoWay}" Margin="5,5,5,5"/>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Category" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="{ThemeResource ControlContentThemeFontSize}"  Margin="5,5,5,5"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" Name="CategoryList" HorizontalAlignment="Left" Width="200" ItemsSource="{Binding Categories}" SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" Margin="5,5,5,5" />
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Position" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="{ThemeResource ControlContentThemeFontSize}"  Margin="5,5,5,5"/>
+                <bm:Map Grid.Row="2" Grid.Column="1" conv:MapBindings.MapBounds="{Binding MapBounds}" Credentials="{StaticResource ResourceKey=BingMapKey}" ViewChangeEnded="map_ViewChangeEnded" x:Name="map"  Margin="5,5,5,5">
+                    <bm:MapItemsControl ItemsSource="{Binding MapPositions}" >
+                        
+                    </bm:MapItemsControl>
+                </bm:Map>
+                
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Tags" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="{ThemeResource ControlContentThemeFontSize}"  Margin="5,5,5,5"/>
+                <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Width="400" PlaceholderText="Tags" Text="{Binding Tags, Mode=TwoWay}" Margin="5,5,5,5"/>
                
 
             </Grid>

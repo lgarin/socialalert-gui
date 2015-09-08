@@ -1,25 +1,32 @@
-﻿using Microsoft.Practices.Prism.StoreApps;
+﻿using Bing.Maps;
+using Microsoft.Practices.Prism.StoreApps;
 using Microsoft.Practices.Prism.StoreApps.Interfaces;
 using Microsoft.Practices.Unity;
 using Socialalert.Models;
 using Socialalert.Services;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Linq;
 using Windows.Devices.Geolocation;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Socialalert.ViewModels
 {
+
     public class UploadImagePageViewModel : LoadableViewModel
     {
         private Uri pictureUri;
         private BitmapImage uploadedPicture;
         private string title;
         private string tags;
-        private ObservableCollection<MediaCategory> selectedCategories = new ObservableCollection<MediaCategory>();
+        private GeoAddress location;
+
+
+        private MediaCategory? selectedCategory;
 
 
         [Dependency]
@@ -37,6 +44,20 @@ namespace Socialalert.ViewModels
         public DelegateCommand UploadPictureCommand { get; private set; }
 
         public DelegateCommand PostCommand { get; private set; }
+
+        public DelegateCommand<LocationRect> MapViewChangedCommand { get; private set; }
+
+        public LocationRect MapBounds
+        {
+            get
+            {
+                if (location != null && location.Latitude != null && location.Longitude != null)
+                {
+                    return new LocationRect(new Location(location.Latitude.Value, location.Longitude.Value), 10.0, 10.0);
+                }
+                return null;
+            }
+        }
 
         public string Title
         {
@@ -67,19 +88,8 @@ namespace Socialalert.ViewModels
         {
             get
             {
-                return (MediaCategory[])Enum.GetValues(typeof(MediaCategory));
-            }
-        }
 
-        public ObservableCollection<MediaCategory> SelectedCategories
-        {
-            get
-            {
-                return selectedCategories;
-            }
-            set
-            {
-                SetProperty(ref selectedCategories, value);
+                return (MediaCategory[])Enum.GetValues(typeof(MediaCategory));
             }
         }
 
@@ -90,6 +100,14 @@ namespace Socialalert.ViewModels
             ApplicationStateService.PropertyChanged += (s, e) => UploadPictureCommand.RaiseCanExecuteChanged();
             PostCommand = new DelegateCommand(PostPicture, CanPostPicture);
             ApplicationStateService.PropertyChanged += (s, e) => PostCommand.RaiseCanExecuteChanged();
+            MapViewChangedCommand = new DelegateCommand<LocationRect>(ChangeLocation);
+        }
+
+        private void ChangeLocation(LocationRect box)
+        {
+            location = new GeoAddress();
+            location.Longitude = box.Center.Longitude;
+            location.Latitude = box.Center.Latitude;
         }
 
         public BitmapImage UploadedPicture
@@ -146,7 +164,7 @@ namespace Socialalert.ViewModels
 
         private bool CanPostPicture()
         {
-            return ApplicationStateService.CurrentUser != null && !string.IsNullOrWhiteSpace(Title) && UploadedPicture != null;
+            return ApplicationStateService.CurrentUser != null && !string.IsNullOrWhiteSpace(Title) && UploadedPicture != null && SelectedCategory != null;
         }
 
         private string[] TagArray
@@ -157,16 +175,22 @@ namespace Socialalert.ViewModels
             }
         }
 
+        public MediaCategory? SelectedCategory
+        {
+            get { return selectedCategory; }
+            set { SetProperty(ref selectedCategory, value); PostCommand.RaiseCanExecuteChanged(); }
+        }
+
+
         private MediaCategory[] CategoryArray
         {
             get
             {
-                /*
-                MediaCategory[] array = new MediaCategory[SelectedCategories.Count];
-                SelectedCategories.CopyTo(array, 0);
-                return array;
-                */
-                return new[] { MediaCategory.AWESOME };
+                if (SelectedCategory == null)
+                {
+                    return new MediaCategory[0];
+                }
+                return new[] { SelectedCategory.Value };
             }
         }
 
@@ -174,7 +198,7 @@ namespace Socialalert.ViewModels
         {
             try
             {
-                var location = await GeoLocationService.GetCurrentLocation(PositionAccuracy.High);
+                
                 await ExecuteAsync(new ClaimPictureRequest() { PictureUri = pictureUri, Title = this.Title, Tags = this.TagArray, Categories = this.CategoryArray, Location = location });
                 NavigationService.GoBack();
             }
@@ -182,6 +206,11 @@ namespace Socialalert.ViewModels
             {
                 await AlertMessageService.ShowAsync(e.Message, ResourceLoader.GetString("ErrorCannotPost"));
             }
+        }
+
+        public async override void OnNavigatedTo(object navigationParameter, Windows.UI.Xaml.Navigation.NavigationMode navigationMode, Dictionary<string, object> viewModelState)
+        {
+            location = await GeoLocationService.GetCurrentLocation(PositionAccuracy.High);
         }
     }
 }
