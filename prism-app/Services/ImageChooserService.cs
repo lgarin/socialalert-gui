@@ -12,17 +12,17 @@ namespace Socialalert.Services
 {
     public class ImageChooserService
     {
-        public async Task<IRandomAccessStream> LoadImage()
+        public async Task<StorageFile> LoadImage()
         {
             return await LoadFile(PickerLocationId.PicturesLibrary);
         }
 
-        public async Task<IRandomAccessStream> LoadVideo()
+        public async Task<StorageFile> LoadVideo()
         {
             return await LoadFile(PickerLocationId.VideosLibrary);
         }
 
-        private async Task<IRandomAccessStream> LoadFile(PickerLocationId locationId)
+        private async Task<StorageFile> LoadFile(PickerLocationId locationId)
         {
             FileOpenPicker openPicker = new FileOpenPicker();
             openPicker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
@@ -44,14 +44,7 @@ namespace Socialalert.Services
             // Open the file picker.
             StorageFile file = await openPicker.PickSingleFileAsync();
 
-            // file is null if user cancels the file picker.
-            if (file != null)
-            {
-                // Open a stream for the selected file.
-                return await file.OpenAsync(FileAccessMode.Read);
-            }
-
-            return null;
+            return file;
         }
     }
 }

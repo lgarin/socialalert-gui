@@ -12,6 +12,8 @@ using System.Globalization;
 using System.Linq;
 using Windows.Devices.Geolocation;
 using Windows.Storage.Streams;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace Socialalert.ViewModels
@@ -19,12 +21,14 @@ namespace Socialalert.ViewModels
 
     public class UploadImagePageViewModel : LoadableViewModel
     {
-        private Uri pictureUri;
+        private Uri mediaUri;
         private BitmapImage uploadedPicture;
+        private Uri uploadedVideo;
         private string title;
         private string tags;
         private GeoAddress location;
-
+        private bool video;
+        private MediaElement mediaElement;
 
         private MediaCategory? selectedCategory;
 
@@ -41,7 +45,7 @@ namespace Socialalert.ViewModels
         [Dependency]
         protected IGeoLocationService GeoLocationService { get; set; }
 
-        public DelegateCommand UploadPictureCommand { get; private set; }
+        public DelegateCommand UploadMediaCommand { get; private set; }
 
         public DelegateCommand PostCommand { get; private set; }
 
@@ -53,9 +57,29 @@ namespace Socialalert.ViewModels
             {
                 if (location != null && location.Latitude != null && location.Longitude != null)
                 {
-                    return new LocationRect(new Location(location.Latitude.Value, location.Longitude.Value), 10.0, 10.0);
+                    return new LocationRect(new Location(location.Latitude.Value, location.Longitude.Value), 1.0, 1.0);
                 }
                 return null;
+            }
+        }
+
+        public bool IsVideo
+        {
+            get
+            {
+                return video;
+            }
+            set
+            {
+                SetProperty(ref video, value);
+                if (video)
+                {
+                    UploadedPicture = null;
+                }
+                else
+                {
+                    UploadedVideo = null;
+                }
             }
         }
 
@@ -96,11 +120,14 @@ namespace Socialalert.ViewModels
         public UploadImagePageViewModel(IApplicationStateService applicationStateService)
         {
             ApplicationStateService = applicationStateService;
-            UploadPictureCommand = new DelegateCommand(UploadPicture, CanUploadPicture);
-            ApplicationStateService.PropertyChanged += (s, e) => UploadPictureCommand.RaiseCanExecuteChanged();
+            UploadMediaCommand = new DelegateCommand(UploadMedia, CanUploadMedia);
+            ApplicationStateService.PropertyChanged += (s, e) => UploadMediaCommand.RaiseCanExecuteChanged();
             PostCommand = new DelegateCommand(PostPicture, CanPostPicture);
             ApplicationStateService.PropertyChanged += (s, e) => PostCommand.RaiseCanExecuteChanged();
             MapViewChangedCommand = new DelegateCommand<LocationRect>(ChangeLocation);
+            mediaElement = new MediaElement() { IsMuted = true, IsLooping = true, AutoPlay = true, Stretch = Stretch.Uniform };
+            mediaElement.MediaFailed += (s, e) => ShowError(e.ErrorMessage);
+            mediaElement.MediaOpened += (s, e) => CompleteLoad();
         }
 
         private void ChangeLocation(LocationRect box)
@@ -116,15 +143,33 @@ namespace Socialalert.ViewModels
             private set { SetProperty(ref uploadedPicture, value); }
         }
 
-        private bool CanUploadPicture()
+        public Uri UploadedVideo
+        {
+            get { return uploadedVideo; }
+            private set { SetProperty(ref uploadedVideo, value); }
+        }
+
+        private bool CanUploadMedia()
         {
             return ApplicationStateService.CurrentUser != null;
         }
 
+        private void UploadMedia()
+        {
+            if (IsVideo)
+            {
+                UploadVideo();
+            }
+            else
+            {
+                UploadPicture();
+            }
+        }
+
         private async void UploadPicture()
         {
-            var stream = await ImageChooser.LoadImage();
-            if (stream == null)
+            var file = await ImageChooser.LoadImage();
+            if (file == null)
             {
                 return;
             }
@@ -132,11 +177,34 @@ namespace Socialalert.ViewModels
             try
             {
                 LoadingData = true;
-                pictureUri = await ImageUploadService.PostPictureAsync(stream);
+                mediaUri = await ImageUploadService.PostPictureAsync(file);
                 var baseUri = new Uri(ResourceDictionary["BasePreviewUrl"] as string, UriKind.Absolute);
-                UploadedPicture = new BitmapImage(new Uri(baseUri, pictureUri));
+                UploadedPicture = new BitmapImage(new Uri(baseUri, mediaUri));
                 UploadedPicture.ImageFailed += (s, e) => ShowError(e.ErrorMessage);
                 UploadedPicture.ImageOpened += (s, e) => CompleteLoad();
+            }
+            catch (Exception e)
+            {
+                ShowError(e.Message);
+            }
+        }
+
+
+        private async void UploadVideo()
+        {
+            var file = await ImageChooser.LoadVideo();
+            if (file == null)
+            {
+                return;
+            }
+
+            try
+            {
+                LoadingData = true;
+                mediaUri = await ImageUploadService.PostVideoAsync(file);
+                var baseUri = new Uri(ResourceDictionary["BasePreviewUrl"] as string, UriKind.Absolute);
+                UploadedVideo = new Uri(baseUri, mediaUri);
+                mediaElement.Source = UploadedVideo;
             }
             catch (Exception e)
             {
@@ -154,7 +222,8 @@ namespace Socialalert.ViewModels
         {
             LoadingData = false;
             UploadedPicture = null;
-            pictureUri = null;
+            UploadedVideo = null;
+            mediaUri = null;
 
             var errorMessage = string.Format(CultureInfo.CurrentCulture,
                                                  ResourceLoader.GetString("GeneralServiceErrorMessage"),
@@ -198,8 +267,15 @@ namespace Socialalert.ViewModels
         {
             try
             {
+                if (IsVideo)
+                {
+
+                }
+                else
+                {
+                    await ExecuteAsync(new ClaimPictureRequest() { PictureUri = mediaUri, Title = this.Title, Tags = this.TagArray, Categories = this.CategoryArray, Location = location });
+                }
                 
-                await ExecuteAsync(new ClaimPictureRequest() { PictureUri = pictureUri, Title = this.Title, Tags = this.TagArray, Categories = this.CategoryArray, Location = location });
                 NavigationService.GoBack();
             }
             catch (JsonRpcException e)
@@ -211,6 +287,8 @@ namespace Socialalert.ViewModels
         public async override void OnNavigatedTo(object navigationParameter, Windows.UI.Xaml.Navigation.NavigationMode navigationMode, Dictionary<string, object> viewModelState)
         {
             location = await GeoLocationService.GetCurrentLocation(PositionAccuracy.High);
+            OnPropertyChanged(() => MapBounds);
         }
     }
 }
+

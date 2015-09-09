@@ -67,7 +67,7 @@
                        IsHitTestVisible="false" 
 					   Margin="0,0,30,40"
 					   Style="{StaticResource HeaderTextBlockStyle}" 
-			           Text="Upload Image" 
+			           Text="Upload Object" 
 					   TextWrapping="NoWrap" 
 					   VerticalAlignment="Bottom" />
         </Grid>
@@ -80,10 +80,16 @@
                 <ColumnDefinition MinWidth="100"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Row="0" Grid.Column="0" Command="{Binding UploadPictureCommand}" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="640" Height="480" HorizontalAlignment="Left" Margin="0,-6,0,134" Grid.RowSpan="2" >
+            <Button Grid.Row="0" Grid.Column="0" Command="{Binding UploadMediaCommand}" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="640" Height="480" HorizontalAlignment="Left" Margin="0,-6,0,134" Grid.RowSpan="2" >
                 <StackPanel>
-                    <Image Source="{Binding UploadedPicture}" Stretch="Uniform" Visibility="{Binding UploadedPicture, Converter={StaticResource ObjectToVisibilityConverter}}"/>
-                    <TextBlock Text="Upload" Visibility="{Binding UploadedPicture, Converter={StaticResource ObjectToCollapsedConverter}}"/>
+                    <StackPanel Visibility="{Binding IsVideo, Converter={StaticResource BooleanToCollapsedConverter}}">
+                        <Image Source="{Binding UploadedPicture}" Stretch="Uniform" Visibility="{Binding UploadedPicture, Converter={StaticResource ObjectToVisibilityConverter}}"/>
+                        <TextBlock Text="Upload Picture" Visibility="{Binding UploadedPicture, Converter={StaticResource ObjectToCollapsedConverter}}"/>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <ContentControl Content="{Binding MediaElement}" Visibility="{Binding UploadedVideo, Converter={StaticResource ObjectToVisibilityConverter}}"/>
+                        <TextBlock Text="Upload Video" Visibility="{Binding UploadedVideo, Converter={StaticResource ObjectToCollapsedConverter}}"/>
+                    </StackPanel>
                 </StackPanel>
             </Button>
             <Grid Grid.Row="0" Grid.Column="1">
@@ -113,6 +119,10 @@
                
 
             </Grid>
+            <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left"  >
+                <RadioButton GroupName="Mode" Content="Picture" IsChecked="{Binding IsVideo, Converter={StaticResource InverseBooleanConverter}, Mode=TwoWay}" Margin="10" />
+                <RadioButton GroupName="Mode" Content="Video" IsChecked="{Binding IsVideo, Mode=TwoWay}" Margin="10" />
+            </StackPanel>
             <Button Grid.Row="3" Grid.Column="1" Content="Post" HorizontalAlignment="Left" Margin="55,0,0,32" VerticalAlignment="Bottom" Height="40" Width="80" Command="{Binding PostCommand}"/>
         </Grid>
         <ProgressRing Grid.Row="1" IsActive="{Binding LoadingData}" Height="100" Width="100" />
