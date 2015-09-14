@@ -45,6 +45,18 @@ namespace Socialalert.ViewModels
         [Dependency]
         protected IGeoLocationService GeoLocationService { get; set; }
 
+        public MediaElement MediaElement
+        {
+            get
+            {
+                return mediaElement;
+            }
+            set
+            {
+                SetProperty(ref mediaElement, value);
+            }
+        }
+
         public DelegateCommand UploadMediaCommand { get; private set; }
 
         public DelegateCommand PostCommand { get; private set; }
@@ -233,7 +245,7 @@ namespace Socialalert.ViewModels
 
         private bool CanPostPicture()
         {
-            return ApplicationStateService.CurrentUser != null && !string.IsNullOrWhiteSpace(Title) && UploadedPicture != null && SelectedCategory != null;
+            return ApplicationStateService.CurrentUser != null && !string.IsNullOrWhiteSpace(Title) && mediaUri != null && SelectedCategory != null;
         }
 
         private string[] TagArray
