@@ -83,12 +83,12 @@
             <Button Grid.Row="0" Grid.Column="0" Command="{Binding UploadMediaCommand}" Background="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" Width="640" Height="480" HorizontalAlignment="Left" Margin="0,-6,0,134" Grid.RowSpan="2" >
                 <StackPanel>
                     <StackPanel Visibility="{Binding IsVideo, Converter={StaticResource BooleanToCollapsedConverter}}">
-                        <Image Source="{Binding UploadedPicture}" Stretch="Uniform" Visibility="{Binding UploadedPicture, Converter={StaticResource ObjectToVisibilityConverter}}"/>
-                        <TextBlock Text="Upload Picture" Visibility="{Binding UploadedPicture, Converter={StaticResource ObjectToCollapsedConverter}}"/>
+                        <Image Source="{Binding BitmapImage}" Visibility="{Binding BitmapImage.UriSource, Converter={StaticResource ObjectToVisibilityConverter}}"/>
+                        <TextBlock Text="Upload Picture" Visibility="{Binding BitmapImage.UriSource, Converter={StaticResource ObjectToCollapsedConverter}}"/>
                     </StackPanel>
                     <StackPanel Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
-                        <ContentControl Content="{Binding MediaElement}" Visibility="{Binding UploadedVideo, Converter={StaticResource ObjectToVisibilityConverter}}"/>
-                        <TextBlock Text="Upload Video" Visibility="{Binding UploadedVideo, Converter={StaticResource ObjectToCollapsedConverter}}"/>
+                        <ContentControl Content="{Binding MediaElement}" Visibility="{Binding MediaElement.Source, Converter={StaticResource ObjectToVisibilityConverter}}"/>
+                        <TextBlock Text="Upload Video" Visibility="{Binding MediaElement.Source, Converter={StaticResource ObjectToCollapsedConverter}}"/>
                     </StackPanel>
                 </StackPanel>
             </Button>

@@ -19,11 +19,11 @@ namespace Socialalert.Models
         }
     }
 
-    public class IsFollowingProfileRequest : JsonRpcRequest<Boolean>
+    public class IsFollowingProfileRequest : JsonRpcRequest<DateTime>
     {
         public Guid ProfileId;
 
-        public IsFollowingProfileRequest() : base("profileFacade", "isFollowing") { }
+        public IsFollowingProfileRequest() : base("profileFacade", "isFollowingSince") { }
 
         public IsFollowingProfileRequest(Guid profileId) : this()
         {

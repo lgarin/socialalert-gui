@@ -89,7 +89,7 @@ namespace Socialalert.Converters
         private static void OnMapBoundsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var map = d as Bing.Maps.Map;
-            if (map != null)
+            if (map != null && e.NewValue != null)
             {
                 map.SetView((LocationRect)e.NewValue);
             }

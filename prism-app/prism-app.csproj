@@ -131,7 +131,7 @@
     <Compile Include="Services\ApplicationStateService.cs" />
     <Compile Include="Services\GeoLocationService.cs" />
     <Compile Include="Services\ImageChooserService.cs" />
-    <Compile Include="Services\ImageUploadService.cs" />
+    <Compile Include="Services\MediaUploadService.cs" />
     <Compile Include="Services\JsonRpcClient.cs" />
     <Compile Include="Services\LoginCredentialService.cs" />
     <Compile Include="Services\MasterDataService.cs" />

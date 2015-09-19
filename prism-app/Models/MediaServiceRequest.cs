@@ -151,4 +151,15 @@ namespace Socialalert.Services
 
         public ClaimPictureRequest() : base("mediaFacade", "claimPicture") { }
     }
+
+    public class ClaimVideoRequest : JsonRpcRequest<MediaInfo>
+    {
+        public Uri VideoUri;
+        public string Title;
+        public GeoAddress Location;
+        public MediaCategory[] Categories;
+        public string[] Tags;
+
+        public ClaimVideoRequest() : base("mediaFacade", "claimVideo") { }
+    }
 }

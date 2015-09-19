@@ -121,7 +121,7 @@ namespace Socialalert.ViewModels
         {
             if (ApplicationStateService.CurrentUser != null)
             {
-                Info.IsFollowed = await ExecuteAsync(new IsFollowingProfileRequest(Info.ProfileId));
+                Info.IsFollowed = await ExecuteAsync(new IsFollowingProfileRequest(Info.ProfileId)) != null;
             }
             else
             {
