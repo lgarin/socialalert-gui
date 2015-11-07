@@ -99,11 +99,11 @@ namespace Socialalert.ViewModels
                 SetProperty(ref video, value);
                 if (video)
                 {
-                    BitmapImage.UriSource = null;
+                    ResetPicture();
                 }
                 else
                 {
-                    MediaElement.Source = null;
+                    ResetVideo();
                 }
             }
         }
@@ -150,6 +150,8 @@ namespace Socialalert.ViewModels
             PostCommand = new DelegateCommand(PostPicture, CanPostPicture);
             ApplicationStateService.PropertyChanged += (s, e) => PostCommand.RaiseCanExecuteChanged();
             MapViewChangedCommand = new DelegateCommand<LocationRect>(ChangeLocation);
+
+            
         }
 
         private void ChangeLocation(LocationRect box)
@@ -196,7 +198,7 @@ namespace Socialalert.ViewModels
                 LoadingData = true;
                 var info = await MediaUploadService.PostPictureAsync(file);
                 BitmapImage.UriSource = HandleUploadInfo(info);
-                OnPropertyChanged(() => BitmapImage);
+                //OnPropertyChanged(() => BitmapImage);
             }
             catch (Exception e)
             {
@@ -219,7 +221,7 @@ namespace Socialalert.ViewModels
                 LoadingData = true;
                 var info = await MediaUploadService.PostVideoAsync(file);
                 MediaElement.Source = HandleUploadInfo(info);
-                OnPropertyChanged(() => MediaElement);
+                //OnPropertyChanged(() => MediaElement);
             }
             catch (Exception e)
             {
@@ -245,8 +247,19 @@ namespace Socialalert.ViewModels
         {
             LoadingData = false;
             mediaUri = null;
-            MediaElement.Source = null;
+            ResetVideo();
+            ResetPicture();
+        }
+
+        private void ResetPicture()
+        {
             BitmapImage.UriSource = null;
+        }
+
+        private void ResetVideo()
+        {
+            MediaElement.Stop();
+            MediaElement.Source = null;
         }
 
         private async void ShowError(String technicalMessage)
@@ -324,6 +337,13 @@ namespace Socialalert.ViewModels
 
             ResetUpload();
             ChangeLocation(await GeoLocationService.GetCurrentLocation(PositionAccuracy.High));
+        }
+
+        public override void OnNavigatedFrom(Dictionary<string, object> viewModelState, bool suspending)
+        {
+            ResetUpload();
+            MediaElement = null;
+            BitmapImage = null;
         }
     }
 }

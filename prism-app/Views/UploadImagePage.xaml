@@ -92,6 +92,7 @@
                     </StackPanel>
                 </StackPanel>
             </Button>
+            <ProgressRing Grid.Row="0" Grid.Column="0" IsActive="{Binding LoadingData}" Height="100" Width="100" />
             <Grid Grid.Row="0" Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
@@ -125,6 +126,6 @@
             </StackPanel>
             <Button Grid.Row="3" Grid.Column="1" Content="Post" HorizontalAlignment="Left" Margin="55,0,0,32" VerticalAlignment="Bottom" Height="40" Width="80" Command="{Binding PostCommand}"/>
         </Grid>
-        <ProgressRing Grid.Row="1" IsActive="{Binding LoadingData}" Height="100" Width="100" />
+        
     </Grid>
 </prism:VisualStateAwarePage>
