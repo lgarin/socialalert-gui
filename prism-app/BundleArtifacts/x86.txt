@@ -1,0 +1,3 @@
+MainPackage=C:\Dev\socialalert-gui\prism-app\bin\x86\Debug\prism-app_1.0.0.0_x86_Debug.appx
+SymbolPackage=C:\Dev\socialalert-gui\prism-app\AppPackages\prism-app_1.0.0.0_Debug_Test\prism-app_1.0.0.0_x86_Debug.appxsym
+ResourcePack=C:\Dev\socialalert-gui\prism-app\bin\x86\Debug\prism-app_1.0.0.0_scale-180.appx
