@@ -10,11 +10,29 @@ namespace Bravson.Socialalert.Portable
 {
     public partial class App : Application
     {
+        public AppState State { get; } = new AppState();
+
+        public new static App Current
+        {
+            get { return Application.Current as App; }
+        }
+
+        private JsonRpcClient client;
+
         public App()
         {
             InitializeComponent();
-            // The root page of your application
-            //MainPage = new TestPage();
+            client = new JsonRpcClient(Resources["BaseServerUrl"] as string);
+            if (Properties.ContainsKey("State"))
+            {
+                State.Populate(Properties["State"] as string);
+            }
+            MainPage = new LoginPage();
+        }
+
+        public async Task<T> RequestServerAsync<T>(JsonRpcRequest<T> requestObject)
+        {
+            return await client.InvokeAsync(requestObject);
         }
 
         protected override void OnStart()
@@ -24,7 +42,7 @@ namespace Bravson.Socialalert.Portable
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps
+            Properties["State"] = State.Serialize();
         }
 
         protected override void OnResume()

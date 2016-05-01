@@ -5,19 +5,14 @@
              x:Class="Bravson.Socialalert.Portable.App">
   <Application.Resources>
     <ResourceDictionary>
-      <x:Double x:Key="borderWidth">3</x:Double>
-      <x:String x:Key="fontSize">Large</x:String>
+      <x:String x:Key="UploadServerUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/upload</x:String>
+      <x:String x:Key="BaseServerUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/rest/</x:String>
+      <x:String x:Key="BaseThumbnailUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/thumbnail/</x:String>
+      <x:String x:Key="BaseImageUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/media/</x:String>
+      <x:String x:Key="BasePreviewUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/preview/</x:String>
+      <x:String x:Key="ProfilePictureUriPattern">profiles/{0}.jpg</x:String>
       <OnPlatform x:Key="backgroundColor" x:TypeArguments="Color" Android="#404040" />
       <OnPlatform x:Key="borderColor" x:TypeArguments="Color" Android="White" WinPhone="Black" />
     </ResourceDictionary>
   </Application.Resources>
-  <Application.MainPage>
-    <ContentPage>
-      <StackLayout>
-        <Label FontSize="{StaticResource fontSize}">Test it</Label>
-        <Image Source="{local:ImageResource login_bg.jpg}"/>
-        <Image Source="https://developer.xamarin.com/demo/IMG_3256.JPG" />
-      </StackLayout>
-    </ContentPage>
-  </Application.MainPage>
 </Application>
