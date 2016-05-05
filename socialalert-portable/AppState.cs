@@ -13,6 +13,13 @@ namespace Bravson.Socialalert.Portable
     [JsonObject]
     public sealed class AppState : SimpleModel
     {
+        [JsonIgnore]
+        public UserInfo UserInfo
+        {
+            get { return Get<UserInfo>(); }
+            set { Set(value); }
+        }
+
         public string DefaultUsername
         {
             get { return Get<string>(); }

@@ -101,6 +101,7 @@ namespace Bravson.Socialalert.Portable
                 using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead))
                 {
                     var resultString = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
+                    var cookies = response.Headers.Where(x => x.Key == "Set-Cookie").SelectMany(x => x.Value).FirstOrDefault(x => x.StartsWith("JSESSIONID="));
                     var array = JObject.Parse(resultString);
                     var error = array["error"];
                     var result = array["result"];

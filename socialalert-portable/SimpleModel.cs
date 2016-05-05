@@ -7,22 +7,48 @@ using Xamarin.Forms;
 
 namespace Bravson.Socialalert.Portable
 {
-    /**
-     * use regex
-     * public (\w+\??) (\w+);
-     * public $1 $2 { get { return Get<$1>(); } set { Set(value); } }
-     * 
-     * public (\w+\??)\[\] (\w+);
-     * public ObservableCollection<$1> $2 = new ObservableCollection<$1>();
-     */
-    public abstract class SimpleModel : INotifyPropertyChanged
+    public sealed class PropertyStore
     {
         private readonly Dictionary<string, object> propertyDictionary = new Dictionary<string, object>();
+        
+        public T GetValue<T>(string propertyName = null)
+        {
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException("propertyName");
+            }
+
+            object value;
+            if (propertyDictionary.TryGetValue(propertyName, out value))
+            {
+                return (T)value;
+            }
+
+            return default(T);
+        }
+
+        public bool SetValue<T>(T newValue, string propertyName)
+        {
+            if (propertyName == null)
+            {
+                throw new ArgumentNullException("propertyName");
+            }
+
+            T oldValue = GetValue<T>(propertyName);
+            if (EqualityComparer<T>.Default.Equals(newValue, oldValue))
+            {
+                return false;
+            }
+            propertyDictionary[propertyName] = newValue;
+            return true;
+        }
+    }
+
+    public sealed class CommandStore
+    {
         private readonly Dictionary<string, Command> commandDictionary = new Dictionary<string, Command>();
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected ICommand Command(Action action, Func<bool> check, [CallerMemberName] string propertyName = null)
+        public Command GetOrCreate(Action action, Func<bool> check, string propertyName)
         {
             if (propertyName == null)
             {
@@ -40,41 +66,41 @@ namespace Bravson.Socialalert.Portable
             return value;
         }
 
-        protected T Get<T>([CallerMemberName] string propertyName = null)
+        public void RefreshAll()
         {
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException("propertyName");
-            }
-
-            object value;
-            if (propertyDictionary.TryGetValue(propertyName, out value))
-            {
-                return (T)value;
-            }
-
-            return default(T);
-        }
-
-        protected bool Set<T>(T newValue, [CallerMemberName] string propertyName = null)
-        {
-            if (propertyName == null)
-            {
-                throw new ArgumentNullException("propertyName");
-            }
-
-            T oldValue = Get<T>(propertyName);
-            if (EqualityComparer<T>.Default.Equals(newValue, oldValue))
-            {
-                return false;
-            }
-            propertyDictionary[propertyName] = newValue;
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             foreach (var command in commandDictionary.Values)
             {
                 command.ChangeCanExecute();
             }
-            return true;
+        }
+    }
+
+    /**
+     * use regex
+     * public (\w+\??) (\w+);
+     * public $1 $2 { get { return Get<$1>(); } set { Set(value); } }
+     * 
+     * public (\w+\??)\[\] (\w+);
+     * public ObservableCollection<$1> $2 = new ObservableCollection<$1>();
+     */
+    public abstract class SimpleModel : INotifyPropertyChanged
+    {
+        private PropertyStore properties = new PropertyStore();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected T Get<T>([CallerMemberName] string propertyName = null)
+        {
+            return properties.GetValue<T>(propertyName);
+        }
+
+        protected bool Set<T>(T newValue, [CallerMemberName] string propertyName = null)
+        {
+            if (properties.SetValue(newValue, propertyName)) {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+                return true;
+            }
+            return false;
         }
     }
 }

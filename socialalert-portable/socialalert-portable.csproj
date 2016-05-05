@@ -47,14 +47,15 @@
     <Compile Include="Data\UserServiceRequest.cs" />
     <Compile Include="Data\UserServiceResponse.cs" />
     <Compile Include="JsonRpcClient.cs" />
-    <Compile Include="LoadableModel.cs" />
-    <Compile Include="LoginModel.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ModelPage.cs" />
+    <Compile Include="PictureGridPage.xaml.cs">
+      <DependentUpon>PictureGridPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleModel.cs" />
-    <Compile Include="TestPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -85,6 +86,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="LoginPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="PictureGridPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
       <SubType>Designer</SubType>
     </EmbeddedResource>
