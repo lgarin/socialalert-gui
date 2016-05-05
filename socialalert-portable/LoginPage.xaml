@@ -5,24 +5,40 @@
              x:Class="Bravson.Socialalert.Portable.LoginPage">
   <Grid>
     <Image Source="login_bg.jpg" Aspect="Fill"/>
-    <StackLayout VerticalOptions="Start" HorizontalOptions="Center" Spacing="20" WidthRequest="250">
-      <Image Source="logo_login.png" WidthRequest="140" HeightRequest="140" Margin="0, 50, 0, 10"/>
-      <Frame BackgroundColor="White" HasShadow="True" Padding="5">
-        <StackLayout Orientation="Horizontal">
-          <Image Source="email_login_icon.png" Aspect="AspectFit" WidthRequest="32"/>
-          <Entry x:Name="usernameEntry" Placeholder="Email" Keyboard="Email" Text="{Binding Username}" TextColor="Black" PlaceholderColor="Gray"/>
+    <ScrollView>
+      <Grid x:Name="mainGrid" VerticalOptions="Start" HorizontalOptions="Center">
+        <!-- Initialized for portrait mode. -->
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="0" />
+        </Grid.ColumnDefinitions>
+        <StackLayout  Grid.Row="0" Grid.Column="0" Padding="10">
+          <BoxView x:Name="paddingBox" HeightRequest="50"/>
+          <Image x:Name="logoImage" Source="logo_login.png" WidthRequest="140" HeightRequest="140"/>
         </StackLayout>
-      </Frame>
-      <Frame BackgroundColor="White" HasShadow="True" Padding="5">
-        <StackLayout Orientation="Horizontal">
-          <Image Source="password_login_icon.png" Aspect="AspectFit" WidthRequest="32" />
-          <Entry x:Name="passwordEntry" Placeholder="Password" IsPassword="True" Text="{Binding Password}" TextColor="Black" PlaceholderColor="Gray"/>
+        <StackLayout x:Name="controlPanelStack" Grid.Row="1" Grid.Column="0" Spacing="20" WidthRequest="250">
+          <Frame BackgroundColor="White" HasShadow="True" Padding="5">
+            <StackLayout Orientation="Horizontal">
+              <Image Source="email_login_icon.png" Aspect="AspectFit" WidthRequest="32"/>
+              <Entry x:Name="usernameEntry" Placeholder="Email" Keyboard="Email" Text="{Binding Username}" TextColor="Black" PlaceholderColor="Gray" WidthRequest="198"/>
+            </StackLayout>
+          </Frame>
+          <Frame BackgroundColor="White" HasShadow="True" Padding="5">
+            <StackLayout Orientation="Horizontal">
+              <Image Source="password_login_icon.png" Aspect="AspectFit" WidthRequest="32" />
+              <Entry x:Name="passwordEntry" Placeholder="Password" IsPassword="True" Text="{Binding Password}" TextColor="Black" PlaceholderColor="Gray" WidthRequest="198"/>
+            </StackLayout>
+          </Frame>
+          <Grid>
+            <Button Text="Login" BackgroundColor="#202F80" TextColor="White" FontAttributes="Bold" Command="{Binding Login}"/>
+            <ActivityIndicator VerticalOptions="Center" HorizontalOptions="Center" IsRunning="{Binding LoadingData}" />
+          </Grid>
         </StackLayout>
-      </Frame>
-      <Grid>
-        <Button Text="Login" BackgroundColor="#202F80" TextColor="White" FontAttributes="Bold" Command="{Binding Login}"/>
-        <ActivityIndicator VerticalOptions="Center" HorizontalOptions="Center" IsRunning="{Binding LoadingData}" />
-      </Grid>
-    </StackLayout>
+     </Grid>
+    </ScrollView>
   </Grid>
 </local:ModelPage>
