@@ -3,5 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Bravson.Socialalert.Portable"
              x:Class="Bravson.Socialalert.Portable.PictureGridPage">
-  <Label Text="{Binding MainText}" VerticalOptions="Center" HorizontalOptions="Center" />
+
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Name="Search" Order="Primary" Icon="search_header_icon.png"/>
+  </ContentPage.ToolbarItems>
+
+  <ListView x:Name="listView" IsPullToRefreshEnabled="true" RefreshCommand="{Binding Refresh}" ItemsSource="{Binding ItemList}" RowHeight="200" >
+    <ListView.ItemTemplate>
+      <DataTemplate>
+        <ViewCell>
+          <Grid BackgroundColor="White" Padding="5">
+            <Image Source="{Binding ImageSource}" Aspect="AspectFill"/>
+          </Grid>
+        </ViewCell>
+      </DataTemplate>
+    </ListView.ItemTemplate>
+  </ListView>
 </local:ModelPage>

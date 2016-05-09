@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Xamarin.Forms;
 
-namespace Bravson.Socialalert.Portable
+namespace Bravson.Socialalert.Portable.Model
 {
     public sealed class PropertyStore
     {

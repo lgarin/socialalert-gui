@@ -38,7 +38,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AppState.cs" />
+    <Compile Include="Model\AppState.cs" />
     <Compile Include="Data\Constants.cs" />
     <Compile Include="Data\MediaServiceRequest.cs" />
     <Compile Include="Data\MediaServiceResponse.cs" />
@@ -51,11 +51,12 @@
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ModelPage.cs" />
+    <Compile Include="Model\PictureGridItem.cs" />
     <Compile Include="PictureGridPage.xaml.cs">
       <DependentUpon>PictureGridPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SimpleModel.cs" />
+    <Compile Include="Model\SimpleModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">

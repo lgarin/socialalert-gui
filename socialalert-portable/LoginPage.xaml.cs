@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using Xamarin.Forms;
 
 namespace Bravson.Socialalert.Portable
@@ -51,6 +44,7 @@ namespace Bravson.Socialalert.Portable
             {
                 App.State.UserInfo = await ExecuteAsync(new LoginRequest(Username, Password));
                 App.State.DefaultUsername = Username;
+                App.Current.MainPage = new NavigationPage(new PictureGridPage());
             }
             catch (Exception e)
             {

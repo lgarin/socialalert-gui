@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace Bravson.Socialalert.Portable
+namespace Bravson.Socialalert.Portable.Model
 {
     [JsonObject]
     public sealed class AppState : SimpleModel
