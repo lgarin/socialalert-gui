@@ -9,14 +9,14 @@ namespace Bravson.Socialalert.Portable.Model
 {
     public class PictureGridItem : SimpleModel
     {
-        public PictureGridItem(MediaInfo info, Uri baseThumbnailUri)
+        public PictureGridItem(IEnumerable<MediaInfo> mediaInfoGroup, Uri baseThumbnailUri)
         {
-            ImageSource = ImageSource.FromUri(new Uri(baseThumbnailUri, info.MediaUri));
+            ImageSources = mediaInfoGroup.Select(x => x == null ? null : ImageSource.FromUri(new Uri(baseThumbnailUri, x.MediaUri))).ToArray();
         }
 
-        public ImageSource ImageSource
+        public ImageSource[] ImageSources
         {
-            get { return Get<ImageSource>(); }
+            get { return Get<ImageSource[]>(); }
             set { Set(value);  }
         }
     }

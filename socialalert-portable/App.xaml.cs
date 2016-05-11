@@ -23,7 +23,8 @@ namespace Bravson.Socialalert.Portable
             {
                 State.Populate(Properties["State"] as string);
             }
-            MainPage = new LoginPage();
+            //MainPage = new LoginPage();
+            MainPage = new NavigationPage(new PictureGridPage()); 
         }
 
         protected override void OnStart()

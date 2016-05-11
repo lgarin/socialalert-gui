@@ -4,19 +4,46 @@
              xmlns:local="clr-namespace:Bravson.Socialalert.Portable"
              x:Class="Bravson.Socialalert.Portable.PictureGridPage">
 
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <DataTemplate x:Key="template3Columns">
+        <ViewCell>
+          <Grid BackgroundColor="White" Padding="1" ColumnSpacing="2">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" Source="{Binding ImageSources[0]}" Aspect="AspectFill"/>
+            <Image Grid.Column="1" Source="{Binding ImageSources[1]}" Aspect="AspectFill"/>
+            <Image Grid.Column="2" Source="{Binding ImageSources[2]}" Aspect="AspectFill"/>
+          </Grid>
+        </ViewCell>
+      </DataTemplate>
+      <DataTemplate x:Key="template5Columns">
+        <ViewCell>
+          <Grid BackgroundColor="White" Padding="1" ColumnSpacing="2">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Image Grid.Column="0" Source="{Binding ImageSources[0]}" Aspect="AspectFill"/>
+            <Image Grid.Column="1" Source="{Binding ImageSources[1]}" Aspect="AspectFill"/>
+            <Image Grid.Column="2" Source="{Binding ImageSources[2]}" Aspect="AspectFill"/>
+            <Image Grid.Column="3" Source="{Binding ImageSources[3]}" Aspect="AspectFill"/>
+            <Image Grid.Column="4" Source="{Binding ImageSources[4]}" Aspect="AspectFill"/>
+          </Grid>
+        </ViewCell>
+      </DataTemplate>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  
   <ContentPage.ToolbarItems>
     <ToolbarItem Name="Search" Order="Primary" Icon="search_header_icon.png"/>
   </ContentPage.ToolbarItems>
 
-  <ListView x:Name="listView" IsPullToRefreshEnabled="true" RefreshCommand="{Binding Refresh}" ItemsSource="{Binding ItemList}" RowHeight="200" >
-    <ListView.ItemTemplate>
-      <DataTemplate>
-        <ViewCell>
-          <Grid BackgroundColor="White" Padding="5">
-            <Image Source="{Binding ImageSource}" Aspect="AspectFill"/>
-          </Grid>
-        </ViewCell>
-      </DataTemplate>
-    </ListView.ItemTemplate>
-  </ListView>
+  <ListView x:Name="listView" IsPullToRefreshEnabled="true" RefreshCommand="{Binding Refresh}" ItemsSource="{Binding ItemList}" RowHeight="90" ItemTemplate="{StaticResource template3Columns}" />
 </local:ModelPage>
