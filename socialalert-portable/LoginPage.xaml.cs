@@ -44,7 +44,7 @@ namespace Bravson.Socialalert.Portable
             {
                 App.State.UserInfo = await ExecuteAsync(new LoginRequest(Username, Password));
                 App.State.DefaultUsername = Username;
-                App.Current.MainPage = new NavigationPage(new PictureGridPage());
+                App.Current.MainPage = new PictureGridPage();
             }
             catch (Exception e)
             {

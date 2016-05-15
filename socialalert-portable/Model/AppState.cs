@@ -13,6 +13,14 @@ namespace Bravson.Socialalert.Portable.Model
     [JsonObject]
     public sealed class AppState : SimpleModel
     {
+        private readonly JsonSerializer serializer;
+
+        public AppState(string serializedState)
+        {
+            serializer = JsonSerializer.CreateDefault();
+            Populate(serializedState);
+        }
+
         [JsonIgnore]
         public UserInfo UserInfo
         {
@@ -26,21 +34,16 @@ namespace Bravson.Socialalert.Portable.Model
             set { Set(value); }
         }
 
-        private Lazy<JsonSerializer> Serializer
-        {
-            get { return new Lazy<JsonSerializer>(JsonSerializer.CreateDefault); }
-        }
-
         public string Serialize()
         {
             using (StringWriter writer = new StringWriter())
             {
-                Serializer.Value.Serialize(writer, this, typeof(AppState));
+                serializer.Serialize(writer, this, typeof(AppState));
                 return writer.ToString();
             }
         }
 
-        public bool Populate(string value)
+        private bool Populate(string value)
         {
             if (string.IsNullOrEmpty(value))
             {
@@ -49,7 +52,7 @@ namespace Bravson.Socialalert.Portable.Model
             StringReader reader = new StringReader(value);
             try
             {
-                Serializer.Value.Populate(reader, this);
+                serializer.Populate(reader, this);
                 return true;
             }
             catch

@@ -49,7 +49,7 @@ namespace Bravson.Socialalert.Portable
             try
             {
                 LoadingData = true;
-                return await App.Connection.InvokeAsync<T>(request);
+                return await App.ServerConnection.InvokeAsync<T>(request);
             }
             catch (AggregateException ex)
             {

@@ -6,6 +6,11 @@ using System.Diagnostics;
 using Xamarin.Forms;
 using System.Collections.Generic;
 using Bravson.Socialalert.Portable.Util;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
+using Plugin.Geolocator;
+using Plugin.Geolocator.Abstractions;
+using System.Threading.Tasks;
 
 namespace Bravson.Socialalert.Portable
 {
@@ -17,7 +22,13 @@ namespace Bravson.Socialalert.Portable
         {
             InitializeComponent();
             SizeChanged += OnPageSizeChanged;
-            //DoRefresh();
+            plusButton.Clicked += OnPlusButtonClicked;
+        }
+
+        private void OnPlusButtonClicked(object sender, EventArgs e)
+        {
+            cameraButton.IsVisible = !cameraButton.IsVisible;
+            mapButton.IsVisible = !mapButton.IsVisible;
         }
 
         public ObservableCollection<PictureGridItem> ItemList { get; } = new ObservableCollection<PictureGridItem>();
@@ -29,9 +40,68 @@ namespace Bravson.Socialalert.Portable
             get { return Command(DoRefresh, CanRefresh); }
         }
 
+        public Command Search
+        {
+            get { return Command(DoSearch, CanSearch); }
+        }
+
+        public Command CapturePhoto
+        {
+            get { return Command(DoCapturePhoto, CanCapturePhoto); }
+        }
+
+        private async void DoCapturePhoto()
+        {
+            var options = new StoreCameraMediaOptions() { PhotoSize = PhotoSize.Large, SaveToAlbum = false };
+            var photoAsync = CrossMedia.Current.TakePhotoAsync(options);
+            var location = default(Position);
+            if (CrossGeolocator.Current.IsGeolocationEnabled)
+            { 
+                CrossGeolocator.Current.DesiredAccuracy = 20;
+                location = await CrossGeolocator.Current.GetPositionAsync();
+            }
+            var photo = await photoAsync;
+            if (photo != null)
+            {
+                using (photo)
+                {
+                    PendingUpload upload = new PendingUpload(MediaType.PICTURE, photo.Path);
+                    await App.DatabaseConnection.UpsertPendingUpload(upload);
+                    
+                    App.Notification.ShowUpload(upload);
+                    // TODO navigate
+                }
+            }
+        }
+
+        private bool CanCapturePhoto()
+        {
+            return CrossMedia.Current.IsTakePhotoSupported;
+        }
+
+        public string Keywords
+        {
+            get { return Get<string>(); }
+            set { Set(value); }
+        }
+
+        private void DoSearch()
+        {
+            DoRefresh();
+        }
+
+        private bool CanSearch()
+        {
+            return true;
+        }
+
         private async void DoRefresh()
         {
-            var result = await ExecuteAsync(new SearchMediaRequest { PageNumber=0, PageSize=100, MaxAge=2000*Constants.MillisPerDay });
+            if (!listView.IsRefreshing)
+            {
+                listView.BeginRefresh();
+            }
+            var result = await ExecuteAsync(new SearchMediaRequest { PageNumber=0, PageSize=100, MaxAge=2000*Constants.MillisPerDay, Keywords=Keywords });
             BatchBegin();
             ItemList.Clear();
             foreach (var mediaGroup in result.Content.Batch(columnCount))

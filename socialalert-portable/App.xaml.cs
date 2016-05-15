@@ -1,35 +1,60 @@
 ﻿using Bravson.Socialalert.Portable.Model;
-
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Bravson.Socialalert.Portable
 {
     public partial class App : Application
     {
-        public static AppState State { get; } = new AppState();
-
         public new static App Current
         {
             get { return Application.Current as App; }
         }
 
-        public static JsonRpcClient Connection { get; private set; }
+        public static AppState State { get; private set; }
+
+        public static JsonRpcClient ServerConnection { get; private set; }
+
+        public static SqliteClient DatabaseConnection { get; private set; }
+
+        public static NotificationClient Notification { get; private set; }
 
         public App()
         {
             InitializeComponent();
-            Connection = new JsonRpcClient(Resources["BaseServerUrl"] as string);
-            if (Properties.ContainsKey("State"))
-            {
-                State.Populate(Properties["State"] as string);
-            }
-            //MainPage = new LoginPage();
-            MainPage = new NavigationPage(new PictureGridPage()); 
+
+            Notification = new NotificationClient();
         }
 
-        protected override void OnStart()
+        private Task InitServerConnection(string serverUrl)
+        {
+            return Task.Run(() => ServerConnection = new JsonRpcClient(serverUrl));
+        }
+
+        private Task InitDatabaseConnection(string databaseName)
+        {
+            return Task.Run(() => DatabaseConnection = new SqliteClient(databaseName));
+        }
+
+        private Task InitAppState(IDictionary<string, object> persistedState)
+        {
+            if (persistedState.ContainsKey("State"))
+            {
+                return Task.Run(() => State = new AppState(persistedState["State"] as string));
+            }
+            return Task.FromResult(0);
+        }
+
+        protected async override void OnStart()
         {
             // Handle when your app starts
+            await Task.WhenAll(InitDatabaseConnection("sqlite.db3"),
+                               InitServerConnection(Resources["BaseServerUrl"] as string),
+                               InitAppState(Properties));
+
+            MainPage = new PictureGridPage();
         }
 
         protected override void OnSleep()

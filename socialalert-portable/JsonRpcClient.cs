@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Bravson.Socialalert.Portable.Util;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -13,19 +14,18 @@ namespace Bravson.Socialalert.Portable
 {
     sealed class EpochDateTimeConverter : DateTimeConverterBase
     {
-        private static readonly DateTime epoch = new DateTime(1970, 1, 1);
-
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             DateTime dateTime = (DateTime)value;
-            writer.WriteValue((dateTime.Ticks - epoch.Ticks) / TimeSpan.TicksPerMillisecond);
+            writer.WriteValue(dateTime.GetEpochMillis());
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (reader.ValueType == typeof(long))
             {
-                return epoch.AddTicks(TimeSpan.TicksPerMillisecond * (long)reader.Value);
+                long millis = (long)reader.Value;
+                return millis.FromEpochMillis();
             }
             return null;
         }
