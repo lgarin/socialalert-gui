@@ -65,10 +65,13 @@ namespace Bravson.Socialalert.Portable
             {
                 using (photo)
                 {
+                    App.UploadService.Upload(photo);
+                    /*
                     PendingUpload upload = new PendingUpload(MediaType.PICTURE, photo.Path);
                     await App.DatabaseConnection.UpsertPendingUpload(upload);
                     
                     App.Notification.ShowUpload(upload);
+                    */
                     // TODO navigate
                 }
             }

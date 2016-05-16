@@ -2,6 +2,9 @@
 {
     static class Constants
     {
+        public const string JpegMimeType = "image/jpeg";
+        public const string Mp4MimeType = "video/mp4";
+
         public const long MillisPerDay = 1000L * 60L * 60L * 24L;
 
         public const int ItemsPerPage = 20;

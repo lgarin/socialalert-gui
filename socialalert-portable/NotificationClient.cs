@@ -50,9 +50,9 @@ namespace Bravson.Socialalert.Portable
             MessagingCenter.Subscribe<NotificationClient, int>(this, UploadMessage, OnUploadAction);
         }
 
-        public void ShowUpload(PendingUpload upload)
+        public void ShowUpload(PendingUpload upload, int? progressPercentage = null)
         {
-            var notification = new LocalNotification(upload.Id.Value) { Title = "Upload media".Translate(resources), Body = upload.State.GetDescription(resources), Color = upload.Color, Timestamp = upload.Timestamp, Ongoing = upload.State == UploadState.Completed, Icon = "alarm63.png", BroadcastMessage = UploadMessage };
+            var notification = new LocalNotification(upload.Id.Value) { Title = "Upload media".Translate(resources), Body = upload.State.GetDescription(resources), Color = upload.Color, Timestamp = upload.Timestamp, Ongoing = upload.State == UploadState.Completed, Icon = "alarm63.png", BroadcastMessage = UploadMessage, ProgressPercentage=progressPercentage };
             service.Show(notification);
         }
 

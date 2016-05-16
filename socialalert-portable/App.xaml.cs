@@ -25,11 +25,14 @@ namespace Bravson.Socialalert.Portable
 
         public static NotificationClient Notification { get; private set; }
 
+        public static UploadService UploadService { get; private set; }
+
         public App()
         {
             InitializeComponent();
             Config = new AppConfig(Resources);
             Notification = new NotificationClient(Resources);
+            UploadService = new UploadService();
         }
 
         private Task InitServerConnection(Uri serverUrl)
@@ -54,6 +57,7 @@ namespace Bravson.Socialalert.Portable
                                InitServerConnection(Config.ServerUrl),
                                InitAppState(Properties.Get(AppStatePropertyKey) as string));
 
+            UploadService.Run();
             MainPage = new PictureGridPage();
         }
 

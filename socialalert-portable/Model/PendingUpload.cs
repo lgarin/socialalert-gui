@@ -98,6 +98,7 @@ namespace Bravson.Socialalert.Portable.Model
             }
         }
 
+        [Ignore]
         public bool Ongoing
         {
             get
@@ -106,6 +107,7 @@ namespace Bravson.Socialalert.Portable.Model
             }
         }
 
+        [Ignore]
         public Color Color
         {
             get
@@ -120,6 +122,26 @@ namespace Bravson.Socialalert.Portable.Model
                     default: return Color.Black;
                 }
             }
+        }
+
+        [Ignore]
+        public string ContentType
+        {
+            get
+            {
+                switch (MediaType)
+                {
+                    case MediaType.PICTURE: return Constants.JpegMimeType;
+                    case MediaType.VIDEO: return Constants.Mp4MimeType;
+                    default: return null;
+                }
+            }
+        }
+
+        [Ignore]
+        public bool CanClaim
+        {
+            get { return Uri != null && Title != null; }
         }
     }
 }
