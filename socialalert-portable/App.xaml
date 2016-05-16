@@ -5,8 +5,7 @@
              x:Class="Bravson.Socialalert.Portable.App">
   <Application.Resources>
     <ResourceDictionary>
-      <x:String x:Key="UploadServerUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/upload</x:String>
-      <x:String x:Key="BaseServerUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/rest/</x:String>
+      <x:String x:Key="ServerUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app</x:String>
       <x:String x:Key="BaseThumbnailUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/thumbnail/</x:String>
       <x:String x:Key="BaseImageUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/media/</x:String>
       <x:String x:Key="BasePreviewUrl">http://jcla3ndtozbxyghx.myfritz.net:18789/socialalert-app/preview/</x:String>

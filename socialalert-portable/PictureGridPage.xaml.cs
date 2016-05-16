@@ -2,15 +2,13 @@
 using System;
 using System.Linq;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using Xamarin.Forms;
-using System.Collections.Generic;
 using Bravson.Socialalert.Portable.Util;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
-using System.Threading.Tasks;
+using Bravson.Socialalert.Portable.Data;
 
 namespace Bravson.Socialalert.Portable
 {
@@ -23,6 +21,15 @@ namespace Bravson.Socialalert.Portable
             InitializeComponent();
             SizeChanged += OnPageSizeChanged;
             plusButton.Clicked += OnPlusButtonClicked;
+            keywordEntry.Completed += OnKeywordEntryCompleted;
+        }
+
+        private void OnKeywordEntryCompleted(object sender, EventArgs e)
+        {
+            if (CanRefresh())
+            {
+                DoRefresh();
+            }
         }
 
         private void OnPlusButtonClicked(object sender, EventArgs e)
@@ -33,16 +40,9 @@ namespace Bravson.Socialalert.Portable
 
         public ObservableCollection<PictureGridItem> ItemList { get; } = new ObservableCollection<PictureGridItem>();
 
-        public Uri BaseThumbnailUri { get; } = new Uri(App.Current.Resources["BaseThumbnailUrl"] as string, UriKind.Absolute);
-
         public Command Refresh
         {
             get { return Command(DoRefresh, CanRefresh); }
-        }
-
-        public Command Search
-        {
-            get { return Command(DoSearch, CanSearch); }
         }
 
         public Command CapturePhoto
@@ -85,16 +85,6 @@ namespace Bravson.Socialalert.Portable
             set { Set(value); }
         }
 
-        private void DoSearch()
-        {
-            DoRefresh();
-        }
-
-        private bool CanSearch()
-        {
-            return true;
-        }
-
         private async void DoRefresh()
         {
             if (!listView.IsRefreshing)
@@ -107,7 +97,7 @@ namespace Bravson.Socialalert.Portable
             foreach (var mediaGroup in result.Content.Batch(columnCount))
             {
                 var padding = Enumerable.Repeat(default(MediaInfo), columnCount - mediaGroup.Count());
-                ItemList.Add(new PictureGridItem(mediaGroup.Union(padding), BaseThumbnailUri));
+                ItemList.Add(new PictureGridItem(mediaGroup.Concat(padding), App.Config.BaseThumbnailUri));
             }
             BatchCommit();
             listView.EndRefresh();

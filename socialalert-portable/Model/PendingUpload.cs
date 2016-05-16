@@ -1,9 +1,7 @@
-﻿using SQLite;
+﻿using Bravson.Socialalert.Portable.Data;
+using SQLite;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace Bravson.Socialalert.Portable.Model
 {
@@ -15,6 +13,22 @@ namespace Bravson.Socialalert.Portable.Model
         Claiming,
         Completed,
         Error
+    }
+
+    public static class UploadStateExtension
+    {
+        public static string GetDescription(this UploadState state, ResourceDictionary resources)
+        {
+            switch (state)
+            {
+                case UploadState.Pending: return "Upload pending";
+                case UploadState.Uploading: return "Upload in progress";
+                case UploadState.Claiming: return "Claiming media";
+                case UploadState.Error: return "Upload failed";
+                case UploadState.Completed: return "Upload completed";
+                default: return "Processing upload";
+            }
+        }
     }
 
     [Table("Upload")]
@@ -81,6 +95,30 @@ namespace Bravson.Socialalert.Portable.Model
             else
             {
                 return UploadState.Claiming;
+            }
+        }
+
+        public bool Ongoing
+        {
+            get
+            {
+                return State != UploadState.Completed;
+            }
+        }
+
+        public Color Color
+        {
+            get
+            {
+                switch (State)
+                {
+                    case UploadState.Error: return Color.Red;
+                    case UploadState.WaitingInput: return Color.Yellow;
+                    case UploadState.Completed: return Color.Green;
+                    case UploadState.Uploading: return Color.Blue;
+                    case UploadState.Claiming: return Color.Blue;
+                    default: return Color.Black;
+                }
             }
         }
     }

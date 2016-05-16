@@ -1,20 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using Bravson.Socialalert.Portable;
+using Bravson.Socialalert.Portable.Util;
 using Xamarin.Forms;
 using Android.Support.V4.App;
 using Xamarin.Forms.Platform.Android;
-using Bravson.Socialalert.Portable.Util;
-using System.Threading;
 using System.IO;
 
 [assembly: Dependency(typeof(Bravson.Socialalert.Android.NotificationService))]
@@ -32,10 +24,10 @@ namespace Bravson.Socialalert.Android
             builder.SetContentTitle(notification.Title);
             builder.SetContentText(notification.Body);
             builder.SetOngoing(notification.Ongoing);
-            //builder.SetWhen(notification.Timestamp.GetEpochMillis());
-            if (notification.Progress != null)
+            builder.SetWhen(notification.Timestamp.GetEpochMillis());
+            if (notification.ProgressPercentage != null)
             {
-                builder.SetProgress(100, notification.Progress.Value, false);
+                builder.SetProgress(100, notification.ProgressPercentage.Value, false);
             }
             if (notification.Color != null)
             {

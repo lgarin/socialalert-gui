@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bravson.Socialalert.Portable
+namespace Bravson.Socialalert.Portable.Data
 {
     public enum UserRole
     {

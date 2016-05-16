@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Bravson.Socialalert.Portable
+namespace Bravson.Socialalert.Portable.Data
 {
 
     public class ViewMediaDetailRequest : JsonRpcRequest<MediaInfo> 

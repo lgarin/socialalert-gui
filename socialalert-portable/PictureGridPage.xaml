@@ -14,9 +14,9 @@
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Source="{Binding ImageSources[0]}" Aspect="AspectFill"/>
-            <Image Grid.Column="1" Source="{Binding ImageSources[1]}" Aspect="AspectFill"/>
-            <Image Grid.Column="2" Source="{Binding ImageSources[2]}" Aspect="AspectFill"/>
+            <Image Grid.Column="0" Source="{Binding ImageSources[0]}" BackgroundColor="Black" Aspect="AspectFill"/>
+            <Image Grid.Column="1" Source="{Binding ImageSources[1]}" BackgroundColor="Black" Aspect="AspectFill"/>
+            <Image Grid.Column="2" Source="{Binding ImageSources[2]}" BackgroundColor="Black" Aspect="AspectFill"/>
           </Grid>
         </ViewCell>
       </DataTemplate>
@@ -30,11 +30,11 @@
               <ColumnDefinition Width="*"/>
               <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image Grid.Column="0" Source="{Binding ImageSources[0]}" Aspect="AspectFill"/>
-            <Image Grid.Column="1" Source="{Binding ImageSources[1]}" Aspect="AspectFill"/>
-            <Image Grid.Column="2" Source="{Binding ImageSources[2]}" Aspect="AspectFill"/>
-            <Image Grid.Column="3" Source="{Binding ImageSources[3]}" Aspect="AspectFill"/>
-            <Image Grid.Column="4" Source="{Binding ImageSources[4]}" Aspect="AspectFill"/>
+            <Image Grid.Column="0" Source="{Binding ImageSources[0]}" BackgroundColor="Black" Aspect="AspectFill"/>
+            <Image Grid.Column="1" Source="{Binding ImageSources[1]}" BackgroundColor="Black" Aspect="AspectFill"/>
+            <Image Grid.Column="2" Source="{Binding ImageSources[2]}" BackgroundColor="Black" Aspect="AspectFill"/>
+            <Image Grid.Column="3" Source="{Binding ImageSources[3]}" BackgroundColor="Black" Aspect="AspectFill"/>
+            <Image Grid.Column="4" Source="{Binding ImageSources[4]}" BackgroundColor="Black" Aspect="AspectFill"/>
           </Grid>
         </ViewCell>
       </DataTemplate>
@@ -53,8 +53,8 @@
     <StackLayout Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalOptions="FillAndExpand" BackgroundColor="#3647A3">
       <Button Image="menu_header_icon.png" BackgroundColor="#3647A3" WidthRequest="40" Scale="1.5"/>
       <BoxView HorizontalOptions="FillAndExpand"/>
-      <Entry x:Name="keywordEntry" Placeholder="Search here" TextColor="Black" PlaceholderColor="Gray" WidthRequest="150" Text="{Binding Keywords}" />
-      <Button Image="search_header_icon.png" BackgroundColor="#3647A3" WidthRequest="40" Scale="1.5" Command="{Binding Search}"/>
+      <Entry x:Name="keywordEntry" Placeholder="Search here" TextColor="White" PlaceholderColor="Gray" WidthRequest="150" Text="{Binding Keywords}" />
+      <Button Image="search_header_icon.png" BackgroundColor="#3647A3" WidthRequest="40" Scale="1.5" Command="{Binding Refresh}"/>
     </StackLayout>
     <ListView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="listView" IsPullToRefreshEnabled="true" RefreshCommand="{Binding Refresh}" ItemsSource="{Binding ItemList}" RowHeight="90" ItemTemplate="{StaticResource template3Columns}" />
     <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Vertical" Spacing="0" >

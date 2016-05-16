@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Bravson.Socialalert.Portable.Data;
+using Bravson.Socialalert.Portable.Model;
+using System;
 using Xamarin.Forms;
 
 namespace Bravson.Socialalert.Portable
@@ -48,7 +50,7 @@ namespace Bravson.Socialalert.Portable
             }
             catch (Exception e)
             {
-                DisplayError("Login failed", e);
+                DisplayError("Login failed".Translate(Resources), e);
                 usernameEntry.Focus();
             }
         }

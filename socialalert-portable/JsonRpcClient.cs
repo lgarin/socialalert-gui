@@ -1,14 +1,16 @@
-﻿using Bravson.Socialalert.Portable.Util;
+﻿using Bravson.Socialalert.Portable.Model;
+using Bravson.Socialalert.Portable.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System;
-using System.Linq;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Net;
 
 namespace Bravson.Socialalert.Portable
 {
@@ -31,16 +33,73 @@ namespace Bravson.Socialalert.Portable
         }
     }
 
-    public sealed class JsonRpcException : Exception
+    sealed class ProgressableStreamContent : HttpContent
     {
-        public JsonRpcException(String message, int? errorCode)
-            : base(message)
+        private const int defaultBufferSize = 4096;
+
+        private readonly Stream content;
+        private readonly int bufferSize;
+        private readonly IProgress<int> progress;
+
+        public ProgressableStreamContent(Stream content, IProgress<int> progress) : this(content, defaultBufferSize, progress) { }
+
+        public ProgressableStreamContent(Stream content, int bufferSize, IProgress<int> progress)
         {
-            if (errorCode.HasValue)
+            this.content = content;
+            this.bufferSize = bufferSize;
+            this.progress = progress;
+        }
+
+        protected override async Task SerializeToStreamAsync(Stream stream, TransportContext context)
+        {
+            var buffer = new byte[bufferSize];
+            var size = (int) content.Length;
+            var uploaded = 0;
+            var read = 0;
+
+            using (content)
             {
-                HResult = errorCode.Value;
+                while ((read = await content.ReadAsync(buffer, 0, buffer.Length)) > 0) 
+                {
+                    await stream.WriteAsync(buffer, 0, read);
+                    uploaded += read;
+                    progress.Report(size / uploaded);
+                }
             }
         }
+
+        protected override bool TryComputeLength(out long length)
+        {
+            length = content.Length;
+            return true;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                content.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+
+    public sealed class JsonRpcException : Exception
+    {
+        public JsonRpcException(string message, int? errorCode)
+            : base(message)
+        {
+            if (errorCode.HasValue && Enum.IsDefined(typeof(ErrorCode), errorCode.Value))
+            {
+                ErrorCode = (ErrorCode)errorCode.Value;
+            }
+            else
+            {
+                ErrorCode = ErrorCode.Unspecified;
+            }
+        }
+
+        public ErrorCode ErrorCode { get; private set; }
     }
 
     [JsonObject]
@@ -77,9 +136,9 @@ namespace Bravson.Socialalert.Portable
         private readonly HttpClient client = new HttpClient();
         private readonly Uri serverUri;
 
-        public JsonRpcClient(String serverUrl)
+        public JsonRpcClient(Uri serverUri)
         {
-            serverUri = new Uri(serverUrl, UriKind.Absolute);
+            this.serverUri = serverUri;
             serializer = new JsonSerializer();
             serializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
             serializer.Converters.Add(new EpochDateTimeConverter());
@@ -88,7 +147,7 @@ namespace Bravson.Socialalert.Portable
 
         public async Task<T> InvokeAsync<T>(JsonRpcRequest<T> requestObject)
         {
-            using (var request = new HttpRequestMessage(HttpMethod.Post, new Uri(serverUri, requestObject.ServiceName)))
+            using (var request = new HttpRequestMessage(HttpMethod.Post, new Uri(serverUri, "rest/" + requestObject.ServiceName)))
             {
                 var input = new JObject();
                 input["id"] = Interlocked.Increment(ref requestCounter).ToString();
@@ -100,7 +159,6 @@ namespace Bravson.Socialalert.Portable
                 using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead))
                 {
                     var resultString = await response.EnsureSuccessStatusCode().Content.ReadAsStringAsync();
-                    var cookies = response.Headers.Where(x => x.Key == "Set-Cookie").SelectMany(x => x.Value).FirstOrDefault(x => x.StartsWith("JSESSIONID="));
                     var array = JObject.Parse(resultString);
                     var error = array["error"];
                     var result = array["result"];
@@ -113,6 +171,24 @@ namespace Bravson.Socialalert.Portable
                         throw new JsonRpcException((string)error["message"], (int?)error["code"]);
                     }
                     return (T)result.ToObject(typeof(T), serializer);
+                }
+            }
+        }
+
+        public async Task<Uri> PostAsync(Stream stream, string contentType, IProgress<int> progress)
+        {
+            using (var request = new HttpRequestMessage(HttpMethod.Post, new Uri(serverUri, "upload")))
+            {
+                request.Headers.Add("Content-Type", contentType);
+                request.Headers.Add("Content-Length", stream.Length.ToString());
+                request.Content = new ProgressableStreamContent(stream, progress);
+                using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead))
+                {
+                    if (response.StatusCode == HttpStatusCode.Created)
+                    {
+                        return response.Headers.Location;
+                    }
+                    return null;
                 }
             }
         }

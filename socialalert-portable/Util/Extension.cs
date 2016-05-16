@@ -15,6 +15,16 @@ namespace Bravson.Socialalert.Portable.Util
             return items.Select((item, index) => new { item, index }).GroupBy(pair => pair.index / batchSize, pair => pair.item);
         }
 
+        public static object Get(this IDictionary<string, object> dictionary, string key)
+        {
+            object value;
+            if (dictionary.TryGetValue(key, out value))
+            {
+                return value;
+            }
+            return null;
+        }
+
         public static long GetEpochMillis(this DateTime dateTime)
         {
             DateTime dateTimeUtc = dateTime;

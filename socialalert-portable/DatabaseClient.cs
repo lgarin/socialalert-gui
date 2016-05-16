@@ -3,7 +3,6 @@ using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -15,11 +14,11 @@ namespace Bravson.Socialalert.Portable
         SQLiteAsyncConnection CreateAsyncConnection(string databaseName);
     }
 
-    public class SqliteClient : IDisposable
+    public class DatabaseClient : IDisposable
     {
         private readonly SQLiteConnection connection;
 
-        public SqliteClient(string databaseName)
+        public DatabaseClient(string databaseName)
         {
             connection = DependencyService.Get<IDatabaseFactory>().CreateConnection(databaseName);
             connection.CreateTable<PendingUpload>();

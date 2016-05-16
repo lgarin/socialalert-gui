@@ -65,25 +65,15 @@ namespace Bravson.Socialalert.Portable
             }
         }
 
-        protected virtual string getServerErrorMessage(int errorCode)
-        {
-            switch (errorCode)
-            {
-                case ErrorCode.BAD_CREDENTIALS: return "Bad credential";
-                case ErrorCode.LOCKED_ACCOUNT: return "Locked account";
-                default: return "Unkwnown error";
-            }
-        }
-
-        protected async void DisplayError(String title, Exception exception)
+        protected async void DisplayError(string title, Exception exception)
         {
             if (exception is JsonRpcException)
             {
-                await DisplayAlert(title, getServerErrorMessage(exception.HResult), "OK");
+                await DisplayAlert(title, (exception as JsonRpcException).ErrorCode.GetErrorMessage(Resources), "OK".Translate(Resources));
             }
             else
             {
-                await DisplayAlert(title, "Unknown error", "OK");
+                await DisplayAlert(title, ErrorCode.NetworkFailure.GetErrorMessage(Resources), "OK".Translate(Resources));
             }
         }
     }

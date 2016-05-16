@@ -1,10 +1,6 @@
 ﻿using Bravson.Socialalert.Portable.Model;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
 namespace Bravson.Socialalert.Portable
@@ -16,7 +12,12 @@ namespace Bravson.Socialalert.Portable
 
     public class LocalNotification
     {
-        public int Id { get; set; }
+        public LocalNotification(int id)
+        {
+            Id = id;
+        }
+
+        public int Id { get; private set; }
 
         public Color? Color { get; set; }
 
@@ -26,7 +27,7 @@ namespace Bravson.Socialalert.Portable
 
         public string Body { get; set; }
 
-        public int? Progress { get; set; }
+        public int? ProgressPercentage { get; set; }
 
         public DateTime Timestamp { get; set; }
 
@@ -39,17 +40,19 @@ namespace Bravson.Socialalert.Portable
     {
         private const string UploadMessage = "uploadAction";
 
-        private INotificationService service;
+        private readonly INotificationService service;
+        private readonly ResourceDictionary resources;
 
-        public NotificationClient()
+        public NotificationClient(ResourceDictionary resources)
         {
+            this.resources = resources;
             service = DependencyService.Get<INotificationService>();
             MessagingCenter.Subscribe<NotificationClient, int>(this, UploadMessage, OnUploadAction);
         }
 
         public void ShowUpload(PendingUpload upload)
         {
-            var notification = new LocalNotification() { Id = upload.Id.Value, Title = "Uploading", Body = "Test", Timestamp = upload.Timestamp, Ongoing = true, Color = Color.Blue, Icon = "alarm63.png", BroadcastMessage = UploadMessage };
+            var notification = new LocalNotification(upload.Id.Value) { Title = "Upload media".Translate(resources), Body = upload.State.GetDescription(resources), Color = upload.Color, Timestamp = upload.Timestamp, Ongoing = upload.State == UploadState.Completed, Icon = "alarm63.png", BroadcastMessage = UploadMessage };
             service.Show(notification);
         }
 

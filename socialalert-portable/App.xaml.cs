@@ -1,6 +1,6 @@
 ﻿using Bravson.Socialalert.Portable.Model;
-using System.Collections.Generic;
-using System.Diagnostics;
+using Bravson.Socialalert.Portable.Util;
+using System;
 using System.Threading.Tasks;
 using Xamarin.Forms;
 
@@ -8,6 +8,8 @@ namespace Bravson.Socialalert.Portable
 {
     public partial class App : Application
     {
+        private const string AppStatePropertyKey = "State";
+
         public new static App Current
         {
             get { return Application.Current as App; }
@@ -15,51 +17,49 @@ namespace Bravson.Socialalert.Portable
 
         public static AppState State { get; private set; }
 
+        public static AppConfig Config { get; private set; }
+
         public static JsonRpcClient ServerConnection { get; private set; }
 
-        public static SqliteClient DatabaseConnection { get; private set; }
+        public static DatabaseClient DatabaseConnection { get; private set; }
 
         public static NotificationClient Notification { get; private set; }
 
         public App()
         {
             InitializeComponent();
-
-            Notification = new NotificationClient();
+            Config = new AppConfig(Resources);
+            Notification = new NotificationClient(Resources);
         }
 
-        private Task InitServerConnection(string serverUrl)
+        private Task InitServerConnection(Uri serverUrl)
         {
             return Task.Run(() => ServerConnection = new JsonRpcClient(serverUrl));
         }
 
         private Task InitDatabaseConnection(string databaseName)
         {
-            return Task.Run(() => DatabaseConnection = new SqliteClient(databaseName));
+            return Task.Run(() => DatabaseConnection = new DatabaseClient(databaseName));
         }
 
-        private Task InitAppState(IDictionary<string, object> persistedState)
+        private Task InitAppState(string persistedState)
         {
-            if (persistedState.ContainsKey("State"))
-            {
-                return Task.Run(() => State = new AppState(persistedState["State"] as string));
-            }
-            return Task.FromResult(0);
+            return Task.Run(() => State = new AppState(persistedState));
         }
 
         protected async override void OnStart()
         {
             // Handle when your app starts
             await Task.WhenAll(InitDatabaseConnection("sqlite.db3"),
-                               InitServerConnection(Resources["BaseServerUrl"] as string),
-                               InitAppState(Properties));
+                               InitServerConnection(Config.ServerUrl),
+                               InitAppState(Properties.Get(AppStatePropertyKey) as string));
 
             MainPage = new PictureGridPage();
         }
 
         protected override void OnSleep()
         {
-            Properties["State"] = State.Serialize();
+            Properties[AppStatePropertyKey] = State.Serialize();
         }
 
         protected override void OnResume()

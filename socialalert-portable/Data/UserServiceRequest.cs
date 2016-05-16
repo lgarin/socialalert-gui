@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Bravson.Socialalert.Portable
+namespace Bravson.Socialalert.Portable.Data
 {
     public class LoginRequest : JsonRpcRequest<UserInfo>
     {
