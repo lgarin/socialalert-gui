@@ -26,24 +26,36 @@ namespace Bravson.Socialalert.Portable
         
         public Task<List<PendingUpload>> FetchAllPendingUploads()
         {
-            return Task.Run(() => connection.Table<PendingUpload>().ToList());
+            ExecuteCommand((c) => c.Table<PendingUpload>().Delete((p) => true));
+            return ExecuteCommand((c) => c.Table<PendingUpload>().ToList());
         }
 
-        public Task UpsertPendingUpload(PendingUpload entry)
+        public Task<int> UpsertPendingUpload(PendingUpload entry)
         {
             if (entry.Id.HasValue)
             {
-                return Task.Run(() => connection.Update(entry));
+                return ExecuteCommand((c) => c.Update(entry));
             }
             else
             {
-                return Task.Run(() => connection.Insert(entry));
+                return ExecuteCommand((c) => c.Insert(entry));
             }
+        }
+
+        public Task<int> DeletePendingUpload(PendingUpload upload)
+        {
+            return ExecuteCommand((c) => c.Delete(upload));
         }
 
         public void Dispose()
         {
             connection.Dispose();
         }
+
+        private Task<TResult> ExecuteCommand<TResult>(Func<SQLiteConnection, TResult> function)
+        {
+            return Task.Run(() => { lock (connection) return function(connection); });
+        }
+
     }
 }

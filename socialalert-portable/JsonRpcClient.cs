@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
+using System.Net.Http.Headers;
 
 namespace Bravson.Socialalert.Portable
 {
@@ -179,11 +180,12 @@ namespace Bravson.Socialalert.Portable
         {
             using (var request = new HttpRequestMessage(HttpMethod.Post, new Uri(serverUri, "upload")))
             {
-                request.Headers.Add("Content-Type", contentType);
-                request.Headers.Add("Content-Length", stream.Length.ToString());
                 request.Content = new ProgressableStreamContent(stream, progress);
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+                request.Content.Headers.ContentLength = stream.Length;
                 using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead))
                 {
+                    System.Diagnostics.Debug.WriteLine(await response.Content.ReadAsStringAsync());
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
                         return response.Headers.Location;

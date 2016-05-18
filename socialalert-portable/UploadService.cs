@@ -5,6 +5,7 @@ using Plugin.Media.Abstractions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,13 +21,35 @@ namespace Bravson.Socialalert.Portable
 
         public async void Run()
         {
+            foreach (PendingUpload upload in await App.DatabaseConnection.FetchAllPendingUploads())
+            {
+                upload.DetermineState();
+                if (upload.State == UploadState.Pending)
+                {
+                    if (await FileExists(upload.FilePath))
+                    {
+                        uploadQueue.Enqueue(upload);
+                    }
+                    else
+                    {
+                        await App.DatabaseConnection.DeletePendingUpload(upload);
+                    }
+                }
+                else if (upload.State == UploadState.Claiming)
+                {
+                    await ClaimUpload(upload);
+                }
+                App.Notification.ShowUpload(upload);
+            }
+
             while (!stop)
             {
                 await Task.Delay(TimeSpan.FromSeconds(1));
                 PendingUpload upload;
                 if (uploadQueue.TryDequeue(out upload))
                 {
-                    if (await UploadFile(upload) && upload.CanClaim)
+                    await UploadFile(upload);
+                    if (upload.CanClaim)
                     {
                         await ClaimUpload(upload);
                     }
@@ -49,7 +72,7 @@ namespace Bravson.Socialalert.Portable
             */
         }
 
-        private async Task<bool> UploadFile(PendingUpload upload)
+        private async Task UploadFile(PendingUpload upload)
         {
             try
             {
@@ -59,16 +82,20 @@ namespace Bravson.Socialalert.Portable
                 using (var stream = await OpenFile(upload.FilePath))
                 {
                     var uri = await App.ServerConnection.PostAsync(stream, upload.ContentType, new Progress<int>(p => ShowProgress(upload, p)));
-                    upload.Uri = uri.ToString();
+                    upload.Uri = uri?.ToString();
                 }
-                await App.DatabaseConnection.UpsertPendingUpload(upload);
+                if (upload.Uri != null)
+                {
+                    await App.DatabaseConnection.UpsertPendingUpload(upload);
+                    await DeleteFile(upload.FilePath);
+                }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.WriteLine(e);
                 upload.State = UploadState.Error;
             }
             App.Notification.ShowUpload(upload);
-            return upload.State != UploadState.Error;
         }
 
         private void ShowProgress(PendingUpload upload, int progress)
@@ -80,6 +107,18 @@ namespace Bravson.Socialalert.Portable
         {
             var file = await FileSystem.Current.GetFileFromPathAsync(path);
             return await file.OpenAsync(FileAccess.Read);
+        }
+
+        private async Task DeleteFile(string path)
+        {
+            var file = await FileSystem.Current.GetFileFromPathAsync(path);
+            await file.DeleteAsync();
+        }
+
+        private async Task<bool> FileExists(string path)
+        {
+            var file = await FileSystem.Current.GetFileFromPathAsync(path);
+            return file != null;
         }
 
         public async void Upload(MediaFile file)
