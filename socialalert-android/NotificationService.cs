@@ -45,7 +45,7 @@ namespace Bravson.Socialalert.Android
 
             if (notification.BroadcastMessage != null) { 
                 var intent = new Intent(context, typeof(NotificationActionService)).PutExtra(ExtraNotificationId, notification.Id).PutExtra(ExtraBroadcastMessage, notification.BroadcastMessage);
-                builder.SetContentIntent(PendingIntent.GetService(context, 0, intent, PendingIntentFlags.UpdateCurrent));
+                builder.SetContentIntent(PendingIntent.GetService(context, 0, intent, PendingIntentFlags.Immutable));
             }
 
             var notificationManager = NotificationManagerCompat.From(context);

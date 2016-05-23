@@ -52,7 +52,7 @@ namespace Bravson.Socialalert.Portable
 
         private async void DoCapturePhoto()
         {
-            var options = new StoreCameraMediaOptions() { PhotoSize = PhotoSize.Large, SaveToAlbum = false };
+            var options = new StoreCameraMediaOptions() { PhotoSize = PhotoSize.Full, SaveToAlbum = false };
             var photoAsync = CrossMedia.Current.TakePhotoAsync(options);
             var location = default(Position);
             if (CrossGeolocator.Current.IsGeolocationEnabled)
@@ -65,14 +65,8 @@ namespace Bravson.Socialalert.Portable
             {
                 using (photo)
                 {
-                    App.UploadService.Upload(photo);
-                    /*
-                    PendingUpload upload = new PendingUpload(MediaType.PICTURE, photo.Path);
-                    await App.DatabaseConnection.UpsertPendingUpload(upload);
-                    
-                    App.Notification.ShowUpload(upload);
-                    */
-                    // TODO navigate
+                    var upload = await App.UploadService.Upload(photo);
+                    App.Current.MainPage = new PictureMetadataPage(upload);
                 }
             }
         }

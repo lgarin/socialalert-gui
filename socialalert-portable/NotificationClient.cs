@@ -47,18 +47,22 @@ namespace Bravson.Socialalert.Portable
         {
             this.resources = resources;
             service = DependencyService.Get<INotificationService>();
-            MessagingCenter.Subscribe<NotificationClient, int>(this, UploadMessage, OnUploadAction);
+            MessagingCenter.Subscribe<INotificationService, int>(this, UploadMessage, OnUploadAction);
         }
 
         public void ShowUpload(PendingUpload upload, int? progressPercentage = null)
         {
-            var notification = new LocalNotification(upload.Id.Value) { Title = "Upload media".Translate(resources), Body = upload.State.GetDescription(resources), Color = upload.Color, Timestamp = upload.Timestamp, Ongoing = upload.State == UploadState.Completed, Icon = "alarm63.png", BroadcastMessage = UploadMessage, ProgressPercentage=progressPercentage };
+            var notification = new LocalNotification(upload.Id.Value) { Title = "Upload media".Translate(resources), Body = upload.State.GetDescription(resources), Color = upload.Color, Timestamp = upload.Timestamp, Ongoing = upload.State != UploadState.Completed, Icon = "alarm63.png", BroadcastMessage = UploadMessage, ProgressPercentage=progressPercentage };
             service.Show(notification);
         }
 
-        private void OnUploadAction(NotificationClient client, int notificationId)
+        private async void OnUploadAction(INotificationService service, int notificationId)
         {
-            Debug.WriteLine(notificationId.ToString() + " - " + client.GetHashCode());
+            PendingUpload upload = await App.UploadService.FindPendingUpload(notificationId);
+            if (upload != null && upload.State == UploadState.WaitingInput)
+            {
+                App.Current.MainPage = new PictureMetadataPage(upload);
+            }
         }
 
         public void Dispose()

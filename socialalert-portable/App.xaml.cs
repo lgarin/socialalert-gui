@@ -57,7 +57,7 @@ namespace Bravson.Socialalert.Portable
                                InitServerConnection(Config.ServerUrl),
                                InitAppState(Properties.Get(AppStatePropertyKey) as string));
 
-            UploadService.Run();
+
             MainPage = new PictureGridPage();
         }
 

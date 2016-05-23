@@ -26,7 +26,6 @@ namespace Bravson.Socialalert.Portable
         
         public Task<List<PendingUpload>> FetchAllPendingUploads()
         {
-            ExecuteCommand((c) => c.Table<PendingUpload>().Delete((p) => true));
             return ExecuteCommand((c) => c.Table<PendingUpload>().ToList());
         }
 
@@ -57,5 +56,9 @@ namespace Bravson.Socialalert.Portable
             return Task.Run(() => { lock (connection) return function(connection); });
         }
 
+        internal Task<PendingUpload> FindPendingUpload(int uploadId)
+        {
+            return ExecuteCommand((c) => c.Find<PendingUpload>(uploadId));
+        }
     }
 }

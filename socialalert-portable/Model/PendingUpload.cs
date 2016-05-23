@@ -23,6 +23,7 @@ namespace Bravson.Socialalert.Portable.Model
             {
                 case UploadState.Pending: return "Upload pending";
                 case UploadState.Uploading: return "Upload in progress";
+                case UploadState.WaitingInput: return "Waiting user input";
                 case UploadState.Claiming: return "Claiming media";
                 case UploadState.Error: return "Upload failed";
                 case UploadState.Completed: return "Upload completed";
@@ -115,7 +116,7 @@ namespace Bravson.Socialalert.Portable.Model
                 switch (State)
                 {
                     case UploadState.Error: return Color.Red;
-                    case UploadState.WaitingInput: return Color.Yellow;
+                    case UploadState.WaitingInput: return Color.Lime;
                     case UploadState.Completed: return Color.Green;
                     case UploadState.Uploading: return Color.Blue;
                     case UploadState.Claiming: return Color.Blue;
@@ -142,6 +143,24 @@ namespace Bravson.Socialalert.Portable.Model
         public bool CanClaim
         {
             get { return Uri != null && Title != null; }
+        }
+
+        [Ignore]
+        public MediaCategory[] CategoryArray
+        {
+            get { return Category.HasValue ? new MediaCategory[] { Category.Value } : new MediaCategory[0]; }
+        }
+
+        [Ignore]
+        public string[] TagArray
+        {
+            get { return string.IsNullOrEmpty(Tags) ? new string[0] : Tags.Split(' '); }
+        }
+
+        [Ignore]
+        public Uri RelativeUri
+        {
+            get { return Uri != null ? new Uri(Uri, UriKind.Relative) : null;  }
         }
     }
 }

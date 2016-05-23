@@ -64,7 +64,7 @@ namespace Bravson.Socialalert.Portable
                 {
                     await stream.WriteAsync(buffer, 0, read);
                     uploaded += read;
-                    progress.Report(size / uploaded);
+                    progress.Report(100 * uploaded / size);
                 }
             }
         }
@@ -73,15 +73,6 @@ namespace Bravson.Socialalert.Portable
         {
             length = content.Length;
             return true;
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                content.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 
@@ -185,7 +176,6 @@ namespace Bravson.Socialalert.Portable
                 request.Content.Headers.ContentLength = stream.Length;
                 using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseContentRead))
                 {
-                    System.Diagnostics.Debug.WriteLine(await response.Content.ReadAsStringAsync());
                     if (response.StatusCode == HttpStatusCode.Created)
                     {
                         return response.Headers.Location;
